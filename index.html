@@ -2,71 +2,120 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Тапалка Котика</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Тапалка Доге</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Подключаем Tailwind CSS для красивого дизайна -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
-            font-family: sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Запрещаем скролл страницы */
+        }
+        /* Стиль для главной кнопки */
+        .tap-area {
             user-select: none;
+            -webkit-user-select: none;
+            transition: transform 0.05s;
         }
-        #cat {
-            font-size: 150px;
-            cursor: pointer;
-            transition: transform 0.1s;
+        .tap-area:active {
+            transform: scale(0.95);
         }
-        #cat:active {
-            transform: scale(0.9);
-        }
-        #score {
-            font-size: 48px;
+        /* Плавное появление цифр */
+        .float-text {
+            position: absolute;
+            color: #4ade80;
             font-weight: bold;
-            margin-top: 20px;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatUp 0.8s ease-out forwards;
         }
-        .hint {
-            margin-top: 10px;
-            color: gray;
-            font-size: 14px;
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
         }
     </style>
 </head>
-<body>
-    <div id="cat">🐱</div>
-    <div id="score">0</div>
-    <div class="hint">Тапай по котику!</div>
+<body class="flex flex-col h-screen justify-between">
+
+    <!-- Верхняя панель (Баланс) -->
+    <div class="p-4 flex justify-center items-center mt-4">
+        <div class="bg-gray-800 rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-700">
+            <span class="text-2xl mr-2">🪙</span>
+            <span id="score" class="text-3xl font-bold">0</span>
+        </div>
+    </div>
+
+    <!-- Центральная часть (Кот) -->
+    <div class="flex-grow flex justify-center items-center relative">
+        <!-- Круг на фоне -->
+        <div class="absolute w-64 h-64 bg-gray-700 rounded-full opacity-30 blur-xl"></div>
+        
+        <!-- Кнопка-котик -->
+        <div id="cat" class="tap-area text-8xl cursor-pointer z-10 drop-shadow-2xl">
+            🐶
+        </div>
+    </div>
+
+    <!-- Нижняя панель навигации (как на скриншоте) -->
+    <div class="bg-gray-900 border-t border-gray-800 flex justify-around p-3 pb-6">
+        <button class="flex flex-col items-center text-yellow-500">
+            <span class="text-2xl">🐶</span>
+            <span class="text-xs mt-1">Тапать</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-500">
+            <span class="text-2xl">🛒</span>
+            <span class="text-xs mt-1">Магазин</span>
+        </button>
+        <button class="flex flex-col items-center text-gray-500">
+            <span class="text-2xl">👥</span>
+            <span class="text-xs mt-1">Друзья</span>
+        </button>
+    </div>
 
     <script>
         // Инициализация Telegram WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Развернуть на весь экран
+        tg.expand();
+        tg.headerColor = '#1a1a1a'; // Красим шапку Telegram в темный цвет
 
         let score = 0;
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
+        const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'); // Звук монетки
 
-        catElement.addEventListener('click', () => {
+        // Обработка тапа
+        catElement.addEventListener('pointerdown', (e) => {
             score++;
             scoreElement.innerText = score;
             
-            // Легкая вибрация при тапе (если поддерживается)
+            // Вибрация (если поддерживается)
             if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+                tg.HapticFeedback.impactOccurred('medium');
             }
 
-            // Простая анимация
-            catElement.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                catElement.style.transform = 'scale(1)';
-            }, 100);
+            // Звук (тихий)
+            coinSound.volume = 0.3;
+            coinSound.currentTime = 0;
+            coinSound.play().catch(() => {}); // Игнорируем ошибки автовоспроизведения
+
+            // Создаем всплывающий текст "+1" в месте клика
+            createFloatingText(e.clientX, e.clientY);
         });
+
+        function createFloatingText(x, y) {
+            const text = document.createElement('div');
+            text.innerText = '+1';
+            text.className = 'float-text';
+            text.style.left = x + 'px';
+            text.style.top = y + 'px';
+            document.body.appendChild(text);
+            
+            // Удаляем элемент после окончания анимации
+            setTimeout(() => { text.remove(); }, 800);
+        }
     </script>
 </body>
 </html>
