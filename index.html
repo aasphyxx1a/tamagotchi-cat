@@ -3,75 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Тапалка Доге</title>
+    <title>Тамагочи-Котик</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Подключаем Tailwind CSS для красивого дизайна -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Природный фон: мягкое небо, переходящее в траву */
         body {
-            background-color: #1a1a1a;
-            color: white;
+            background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 35%, #d4fc79 65%, #96e6a1 100%);
+            color: #333; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; /* Запрещаем скролл страницы */
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        /* Стиль для главной кнопки */
+
+        /* Легкие облака для оживления фона */
+        .clouds {
+            position: absolute;
+            top: 5%;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Плавное парение котика с тенью на траву */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 20px 15px rgba(0,0,0,0.15));
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Эффект нажатия на котика */
         .tap-area {
             user-select: none;
             -webkit-user-select: none;
             transition: transform 0.05s;
         }
         .tap-area:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
         }
-        /* Плавное появление цифр */
+        
+        /* Всплывающие цифры (+1) */
         .float-text {
             position: absolute;
-            color: #4ade80;
+            color: #2e7d32; 
             font-weight: bold;
-            font-size: 24px;
+            font-size: 28px;
             pointer-events: none;
             animation: floatUp 0.8s ease-out forwards;
+            text-shadow: 0 0 10px rgba(255,255,255,0.8);
+            z-index: 50;
         }
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 0; transform: translateY(-60px); }
         }
+
+        /* Стили для переключения вкладок */
+        .tab-content { display: none; }
+        .tab-content.active { display: flex; }
     </style>
 </head>
-<body class="flex flex-col h-screen justify-between">
+<body>
 
-    <!-- Верхняя панель (Баланс) -->
-    <div class="p-4 flex justify-center items-center mt-4">
-        <div class="bg-gray-800 rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-700">
+    <!-- Фоновые облака -->
+    <div class="clouds"></div>
+
+    <!-- Верхняя панель (Баланс монет) -->
+    <div class="p-4 flex justify-center items-center mt-2 z-10">
+        <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300">
             <span class="text-2xl mr-2">🪙</span>
-            <span id="score" class="text-3xl font-bold">0</span>
+            <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
         </div>
     </div>
 
-    <!-- Центральная часть (Кот) -->
-    <div class="flex-grow flex justify-center items-center relative">
-        <!-- Круг на фоне -->
-        <div class="absolute w-64 h-64 bg-gray-700 rounded-full opacity-30 blur-xl"></div>
+    <!-- ЭКРАН 1: Тапалка -->
+    <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
         
-        <!-- Кнопка-котик -->
-        <div id="cat" class="tap-area text-8xl cursor-pointer z-10 drop-shadow-2xl">
-            🐶
+        <!-- Котик -->
+        <div id="cat" class="tap-area text-[150px] cursor-pointer z-10 floating">
+            🐱
+        </div>
+        
+        <!-- Подсказка -->
+        <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
+    </div>
+
+    <!-- ЭКРАН 2: Магазин -->
+    <div id="tab-shop" class="tab-content flex-grow flex-col p-4 w-full overflow-y-auto pb-24 z-10 relative">
+        <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🛒 Магазин</h2>
+        
+        <div class="space-y-3 z-10">
+            <!-- Предмет 1: Рыбка -->
+            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                <div class="flex items-center">
+                    <span class="text-4xl mr-3">🐟</span>
+                    <div>
+                        <div class="font-bold text-gray-800">Вкусная рыбка</div>
+                        <div class="text-xs text-gray-500">+10 монет за тап (на 5 сек)</div>
+                    </div>
+                </div>
+                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">50 🪙</button>
+            </div>
+
+            <!-- Предмет 2: Клубок -->
+            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                <div class="flex items-center">
+                    <span class="text-4xl mr-3">🧶</span>
+                    <div>
+                        <div class="font-bold text-gray-800">Клубок ниток</div>
+                        <div class="text-xs text-gray-500">+50 монет за тап (на 5 сек)</div>
+                    </div>
+                </div>
+                <button onclick="buyItem('yarn', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">200 🪙</button>
+            </div>
+            
+            <!-- Предмет 3: Шапка -->
+            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                <div class="flex items-center">
+                    <span class="text-4xl mr-3">🎩</span>
+                    <div>
+                        <div class="font-bold text-gray-800">Крутая шапка</div>
+                        <div class="text-xs text-gray-500">Просто меняет вид котика</div>
+                    </div>
+                </div>
+                <button onclick="buyItem('hat', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm">500 🪙</button>
+            </div>
         </div>
     </div>
 
-    <!-- Нижняя панель навигации (как на скриншоте) -->
-    <div class="bg-gray-900 border-t border-gray-800 flex justify-around p-3 pb-6">
-        <button class="flex flex-col items-center text-yellow-500">
-            <span class="text-2xl">🐶</span>
-            <span class="text-xs mt-1">Тапать</span>
+    <!-- Нижняя панель навигации -->
+    <div class="bg-white bg-opacity-90 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
+        <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
+            <span class="text-2xl">🐱</span>
+            <span class="text-xs mt-1 font-bold">Тапать</span>
         </button>
-        <button class="flex flex-col items-center text-gray-500">
+        <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400">
             <span class="text-2xl">🛒</span>
-            <span class="text-xs mt-1">Магазин</span>
-        </button>
-        <button class="flex flex-col items-center text-gray-500">
-            <span class="text-2xl">👥</span>
-            <span class="text-xs mt-1">Друзья</span>
+            <span class="text-xs mt-1 font-bold">Магазин</span>
         </button>
     </div>
 
@@ -79,42 +158,105 @@
         // Инициализация Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#1a1a1a'; // Красим шапку Telegram в темный цвет
+        tg.headerColor = '#a1c4fd'; // Красим шапку Telegram в цвет неба
 
-        let score = 0;
+        // Загружаем сохраненный счет (если играли раньше) или начинаем с 0
+        let score = parseInt(localStorage.getItem('catScore')) || 0;
+        let tapPower = 1; // Сила одного тапа
+
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
-        const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3'); // Звук монетки
+        const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
 
-        // Обработка тапа
+        updateUI();
+
+        // --- ЛОГИКА ТАПА ---
         catElement.addEventListener('pointerdown', (e) => {
-            score++;
-            scoreElement.innerText = score;
+            score += tapPower;
+            saveProgress();
             
-            // Вибрация (если поддерживается)
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
-
-            // Звук (тихий)
-            coinSound.volume = 0.3;
+            // Вибрация (если телефон поддерживает)
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            
+            // Звук монетки
+            coinSound.volume = 0.2;
             coinSound.currentTime = 0;
-            coinSound.play().catch(() => {}); // Игнорируем ошибки автовоспроизведения
+            coinSound.play().catch(() => {}); // Игнорируем блокировку звука
 
-            // Создаем всплывающий текст "+1" в месте клика
-            createFloatingText(e.clientX, e.clientY);
+            // Показываем "+1" в месте клика
+            createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
+            updateUI();
         });
 
-        function createFloatingText(x, y) {
-            const text = document.createElement('div');
-            text.innerText = '+1';
-            text.className = 'float-text';
-            text.style.left = x + 'px';
-            text.style.top = y + 'px';
-            document.body.appendChild(text);
+        // --- МАГАЗИН ---
+        function buyItem(item, price) {
+            if (score >= price) {
+                score -= price;
+                
+                if (item === 'fish') {
+                    activateBoost(10, 5000); // +10 к тапу на 5 секунд
+                } else if (item === 'yarn') {
+                    activateBoost(50, 5000); // +50 к тапу на 5 секунд
+                } else if (item === 'hat') {
+                    catElement.innerText = '😻'; // Меняем эмоцию котика
+                }
+
+                saveProgress();
+                updateUI();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                alert('Покупка успешна!');
+            } else {
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                alert('Недостаточно монет! Тапай больше!');
+            }
+        }
+
+        // Временное усиление тапа
+        function activateBoost(power, duration) {
+            tapPower = power;
+            setTimeout(() => {
+                tapPower = 1; // Возвращаем обычную силу
+                alert('Действие буста закончилось!');
+            }, duration);
+        }
+
+        // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
+        function createFloatingText(x, y, text) {
+            const el = document.createElement('div');
+            el.innerText = text;
+            el.className = 'float-text';
+            // Центрируем текст относительно пальца
+            el.style.left = (x - 15) + 'px';
+            el.style.top = (y - 30) + 'px';
+            document.body.appendChild(el);
             
-            // Удаляем элемент после окончания анимации
-            setTimeout(() => { text.remove(); }, 800);
+            // Удаляем элемент после завершения анимации
+            setTimeout(() => el.remove(), 800);
+        }
+
+        function updateUI() {
+            scoreElement.innerText = score;
+        }
+
+        function saveProgress() {
+            localStorage.setItem('catScore', score);
+        }
+
+        // Переключение вкладок (Тапать / Магазин)
+        function switchTab(tab) {
+            // Скрываем все вкладки
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Показываем нужную
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // Меняем цвета текста у кнопок навигации
+            if (tab === 'tap') {
+                document.getElementById('btn-tap').classList.replace('text-gray-400', 'text-green-600');
+                document.getElementById('btn-shop').classList.replace('text-green-600', 'text-gray-400');
+            } else {
+                document.getElementById('btn-shop').classList.replace('text-gray-400', 'text-green-600');
+                document.getElementById('btn-tap').classList.replace('text-green-600', 'text-gray-400');
+            }
         }
     </script>
 </body>
