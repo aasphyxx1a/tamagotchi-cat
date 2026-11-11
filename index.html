@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Тапалка Котика</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            font-family: sans-serif;
+            user-select: none;
+        }
+        #cat {
+            font-size: 150px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        #cat:active {
+            transform: scale(0.9);
+        }
+        #score {
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .hint {
+            margin-top: 10px;
+            color: gray;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="cat">🐱</div>
+    <div id="score">0</div>
+    <div class="hint">Тапай по котику!</div>
+
+    <script>
+        // Инициализация Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        let score = 0;
+        const scoreElement = document.getElementById('score');
+        const catElement = document.getElementById('cat');
+
+        catElement.addEventListener('click', () => {
+            score++;
+            scoreElement.innerText = score;
+            
+            // Легкая вибрация при тапе (если поддерживается)
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+
+            // Простая анимация
+            catElement.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                catElement.style.transform = 'scale(1)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
