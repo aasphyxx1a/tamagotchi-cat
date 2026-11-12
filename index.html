@@ -7,7 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Природный фон */
         body {
             background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 35%, #d4fc79 65%, #96e6a1 100%);
             color: #333; 
@@ -34,9 +33,18 @@
         /* --- КОТИК --- */
         .cat-wrapper {
             position: relative;
-            width: 200px;
-            height: 180px;
+            width: 220px;
+            height: 200px;
             z-index: 10;
+            /* Плавное парение в покое */
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Анимация парения */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
 
         .cat-container {
@@ -45,61 +53,43 @@
             height: 100%;
             cursor: pointer;
             filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
-            /* Плавное парение в состоянии покоя */
-            animation: float 3s ease-in-out infinite;
+            /* Убираем встроенную анимацию, чтобы JS мог управлять прыжком */
+            animation: none; 
         }
 
-        /* Анимация прыжка при тапе */
-        .jump-animation {
-            animation: jump 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        @keyframes jump {
-            0% { transform: translateY(0) scale(1); }
-            30% { transform: translateY(-25px) scale(0.95); } /* Подлетает вверх и чуть сжимается */
-            60% { transform: translateY(0) scale(1.05, 0.9); } /* Приземляется и плющится */
-            100% { transform: translateY(0) scale(1); } /* Возвращается в норму */
-        }
-
-        /* Мордочка (серая) */
+        /* Мордочка */
         .cat-face {
             position: absolute;
             bottom: 0;
             left: 10px;
-            width: 180px;
-            height: 130px;
+            width: 200px;
+            height: 140px;
             background-color: #5c6166; 
-            border-radius: 90px 90px 70px 70px;
+            border-radius: 100px 100px 80px 80px;
         }
 
-        /* Ушки */
+        /* НОВЫЕ УШКИ (квадраты с закруглениями) */
         .ear {
             position: absolute;
-            top: -25px;
-            width: 0;
-            height: 0;
-            border-left: 35px solid transparent;
-            border-right: 35px solid transparent;
-            border-bottom: 60px solid #5c6166;
+            top: -10px;
+            width: 60px;
+            height: 60px;
+            background-color: #5c6166;
+            border-radius: 15px 15px 0 0; /* Закругленные кончики */
+            z-index: -1; /* Прячем основания ушей за головой */
         }
-        .ear-left { left: 10px; transform: rotate(-15deg); }
-        .ear-right { right: 10px; transform: rotate(15deg); }
+        .ear-left { left: 20px; transform: rotate(-20deg); }
+        .ear-right { right: 20px; transform: rotate(20deg); }
         
         .ear-inner {
             position: absolute;
             top: 15px;
-            left: -20px;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid #404448;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #404448;
+            border-radius: 8px 8px 0 0;
         }
 
         /* Глазки */
@@ -111,8 +101,8 @@
             background-color: #222;
             border-radius: 50%;
         }
-        .eye-left { left: 35px; }
-        .eye-right { right: 35px; }
+        .eye-left { left: 40px; }
+        .eye-right { right: 40px; }
 
         .eye::before {
             content: '';
@@ -138,30 +128,30 @@
         /* Щечки */
         .cheek {
             position: absolute;
-            top: 85px;
-            width: 25px;
-            height: 14px;
+            top: 90px;
+            width: 28px;
+            height: 16px;
             background-color: #ffb6c1;
             border-radius: 50%;
             opacity: 0.8;
         }
-        .cheek-left { left: 20px; }
-        .cheek-right { right: 20px; }
+        .cheek-left { left: 25px; }
+        .cheek-right { right: 25px; }
 
         /* Носик и ротик */
         .nose {
             position: absolute;
-            top: 80px;
+            top: 85px;
             left: 50%;
             transform: translateX(-50%);
-            width: 12px;
-            height: 9px;
+            width: 14px;
+            height: 10px;
             background-color: #333;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
         }
         .mouth {
             position: absolute;
-            top: 89px;
+            top: 95px;
             left: 50%;
             transform: translateX(-50%);
             width: 20px;
@@ -173,22 +163,22 @@
         /* Усики */
         .whisker {
             position: absolute;
-            width: 40px;
+            width: 45px;
             height: 2px;
             background-color: #333;
             border-radius: 2px;
         }
-        .whisker-l1 { top: 85px; left: -20px; transform: rotate(10deg); }
-        .whisker-l2 { top: 95px; left: -20px; transform: rotate(-10deg); }
-        .whisker-r1 { top: 85px; right: -20px; transform: rotate(-10deg); }
-        .whisker-r2 { top: 95px; right: -20px; transform: rotate(10deg); }
+        .whisker-l1 { top: 85px; left: -25px; transform: rotate(10deg); }
+        .whisker-l2 { top: 98px; left: -25px; transform: rotate(-10deg); }
+        .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
+        .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
 
         /* Лапки */
         .paw {
             position: absolute;
             bottom: -10px;
-            width: 60px;
-            height: 35px;
+            width: 65px;
+            height: 40px;
             background-color: #5c6166;
             border-radius: 30px 30px 20px 20px;
             border: 3px solid #333; 
@@ -206,7 +196,7 @@
         }
         .toe {
             width: 4px;
-            height: 10px;
+            height: 12px;
             background-color: #333;
             border-radius: 2px;
         }
@@ -229,7 +219,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: flex; }
 
-        /* Иконки Рыбок */
+        /* Эмодзи-рыбки */
         .fish-emoji {
             font-size: 32px;
             line-height: 1;
@@ -246,7 +236,7 @@
 
     <div class="clouds"></div>
 
-    <!-- Верхняя панель (Баланс) -->
+    <!-- Баланс -->
     <div class="p-4 flex justify-center items-center mt-2 z-10">
         <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
             <span class="fish-emoji">🐟</span>
@@ -254,13 +244,15 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 1: Тапалка -->
+    <!-- Тапалка -->
     <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
         
         <div class="cat-wrapper">
             <div id="cat" class="cat-container">
+                <!-- Ушки -->
                 <div class="ear ear-left"><div class="ear-inner"></div></div>
                 <div class="ear ear-right"><div class="ear-inner"></div></div>
+                <!-- Морда -->
                 <div class="cat-face">
                     <div class="eye eye-left"></div>
                     <div class="eye eye-right"></div>
@@ -273,24 +265,21 @@
                     <div class="whisker whisker-r1"></div>
                     <div class="whisker whisker-r2"></div>
                 </div>
-                <div class="paw paw-left">
-                    <div class="toes"><div class="toe"></div><div class="toe"></div></div>
-                </div>
-                <div class="paw paw-right">
-                    <div class="toes"><div class="toe"></div><div class="toe"></div></div>
-                </div>
+                <!-- Лапки -->
+                <div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+                <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
             </div>
         </div>
 
         <div class="mt-12 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
     </div>
 
-    <!-- ЭКРАН 2: Магазин -->
+    <!-- Магазин -->
     <div id="tab-shop" class="tab-content flex-grow flex-col p-4 w-full overflow-y-auto pb-24 z-10 relative">
         <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🛒 Магазин</h2>
         
         <div class="space-y-3 z-10">
-            <!-- Предмет 1: Рыбка -->
+            <!-- Рыбка -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
                     <span class="fish-emoji">🐟</span>
@@ -304,7 +293,7 @@
                 </button>
             </div>
 
-            <!-- Предмет 2: Клубок -->
+            <!-- Клубок -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">🧶</span>
@@ -318,7 +307,7 @@
                 </button>
             </div>
             
-            <!-- Предмет 3: Шапка -->
+            <!-- Шапка -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">🎩</span>
@@ -334,7 +323,7 @@
         </div>
     </div>
 
-    <!-- Нижняя панель навигации -->
+    <!-- Меню -->
     <div class="bg-white bg-opacity-90 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
         <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
             <span class="text-2xl">🐱</span>
@@ -360,6 +349,7 @@
 
         updateUI();
 
+        // --- ЖЕЛЕЗОБЕТОННАЯ ЛОГИКА ПРЫЖКА (через JavaScript) ---
         catElement.addEventListener('pointerdown', (e) => {
             score += tapPower;
             saveProgress();
@@ -373,19 +363,18 @@
             createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
             updateUI();
 
-            // --- АНИМАЦИЯ ПРЫЖКА ---
-            // Убираем класс анимации, чтобы можно было запустить её заново
-            catElement.classList.remove('jump-animation');
+            // ПРЫЖОК: Меняем стиль напрямую, минуя классы CSS
+            catElement.style.transform = 'translateY(-30px) scale(0.95)';
             
-            // Небольшая задержка (10 мс), чтобы браузер успел "заметить" удаление класса
+            // Через 150 мс возвращаем на место (эффект приземления)
             setTimeout(() => {
-                catElement.classList.add('jump-animation');
-            }, 10);
-        });
+                catElement.style.transform = 'translateY(0) scale(1.05, 0.9)';
+            }, 150);
 
-        // Убираем класс прыжка после завершения анимации (через 300 мс)
-        catElement.addEventListener('animationend', () => {
-            catElement.classList.remove('jump-animation');
+            // Еще через 150 мс возвращаем в идеальную форму
+            setTimeout(() => {
+                catElement.style.transform = 'translateY(0) scale(1)';
+            }, 300);
         });
 
         function buyItem(item, price) {
@@ -450,4 +439,4 @@
         }
     </script>
 </body>
-</html>
+</html
