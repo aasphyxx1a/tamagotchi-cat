@@ -31,107 +31,177 @@
             pointer-events: none;
         }
 
-        /* Объемный котик */
+        /* --- РИСУЕМ КОТИКА НА CSS --- */
         .cat-container {
             position: relative;
+            width: 200px;
+            height: 180px;
             animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.1s;
+            /* Тень для объема */
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
         }
 
-        /* Сама эмодзи котика, делаем ее менее контрастной */
-        .cat-body {
-            font-size: 160px;
-            line-height: 1;
-            /* Убираем жирную обводку и добавляем мягкую тень */
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15)) contrast(0.9) brightness(1.05);
+        .cat-container:active {
+            transform: scale(0.9);
         }
 
-        /* Добавляем объемные элементы поверх котика */
-        .cat-features {
+        /* Мордочка (серая) */
+        .cat-face {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Чтобы не мешали кликам */
+            bottom: 0;
+            left: 10px;
+            width: 180px;
+            height: 130px;
+            background-color: #5c6166; /* Темно-серый цвет */
+            border-radius: 90px 90px 70px 70px;
         }
 
-        /* Глазки и носик (рисуем поверх) */
-        .eyes {
+        /* Ушки */
+        .ear {
             position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 40px;
+            top: -30px;
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-bottom: 60px solid #5c6166;
         }
-        .eye {
-            width: 14px;
-            height: 20px;
-            background: #222;
-            border-radius: 50%;
-            box-shadow: inset -2px -2px 4px rgba(255,255,255,0.5); /* Блик для объема */
-        }
+        .ear-left { left: 10px; transform: rotate(-15deg); }
+        .ear-right { right: 10px; transform: rotate(15deg); }
         
-        /* Носик */
+        /* Внутренняя часть ушек */
+        .ear-inner {
+            position: absolute;
+            top: 15px;
+            left: -20px;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid #404448;
+        }
+
+        /* Глазки */
+        .eye {
+            position: absolute;
+            top: 40px;
+            width: 36px;
+            height: 42px;
+            background-color: #222;
+            border-radius: 50%;
+        }
+        .eye-left { left: 35px; }
+        .eye-right { right: 35px; }
+
+        /* Блики в глазах */
+        .eye::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+        }
+        .eye::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* Щечки */
+        .cheek {
+            position: absolute;
+            top: 85px;
+            width: 25px;
+            height: 14px;
+            background-color: #ffb6c1;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+        .cheek-left { left: 20px; }
+        .cheek-right { right: 20px; }
+
+        /* Носик и ротик */
         .nose {
             position: absolute;
-            top: 48%;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%);
-            width: 10px;
-            height: 8px;
-            background: #ffb6c1;
+            width: 12px;
+            height: 9px;
+            background-color: #333;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            box-shadow: inset -1px -1px 2px rgba(0,0,0,0.2);
+        }
+        .mouth {
+            position: absolute;
+            top: 89px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            border-bottom: 3px solid #333;
+            border-radius: 0 0 50% 50%;
         }
 
         /* Усики */
-        .whiskers {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            height: 40px;
-        }
-        .whisker-left, .whisker-right {
+        .whisker {
             position: absolute;
             width: 40px;
             height: 2px;
-            background: rgba(0,0,0,0.3);
+            background-color: #333;
             border-radius: 2px;
         }
-        .whisker-left { left: 15%; transform: rotate(10deg); }
-        .whisker-left:nth-child(2) { top: 10px; transform: rotate(-5deg); }
-        .whisker-right { right: 15%; transform: rotate(-10deg); }
-        .whisker-right:nth-child(4) { top: 10px; transform: rotate(5deg); }
+        .whisker-l1 { top: 85px; left: -20px; transform: rotate(10deg); }
+        .whisker-l2 { top: 95px; left: -20px; transform: rotate(-10deg); }
+        .whisker-r1 { top: 85px; right: -20px; transform: rotate(-10deg); }
+        .whisker-r2 { top: 95px; right: -20px; transform: rotate(10deg); }
 
-        /* Лапки (рисуем внизу) */
-        .paws {
+        /* Лапки */
+        .paw {
             position: absolute;
-            bottom: 5%;
+            bottom: -10px;
+            width: 60px;
+            height: 35px;
+            background-color: #5c6166;
+            border-radius: 30px 30px 20px 20px;
+            border: 3px solid #333; /* Обводка для лапок */
+        }
+        .paw-left { left: 20px; }
+        .paw-right { right: 20px; }
+
+        /* Пальчики на лапках */
+        .toes {
+            position: absolute;
+            bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 50px;
+            gap: 8px;
         }
-        .paw {
-            width: 25px;
-            height: 15px;
-            background: #f8e0a5;
-            border-radius: 50%;
-            box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);
+        .toe {
+            width: 4px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 2px;
         }
 
-        /* Эффект нажатия на контейнер с котиком */
-        .tap-area {
-            user-select: none;
-            -webkit-user-select: none;
-            transition: transform 0.05s;
-        }
-        .tap-area:active {
-            transform: scale(0.9);
+        /* Эффекты */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
         
-        /* Всплывающие цифры (+1) */
         .float-text {
             position: absolute;
             color: #2e7d32; 
@@ -147,21 +217,26 @@
             100% { opacity: 0; transform: translateY(-60px); }
         }
 
-        /* Стили для переключения вкладок */
         .tab-content { display: none; }
         .tab-content.active { display: flex; }
 
-        /* Стили для красивой рыбки (SVG) */
-        .fish-icon {
-            width: 28px;
-            height: 28px;
-            fill: #ff9f43; /* Цвет рыбки */
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
-        }
-        .coin-icon {
+        /* Иконки Рыбок (вместо монет) */
+        .fish-icon-main {
             width: 32px;
             height: 32px;
-            fill: #f1c40f;
+            fill: #f1c40f; /* Золотая рыбка для баланса */
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+        .fish-icon-btn {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff; /* Белая рыбка для кнопок */
+            margin-left: 6px;
+        }
+        .fish-icon-shop {
+            width: 36px;
+            height: 36px;
+            fill: #ff9f43; /* Оранжевая рыбка для магазина */
             filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
         }
     </style>
@@ -170,11 +245,11 @@
 
     <div class="clouds"></div>
 
-    <!-- Верхняя панель (Баланс монет) -->
+    <!-- Верхняя панель (Баланс) -->
     <div class="p-4 flex justify-center items-center mt-2 z-10">
         <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
-            <!-- Заменили системный квадрат на красивую монетку -->
-            <svg class="coin-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+            <!-- Золотая рыбка вместо монеты -->
+            <svg class="fish-icon-main" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
             <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
         </div>
     </div>
@@ -182,31 +257,34 @@
     <!-- ЭКРАН 1: Тапалка -->
     <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
         
-        <!-- Контейнер для объемного котика -->
-        <div id="cat" class="tap-area cursor-pointer z-10 cat-container">
-            <div class="cat-body">🐱</div>
-            
-            <!-- Дорисовываем черты лица поверх -->
-            <div class="cat-features">
-                <div class="eyes">
-                    <div class="eye"></div>
-                    <div class="eye"></div>
-                </div>
+        <!-- НАШ НОВЫЙ КОТИК -->
+        <div id="cat" class="cat-container">
+            <!-- Уши -->
+            <div class="ear ear-left"><div class="ear-inner"></div></div>
+            <div class="ear ear-right"><div class="ear-inner"></div></div>
+            <!-- Мордочка -->
+            <div class="cat-face">
+                <div class="eye eye-left"></div>
+                <div class="eye eye-right"></div>
+                <div class="cheek cheek-left"></div>
+                <div class="cheek cheek-right"></div>
                 <div class="nose"></div>
-                <div class="whiskers">
-                    <div class="whisker-left"></div>
-                    <div class="whisker-left"></div>
-                    <div class="whisker-right"></div>
-                    <div class="whisker-right"></div>
-                </div>
-                <div class="paws">
-                    <div class="paw"></div>
-                    <div class="paw"></div>
-                </div>
+                <div class="mouth"></div>
+                <div class="whisker whisker-l1"></div>
+                <div class="whisker whisker-l2"></div>
+                <div class="whisker whisker-r1"></div>
+                <div class="whisker whisker-r2"></div>
+            </div>
+            <!-- Лапки -->
+            <div class="paw paw-left">
+                <div class="toes"><div class="toe"></div><div class="toe"></div></div>
+            </div>
+            <div class="paw paw-right">
+                <div class="toes"><div class="toe"></div><div class="toe"></div></div>
             </div>
         </div>
-        
-        <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
+
+        <div class="mt-12 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
     </div>
 
     <!-- ЭКРАН 2: Магазин -->
@@ -217,15 +295,14 @@
             <!-- Предмет 1: Рыбка -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
-                    <!-- Красивая рыбка -->
-                    <svg class="fish-icon" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                    <svg class="fish-icon-shop" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                     <div>
                         <div class="font-bold text-gray-800">Вкусная рыбка</div>
                         <div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div>
                     </div>
                 </div>
-                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center gap-1">
-                    50 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
+                    50 <svg class="fish-icon-btn" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                 </button>
             </div>
 
@@ -238,8 +315,8 @@
                         <div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div>
                     </div>
                 </div>
-                <button onclick="buyItem('yarn', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center gap-1">
-                    200 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+                <button onclick="buyItem('yarn', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
+                    200 <svg class="fish-icon-btn" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                 </button>
             </div>
             
@@ -252,8 +329,8 @@
                         <div class="text-xs text-gray-500">Меняет вид котика</div>
                     </div>
                 </div>
-                <button onclick="buyItem('hat', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center gap-1">
-                    500 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+                <button onclick="buyItem('hat', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
+                    500 <svg class="fish-icon-btn" viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
                 </button>
             </div>
         </div>
@@ -272,10 +349,12 @@
     </div>
 
     <script>
+        // Инициализация Telegram WebApp
         let tg = window.Telegram.WebApp;
         tg.expand();
         tg.headerColor = '#a1c4fd';
 
+        // Загружаем сохраненный счет
         let score = parseInt(localStorage.getItem('catScore')) || 0;
         let tapPower = 1;
 
@@ -285,6 +364,7 @@
 
         updateUI();
 
+        // --- ЛОГИКА ТАПА ---
         catElement.addEventListener('pointerdown', (e) => {
             score += tapPower;
             saveProgress();
@@ -299,6 +379,7 @@
             updateUI();
         });
 
+        // --- МАГАЗИН ---
         function buyItem(item, price) {
             if (score >= price) {
                 score -= price;
@@ -308,28 +389,30 @@
                 } else if (item === 'yarn') {
                     activateBoost(50, 5000);
                 } else if (item === 'hat') {
-                    // Меняем эмоцию котика, при этом сохраняем наши "нарисованные" глаза и носик
-                    document.querySelector('.cat-body').innerText = '😻'; 
+                    // Шапка в разработке
+                    alert('Шапка куплена! (В разработке)'); 
                 }
 
                 saveProgress();
                 updateUI();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                alert('Покупка успешна!');
+                if(item !== 'hat') alert('Покупка успешна!');
             } else {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                alert('Недостаточно монет! Тапай больше!');
+                alert('Недостаточно рыбок! Тапай больше!');
             }
         }
 
+        // Временное усиление тапа
         function activateBoost(power, duration) {
             tapPower = power;
             setTimeout(() => {
-                tapPower = 1;
+                tapPower = 1; 
                 alert('Действие буста закончилось!');
             }, duration);
         }
 
+        // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
         function createFloatingText(x, y, text) {
             const el = document.createElement('div');
             el.innerText = text;
@@ -348,6 +431,7 @@
             localStorage.setItem('catScore', score);
         }
 
+        // Переключение вкладок
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
