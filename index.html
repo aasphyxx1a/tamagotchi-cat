@@ -30,34 +30,74 @@
             pointer-events: none;
         }
 
-        /* --- КОТИК --- */
-        .cat-wrapper {
+        /* Контейнер для котика и предметов вокруг него */
+        .scene-container {
             position: relative;
-            width: 220px;
-            height: 200px;
+            width: 320px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 10;
-            /* Плавное парение в покое */
             animation: float 3s ease-in-out infinite;
         }
 
-        /* Анимация парения */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
 
-        .cat-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
-            /* Убираем встроенную анимацию, чтобы JS мог управлять прыжком */
-            animation: none; 
+        /* --- ПРЕДМЕТЫ ВОКРУГ --- */
+        .shop-item-decor {
+            position: absolute;
+            font-size: 35px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            opacity: 0; /* Изначально скрыты */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 5;
+            /* Добавляем легкую анимацию покачивания для предметов */
+            animation: swing 4s ease-in-out infinite alternate;
         }
 
-        /* Мордочка */
+        .shop-item-decor.active {
+            opacity: 0.85; /* Не сильно бросаются в глаза */
+        }
+
+        /* Позиции предметов */
+        .item-yarn {
+            left: -20px;
+            bottom: 40px;
+            transform: rotate(-15deg);
+        }
+        .item-mouse {
+            right: -20px;
+            bottom: 50px;
+            transform: rotate(15deg);
+        }
+        .item-mint {
+            bottom: -20px;
+            left: 50%;
+            margin-left: -17px;
+            font-size: 30px;
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(-10deg); }
+            100% { transform: rotate(10deg); }
+        }
+
+        /* --- КОТИК --- */
+        .cat-container {
+            position: relative;
+            width: 220px;
+            height: 200px;
+            cursor: pointer;
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
+            z-index: 10;
+            transition: transform 0.1s;
+        }
+
         .cat-face {
             position: absolute;
             bottom: 0;
@@ -68,15 +108,14 @@
             border-radius: 100px 100px 80px 80px;
         }
 
-        /* НОВЫЕ УШКИ (квадраты с закруглениями) */
         .ear {
             position: absolute;
             top: -10px;
             width: 60px;
             height: 60px;
             background-color: #5c6166;
-            border-radius: 15px 15px 0 0; /* Закругленные кончики */
-            z-index: -1; /* Прячем основания ушей за головой */
+            border-radius: 15px 15px 0 0;
+            z-index: -1;
         }
         .ear-left { left: 20px; transform: rotate(-20deg); }
         .ear-right { right: 20px; transform: rotate(20deg); }
@@ -92,7 +131,6 @@
             border-radius: 8px 8px 0 0;
         }
 
-        /* Глазки */
         .eye {
             position: absolute;
             top: 40px;
@@ -125,7 +163,6 @@
             border-radius: 50%;
         }
 
-        /* Щечки */
         .cheek {
             position: absolute;
             top: 90px;
@@ -138,7 +175,6 @@
         .cheek-left { left: 25px; }
         .cheek-right { right: 25px; }
 
-        /* Носик и ротик */
         .nose {
             position: absolute;
             top: 85px;
@@ -160,7 +196,6 @@
             border-radius: 0 0 50% 50%;
         }
 
-        /* Усики */
         .whisker {
             position: absolute;
             width: 45px;
@@ -173,7 +208,6 @@
         .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
         .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
 
-        /* Лапки */
         .paw {
             position: absolute;
             bottom: -10px;
@@ -219,7 +253,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: flex; }
 
-        /* Эмодзи-рыбки */
         .fish-emoji {
             font-size: 32px;
             line-height: 1;
@@ -247,12 +280,15 @@
     <!-- Тапалка -->
     <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
         
-        <div class="cat-wrapper">
+        <div class="scene-container">
+            <!-- Предметы декора (появляются после покупки) -->
+            <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
+            <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
+            <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
+
             <div id="cat" class="cat-container">
-                <!-- Ушки -->
                 <div class="ear ear-left"><div class="ear-inner"></div></div>
                 <div class="ear ear-right"><div class="ear-inner"></div></div>
-                <!-- Морда -->
                 <div class="cat-face">
                     <div class="eye eye-left"></div>
                     <div class="eye eye-right"></div>
@@ -265,13 +301,12 @@
                     <div class="whisker whisker-r1"></div>
                     <div class="whisker whisker-r2"></div>
                 </div>
-                <!-- Лапки -->
                 <div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
                 <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
             </div>
         </div>
 
-        <div class="mt-12 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
+        <div class="mt-16 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
     </div>
 
     <!-- Магазин -->
@@ -279,7 +314,7 @@
         <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🛒 Магазин</h2>
         
         <div class="space-y-3 z-10">
-            <!-- Рыбка -->
+            <!-- Улучшения тапа -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
                     <span class="fish-emoji">🐟</span>
@@ -288,37 +323,43 @@
                         <div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div>
                     </div>
                 </div>
-                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
-                    50 <span class="fish-emoji-small">🐟</span>
-                </button>
+                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
             </div>
 
-            <!-- Клубок -->
+            <!-- Декор: Клубок -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">🧶</span>
                     <div>
-                        <div class="font-bold text-gray-800">Клубок ниток</div>
-                        <div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div>
+                        <div class="font-bold text-gray-800">Клубок шерсти</div>
+                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
                     </div>
                 </div>
-                <button onclick="buyItem('yarn', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
-                    200 <span class="fish-emoji-small">🐟</span>
-                </button>
+                <button id="btn-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
             </div>
-            
-            <!-- Шапка -->
+
+            <!-- Декор: Мышка -->
             <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                 <div class="flex items-center gap-3">
-                    <span class="text-3xl">🎩</span>
+                    <span class="text-3xl">🐭</span>
                     <div>
-                        <div class="font-bold text-gray-800">Крутая шапка</div>
-                        <div class="text-xs text-gray-500">Меняет вид котика</div>
+                        <div class="font-bold text-gray-800">Игрушечная мышка</div>
+                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
                     </div>
                 </div>
-                <button onclick="buyItem('hat', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">
-                    500 <span class="fish-emoji-small">🐟</span>
-                </button>
+                <button id="btn-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
+            </div>
+            
+            <!-- Декор: Мята -->
+            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🌿</span>
+                    <div>
+                        <div class="font-bold text-gray-800">Кошачья мята</div>
+                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
+                    </div>
+                </div>
+                <button id="btn-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
             </div>
         </div>
     </div>
@@ -340,16 +381,24 @@
         tg.expand();
         tg.headerColor = '#a1c4fd';
 
+        // Загружаем счет
         let score = parseInt(localStorage.getItem('catScore')) || 0;
         let tapPower = 1;
+
+        // Загружаем состояние купленных предметов (true/false)
+        let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || {
+            yarn: false,
+            mouse: false,
+            mint: false
+        };
 
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
         const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
 
         updateUI();
+        updateDecor(); // Включаем купленные предметы при загрузке
 
-        // --- ЖЕЛЕЗОБЕТОННАЯ ЛОГИКА ПРЫЖКА (через JavaScript) ---
         catElement.addEventListener('pointerdown', (e) => {
             score += tapPower;
             saveProgress();
@@ -363,39 +412,56 @@
             createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
             updateUI();
 
-            // ПРЫЖОК: Меняем стиль напрямую, минуя классы CSS
+            // Прыжок
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
-            
-            // Через 150 мс возвращаем на место (эффект приземления)
-            setTimeout(() => {
-                catElement.style.transform = 'translateY(0) scale(1.05, 0.9)';
-            }, 150);
-
-            // Еще через 150 мс возвращаем в идеальную форму
-            setTimeout(() => {
-                catElement.style.transform = 'translateY(0) scale(1)';
-            }, 300);
+            setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 150);
+            setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 300);
         });
 
         function buyItem(item, price) {
+            // Проверка, куплен ли уже предмет
+            if (item === 'yarn' || item === 'mouse' || item === 'mint') {
+                if (ownedItems[item]) {
+                    alert('Этот предмет уже куплен!');
+                    return;
+                }
+            }
+
             if (score >= price) {
                 score -= price;
                 
                 if (item === 'fish') {
                     activateBoost(10, 5000);
-                } else if (item === 'yarn') {
-                    activateBoost(50, 5000);
-                } else if (item === 'hat') {
-                    alert('Шапка куплена! (В разработке)'); 
+                } else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
+                    ownedItems[item] = true;
+                    updateDecor();
+                    saveProgress();
                 }
 
-                saveProgress();
                 updateUI();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                if(item !== 'hat') alert('Покупка успешна!');
+                alert('Покупка успешна!');
             } else {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
                 alert('Недостаточно рыбок! Тапай больше!');
+            }
+        }
+
+        function updateDecor() {
+            if (ownedItems.yarn) {
+                document.getElementById('decor-yarn').classList.add('active');
+                document.getElementById('btn-yarn').innerText = 'Куплено';
+                document.getElementById('btn-yarn').classList.replace('bg-green-500', 'bg-gray-400');
+            }
+            if (ownedItems.mouse) {
+                document.getElementById('decor-mouse').classList.add('active');
+                document.getElementById('btn-mouse').innerText = 'Куплено';
+                document.getElementById('btn-mouse').classList.replace('bg-green-500', 'bg-gray-400');
+            }
+            if (ownedItems.mint) {
+                document.getElementById('decor-mint').classList.add('active');
+                document.getElementById('btn-mint').innerText = 'Куплено';
+                document.getElementById('btn-mint').classList.replace('bg-green-500', 'bg-gray-400');
             }
         }
 
@@ -418,11 +484,19 @@
         }
 
         function updateUI() {
-            scoreElement.innerText = score;
+            // Форматируем большие числа (1000 -> 1k, 1000000 -> 1M)
+            if (score >= 1000000) {
+                scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
+            } else if (score >= 1000) {
+                scoreElement.innerText = (score / 1000).toFixed(1) + 'k';
+            } else {
+                scoreElement.innerText = score;
+            }
         }
 
         function saveProgress() {
             localStorage.setItem('catScore', score);
+            localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
         }
 
         function switchTab(tab) {
@@ -439,4 +513,4 @@
         }
     </script>
 </body>
-</html
+</html>
