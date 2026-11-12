@@ -20,8 +20,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-bowtie{top:62%;left:50%;transform:translateX(-50%);width:70px}
 .acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
 .acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
-.acc-shoes{bottom:-10px;left:50%;transform:translateX(-50%);width:120px}
-/* Бутылка прижата к правой лапке и перекрывает её */
+/* Опускаем ботинки ниже */
+.acc-shoes{bottom:-50px;left:50%;transform:translateX(-50%);width:110px}
 .acc-bottle{bottom: -5%; right: -5%; width: 65px; z-index: 12;}
 
 .shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
@@ -49,7 +49,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <body>
 <div id="app-container">
 
-<!-- ВЕРХНЯЯ ПАНЕЛЬ: БУСТ, БАЛАНС, ГАРДЕРОБ -->
 <div class="p-4 flex justify-between items-start mt-2 z-50 shrink-0">
     <div class="flex flex-col items-center">
         <button onclick="buyBoost()" id="btn-boost" class="bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg border-2 border-white text-xl font-bold hover:bg-red-600 transition boost-pulse">⚡</button>
@@ -79,7 +78,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <img id="acc-tie" class="accessory-layer acc-tie" src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png">
 <img id="acc-bowtie" class="accessory-layer acc-bowtie" src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png">
 <img id="acc-hairpin" class="accessory-layer acc-hairpin" src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png">
-<!-- Бутылка -->
 <img id="acc-bottle" class="accessory-layer acc-bottle" src="https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png">
 </div>
 </div>
@@ -94,14 +92,12 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 <div class="px-4 w-full scrollable-content pb-24">
-<!-- Декор -->
 <div id="shop-decor" class="shop-content space-y-3 hidden">
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок шерсти</div></div></div><button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800 text-sm">Мышка</div></div></div><button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800 text-sm">Кошачья мята</div></div></div><button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
 
-<!-- Стиль -->
 <div id="shop-style" class="shop-content space-y-3">
 <!-- Сюда JS вставит список одежды -->
 </div>
