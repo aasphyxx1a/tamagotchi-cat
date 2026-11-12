@@ -43,6 +43,7 @@
             width: 100%;
             height: 350px; 
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10;
@@ -69,7 +70,7 @@
         .shop-item-decor.active { opacity: 0.9; }
         .item-yarn { left: 10%; bottom: 60px; transform: rotate(-15deg); }
         .item-mouse { right: 10%; bottom: 70px; transform: rotate(15deg); }
-        .item-mint { bottom: 0px; left: 50%; margin-left: -17px; font-size: 30px; }
+        .item-mint { bottom: 10px; left: 50%; margin-left: -17px; font-size: 30px; }
         @keyframes swing {
             0% { transform: rotate(-10deg); }
             100% { transform: rotate(10deg); }
@@ -93,7 +94,7 @@
             left: 10px;
             width: 200px;
             height: 140px;
-            background-color: #e69a45; /* Рыжий по умолчанию */
+            background-color: #e69a45; 
             border-radius: 100px 100px 80px 80px;
             transition: background-color 0.3s;
         }
@@ -106,7 +107,7 @@
             height: 0;
             border-left: 35px solid transparent;
             border-right: 35px solid transparent;
-            border-bottom: 60px solid #e69a45; /* Цвет ушей совпадает с мордой */
+            border-bottom: 60px solid #e69a45; 
             z-index: -1;
             transition: border-bottom-color 0.3s;
         }
@@ -121,39 +122,24 @@
             height: 0;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
-            border-bottom: 35px solid #ffcc99; /* Светлая внутренность */
+            border-bottom: 35px solid #ffcc99; 
         }
 
-        /* Пятнышки (только для рыжего) */
-        .spot {
-            position: absolute;
-            background-color: #c86a1a;
-            border-radius: 50%;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-        }
+        /* Пятнышки */
+        .spot { position: absolute; background-color: #c86a1a; border-radius: 50%; opacity: 0.6; transition: opacity 0.3s; }
         .spot-1 { top: 20px; left: 30px; width: 15px; height: 15px; }
         .spot-2 { top: 40px; right: 45px; width: 20px; height: 18px; }
         .spot-3 { top: 10px; right: 80px; width: 10px; height: 10px; }
 
-        /* Глазки (базовые) */
+        /* Глазки */
         .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; }
         .eye-left { left: 40px; }
         .eye-right { right: 40px; }
         .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
         .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
 
-        /* Брови для черного кота */
-        .eyebrow {
-            position: absolute;
-            top: 35px;
-            width: 30px;
-            height: 4px;
-            background-color: #222;
-            border-radius: 2px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+        /* Брови */
+        .eyebrow { position: absolute; top: 35px; width: 30px; height: 4px; background-color: #222; border-radius: 2px; opacity: 0; transition: opacity 0.3s; }
         .eyebrow-left { left: 35px; transform: rotate(15deg); }
         .eyebrow-right { right: 35px; transform: rotate(-15deg); }
 
@@ -237,6 +223,10 @@
         <!-- ЭКРАН 1: Тапалка -->
         <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
             <div class="scene-container" id="tap-zone">
+                
+                <!-- Табличка с именем (по умолчанию скрыта) -->
+                <div id="cat-name-display" class="hidden bg-white bg-opacity-80 px-5 py-1.5 rounded-full text-lg font-bold text-gray-700 shadow-sm mb-4 z-20"></div>
+
                 <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
                 <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
                 <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
@@ -265,7 +255,7 @@
                     <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
                 </div>
             </div>
-            <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
+            <div class="mt-4 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
         </div>
 
         <!-- ЭКРАН 2: Магазин -->
@@ -338,8 +328,8 @@
                     <div class="flex items-center gap-3">
                         <span class="text-4xl">🐺</span>
                         <div>
-                            <div class="font-bold text-gray-800">Серый котик</div>
-                            <div class="text-xs text-gray-500">Классический окрас</div>
+                            <div class="font-bold text-gray-800">Нэнсик</div>
+                            <div class="text-xs text-gray-500">Серый котик</div>
                         </div>
                     </div>
                     <button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
@@ -349,7 +339,7 @@
                     <div class="flex items-center gap-3">
                         <span class="text-4xl">🐈‍⬛</span>
                         <div>
-                            <div class="font-bold text-gray-800">Черный котик</div>
+                            <div class="font-bold text-gray-800">Лукошка</div>
                             <div class="text-xs text-gray-500">Сердитый и стильный</div>
                         </div>
                     </div>
@@ -392,6 +382,7 @@
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
         const tapZone = document.getElementById('tap-zone');
+        const nameDisplay = document.getElementById('cat-name-display');
 
         updateUI();
         updateDecor();
@@ -524,6 +515,17 @@
 
         function updateCatUI() {
             catElement.className = `cat-container cat-${currentCat}`;
+
+            // Показываем имена только для серого и черного
+            if (currentCat === 'gray') {
+                nameDisplay.innerText = 'Нэнсик';
+                nameDisplay.classList.remove('hidden');
+            } else if (currentCat === 'black') {
+                nameDisplay.innerText = 'Лукошка';
+                nameDisplay.classList.remove('hidden');
+            } else {
+                nameDisplay.classList.add('hidden'); // Для рыжего скрываем
+            }
 
             const btnGray = document.getElementById('btn-cat-gray');
             const btnBlack = document.getElementById('btn-cat-black');
