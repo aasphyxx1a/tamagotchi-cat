@@ -55,6 +55,7 @@
             100% { transform: translateY(0px); }
         }
 
+        /* ПРЕДМЕТЫ ДЕКОРА */
         .shop-item-decor {
             position: absolute;
             font-size: 35px;
@@ -63,20 +64,18 @@
             transition: opacity 0.5s ease, transform 0.5s ease;
             z-index: 5;
             animation: swing 4s ease-in-out infinite alternate;
-            pointer-events: none; /* Чтобы предметы не перехватывали клики */
+            pointer-events: none;
         }
-
         .shop-item-decor.active { opacity: 0.9; }
-
         .item-yarn { left: 10%; bottom: 60px; transform: rotate(-15deg); }
         .item-mouse { right: 10%; bottom: 70px; transform: rotate(15deg); }
         .item-mint { bottom: 0px; left: 50%; margin-left: -17px; font-size: 30px; }
-
         @keyframes swing {
             0% { transform: rotate(-10deg); }
             100% { transform: rotate(10deg); }
         }
 
+        /* --- КОТИК --- */
         .cat-container {
             position: relative;
             width: 220px;
@@ -84,47 +83,79 @@
             filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
             z-index: 10;
             transition: transform 0.1s;
-            pointer-events: none; /* Пропускаем клики сквозь котика на экран */
+            pointer-events: none;
         }
 
+        /* Мордочка */
         .cat-face {
             position: absolute;
             bottom: 0;
             left: 10px;
             width: 200px;
             height: 140px;
-            background-color: #5c6166; 
+            background-color: #e69a45; /* Рыжий по умолчанию */
             border-radius: 100px 100px 80px 80px;
+            transition: background-color 0.3s;
         }
 
+        /* Уши (исправлены) */
         .ear {
             position: absolute;
-            top: -10px;
-            width: 60px;
-            height: 60px;
-            background-color: #5c6166;
-            border-radius: 15px 15px 0 0;
+            top: -15px;
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-bottom: 60px solid #e69a45; /* Цвет ушей совпадает с мордой */
             z-index: -1;
+            transition: border-bottom-color 0.3s;
         }
-        .ear-left { left: 20px; transform: rotate(-20deg); }
-        .ear-right { right: 20px; transform: rotate(20deg); }
+        .ear-left { left: 15px; transform: rotate(-20deg); }
+        .ear-right { right: 15px; transform: rotate(20deg); }
         
         .ear-inner {
             position: absolute;
             top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: #404448;
-            border-radius: 8px 8px 0 0;
+            left: -20px;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid #ffcc99; /* Светлая внутренность */
         }
 
-        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; }
+        /* Пятнышки (только для рыжего) */
+        .spot {
+            position: absolute;
+            background-color: #c86a1a;
+            border-radius: 50%;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        .spot-1 { top: 20px; left: 30px; width: 15px; height: 15px; }
+        .spot-2 { top: 40px; right: 45px; width: 20px; height: 18px; }
+        .spot-3 { top: 10px; right: 80px; width: 10px; height: 10px; }
+
+        /* Глазки (базовые) */
+        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; }
         .eye-left { left: 40px; }
         .eye-right { right: 40px; }
         .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
         .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
+
+        /* Брови для черного кота (по умолчанию скрыты) */
+        .eyebrow {
+            position: absolute;
+            top: 35px;
+            width: 30px;
+            height: 4px;
+            background-color: #222;
+            border-radius: 2px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .eyebrow-left { left: 35px; transform: rotate(15deg); }
+        .eyebrow-right { right: 35px; transform: rotate(-15deg); }
 
         .cheek { position: absolute; top: 90px; width: 28px; height: 16px; background-color: #ffb6c1; border-radius: 50%; opacity: 0.8; }
         .cheek-left { left: 25px; }
@@ -139,12 +170,30 @@
         .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
         .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
 
-        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; background-color: #5c6166; border-radius: 30px 30px 20px 20px; border: 3px solid #333; }
+        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; border-radius: 30px 30px 20px 20px; border: 3px solid #333; transition: background-color 0.3s; }
         .paw-left { left: 20px; }
         .paw-right { right: 20px; }
 
         .toes { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
         .toe { width: 4px; height: 12px; background-color: #333; border-radius: 2px; }
+
+        /* Классы для смены цвета */
+        .cat-ginger .cat-face, .cat-ginger .ear { background-color: #e69a45; border-bottom-color: #e69a45; }
+        .cat-ginger .paw { background-color: #e69a45; }
+        .cat-ginger .ear-inner { border-bottom-color: #ffcc99; }
+        
+        .cat-gray .cat-face, .cat-gray .ear { background-color: #5c6166; border-bottom-color: #5c6166; }
+        .cat-gray .paw { background-color: #5c6166; }
+        .cat-gray .ear-inner { border-bottom-color: #404448; }
+        .cat-gray .spot { opacity: 0; } /* Убираем пятна у серого */
+
+        .cat-black .cat-face, .cat-black .ear { background-color: #2a2a2a; border-bottom-color: #2a2a2a; }
+        .cat-black .paw { background-color: #2a2a2a; }
+        .cat-black .ear-inner { border-bottom-color: #444; }
+        .cat-black .spot { opacity: 0; } /* Убираем пятна у черного */
+        .cat-black .eyebrow { opacity: 1; } /* Показываем злые брови */
+        .cat-black .eye { height: 32px; border-radius: 10px; } /* Прищуриваем глаза */
+        .cat-black .cheek { background-color: #661111; } /* Темные щеки */
         
         .float-text {
             position: absolute;
@@ -170,7 +219,7 @@
         .fish-emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
         .fish-emoji-small { font-size: 18px; line-height: 1; margin-left: 4px; }
 
-        .scrollable-shop { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .scrollable-content { overflow-y: auto; -webkit-overflow-scrolling: touch; }
     </style>
 </head>
 <body>
@@ -185,18 +234,27 @@
             </div>
         </div>
 
-        <!-- В этой области мы ловим ВСЕ клики -->
+        <!-- ЭКРАН 1: Тапалка -->
         <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
-            
             <div class="scene-container" id="tap-zone">
                 <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
                 <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
                 <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
 
-                <div id="cat" class="cat-container">
+                <!-- Котик с классом по умолчанию (рыжий) -->
+                <div id="cat" class="cat-container cat-ginger">
                     <div class="ear ear-left"><div class="ear-inner"></div></div>
                     <div class="ear ear-right"><div class="ear-inner"></div></div>
                     <div class="cat-face">
+                        <!-- Пятнышки (видны только у рыжего) -->
+                        <div class="spot spot-1"></div>
+                        <div class="spot spot-2"></div>
+                        <div class="spot spot-3"></div>
+                        
+                        <!-- Злые брови (видны только у черного) -->
+                        <div class="eyebrow eyebrow-left"></div>
+                        <div class="eyebrow eyebrow-right"></div>
+
                         <div class="eye eye-left"></div>
                         <div class="eye eye-right"></div>
                         <div class="cheek cheek-left"></div>
@@ -215,6 +273,7 @@
             <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
         </div>
 
+        <!-- ЭКРАН 2: Магазин -->
         <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
             <div class="flex justify-center mb-4 mt-2 shrink-0">
                 <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
@@ -223,7 +282,7 @@
                 </div>
             </div>
 
-            <div class="px-4 w-full scrollable-shop pb-24">
+            <div class="px-4 w-full scrollable-content pb-24">
                 <div id="shop-boosters" class="shop-content space-y-3">
                     <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                         <div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800">Вкусная рыбка</div><div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div></div></div>
@@ -238,24 +297,73 @@
                 <div id="shop-decor" class="shop-content space-y-3 hidden">
                     <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                         <div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок шерсти</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
+                        <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
                     </div>
                     <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                         <div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800">Игрушечная мышка</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
+                        <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button>
                     </div>
                     <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
                         <div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800">Кошачья мята</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
+                        <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- НОВЫЙ ЭКРАН 3: Котики -->
+        <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
+            <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🐈 Выбери котика</h2>
+            <div class="px-2 w-full scrollable-content pb-24 space-y-3">
+                
+                <!-- Рыжий (Бесплатно) -->
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">🦊</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Рыжий котик</div>
+                            <div class="text-xs text-gray-500">С пятнышками</div>
+                        </div>
+                    </div>
+                    <button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button>
+                </div>
+
+                <!-- Серый (За 100 000) -->
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">🐺</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Серый котик</div>
+                            <div class="text-xs text-gray-500">Классический окрас</div>
+                        </div>
+                    </div>
+                    <button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
+                </div>
+
+                <!-- Черный (За 500 000) -->
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">🐈‍⬛</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Черный котик</div>
+                            <div class="text-xs text-gray-500">Сердитый и стильный</div>
+                        </div>
+                    </div>
+                    <button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- НИЖНЕЕ МЕНЮ -->
         <div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
             <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
-                <span class="text-2xl">🐱</span>
+                <span class="text-2xl">👆</span>
                 <span class="text-xs mt-1 font-bold">Тапать</span>
+            </button>
+            <button onclick="switchTab('cats')" id="btn-cats" class="flex flex-col items-center text-gray-400">
+                <span class="text-2xl">🐱</span>
+                <span class="text-xs mt-1 font-bold">Котики</span>
             </button>
             <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400">
                 <span class="text-2xl">🛒</span>
@@ -269,18 +377,22 @@
         tg.expand();
         tg.headerColor = '#a1c4fd';
 
+        // Загрузка сохранений
         let score = parseInt(localStorage.getItem('catScore')) || 0;
         let tapPower = 1;
         let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
+        let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
+        let currentCat = localStorage.getItem('currentCat') || 'ginger';
 
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
-        const tapZone = document.getElementById('tap-zone'); // Наша зона клика
+        const tapZone = document.getElementById('tap-zone');
 
         updateUI();
         updateDecor();
+        updateCatUI();
 
-        // ФУНКЦИЯ ТАПА (универсальная)
+        // === ТАПАЛКА ===
         function doTap(x, y) {
             score += tapPower;
             saveProgress();
@@ -290,27 +402,19 @@
             createFloatingText(x, y, `+${tapPower}`);
             updateUI();
 
-            // Анимация прыжка
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 250);
         }
 
-        // Ловим события мыши (для ПК)
-        tapZone.addEventListener('mousedown', function(e) {
-            doTap(e.clientX, e.clientY);
-        });
-
-        // Ловим события касания (для телефонов)
+        tapZone.addEventListener('mousedown', function(e) { doTap(e.clientX, e.clientY); });
         tapZone.addEventListener('touchstart', function(e) {
-            // Предотвращаем стандартное поведение (например, зум)
             e.preventDefault(); 
-            // Берем координаты первого пальца
             let touch = e.touches[0];
             doTap(touch.clientX, touch.clientY);
         }, { passive: false });
 
-
+        // === МАГАЗИН ===
         function buyItem(item, price) {
             if (item === 'yarn' || item === 'mouse' || item === 'mint') {
                 if (ownedItems[item]) return;
@@ -355,6 +459,54 @@
             setTimeout(() => { tapPower = 1; alert('Буст закончился!'); }, duration);
         }
 
+        // === КОТИКИ ===
+        function selectCat(catType) {
+            currentCat = catType;
+            localStorage.setItem('currentCat', currentCat);
+            updateCatUI();
+            try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+        }
+
+        function buyCat(catType, price) {
+            if (ownedCats[catType]) {
+                selectCat(catType);
+                return;
+            }
+            if (score >= price) {
+                score -= price;
+                ownedCats[catType] = true;
+                saveProgress();
+                updateUI();
+                selectCat(catType); // Автоматически переключаем на купленного
+                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+            } else {
+                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
+                alert('Недостаточно рыбок для покупки!');
+            }
+        }
+
+        function updateCatUI() {
+            // Меняем класс котика на экране
+            catElement.className = `cat-container cat-${currentCat}`;
+
+            // Обновляем кнопки
+            const btnGray = document.getElementById('btn-cat-gray');
+            const btnBlack = document.getElementById('btn-cat-black');
+
+            if (ownedCats.gray) {
+                btnGray.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать';
+                btnGray.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm';
+                btnGray.onclick = () => selectCat('gray');
+            }
+
+            if (ownedCats.black) {
+                btnBlack.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать';
+                btnBlack.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm';
+                btnBlack.onclick = () => selectCat('black');
+            }
+        }
+
+        // === ВСПОМОГАТЕЛЬНЫЕ ===
         function createFloatingText(x, y, text) {
             const el = document.createElement('div');
             el.innerText = text; el.className = 'float-text';
@@ -364,27 +516,33 @@
         }
 
         function updateUI() {
-            if (score >= 1000000) scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
-            else if (score >= 1000) scoreElement.innerText = (score / 1000).toFixed(1) + 'k';
-            else scoreElement.innerText = score;
+            // Форматирование чисел: до 500к без сокращений, после - с пробелами (или запятыми)
+            if (score >= 500000) {
+                scoreElement.innerText = score.toLocaleString('ru-RU'); // Автоматически ставит пробелы (можно заменить на запятые)
+            } else {
+                scoreElement.innerText = score;
+            }
         }
 
         function saveProgress() {
             localStorage.setItem('catScore', score);
             localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
+            localStorage.setItem('ownedCats', JSON.stringify(ownedCats));
         }
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
             
-            if (tab === 'tap') {
-                document.getElementById('btn-tap').classList.replace('text-gray-400', 'text-green-600');
-                document.getElementById('btn-shop').classList.replace('text-green-600', 'text-gray-400');
-            } else {
-                document.getElementById('btn-shop').classList.replace('text-gray-400', 'text-green-600');
-                document.getElementById('btn-tap').classList.replace('text-green-600', 'text-gray-400');
-            }
+            const tabs = ['tap', 'cats', 'shop'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-${t}`);
+                if (t === tab) {
+                    btn.classList.replace('text-gray-400', 'text-green-600');
+                } else {
+                    btn.classList.replace('text-green-600', 'text-gray-400');
+                }
+            });
         }
 
         function switchShopTab(shopTab) {
