@@ -2,20 +2,28 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Тамагочи-Котик</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 35%, #d4fc79 65%, #96e6a1 100%);
-            color: #333; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
+        html, body {
+            height: 100%;
             margin: 0;
-            height: 100vh;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 35%, #d4fc79 65%, #96e6a1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333; 
+        }
+
+        #app-container {
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+            width: 100vw;
+            position: relative;
         }
 
         .clouds {
@@ -30,7 +38,6 @@
             pointer-events: none;
         }
 
-        /* Контейнер для котика и предметов */
         .scene-container {
             position: relative;
             width: 320px;
@@ -48,7 +55,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* Предметы декора */
         .shop-item-decor {
             position: absolute;
             font-size: 35px;
@@ -70,7 +76,6 @@
             100% { transform: rotate(10deg); }
         }
 
-        /* Котик */
         .cat-container {
             position: relative;
             width: 220px;
@@ -79,6 +84,9 @@
             filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
             z-index: 10;
             transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+            /* Отключаем стандартное поведение для тача, чтобы не было задержек */
+            touch-action: manipulation; 
         }
 
         .cat-face {
@@ -158,150 +166,102 @@
         .tab-content { display: none; }
         .tab-content.active { display: flex; }
 
-        /* Вкладки внутри магазина */
-        .shop-tab-btn {
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-        .shop-tab-btn.active {
-            border-bottom: 3px solid #10b981; /* Зеленая полоска под активной вкладкой */
-            color: #047857; /* Темно-зеленый текст */
-            font-weight: bold;
-        }
+        .shop-tab-btn { transition: all 0.3s; border-bottom: 3px solid transparent; }
+        .shop-tab-btn.active { border-bottom: 3px solid #10b981; color: #047857; font-weight: bold; }
 
         .fish-emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
         .fish-emoji-small { font-size: 18px; line-height: 1; margin-left: 4px; }
+
+        .scrollable-shop { overflow-y: auto; -webkit-overflow-scrolling: touch; }
     </style>
 </head>
 <body>
 
-    <div class="clouds"></div>
+    <div id="app-container">
+        <div class="clouds"></div>
 
-    <!-- Баланс -->
-    <div class="p-4 flex justify-center items-center mt-2 z-10">
-        <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
-            <span class="fish-emoji">🐟</span>
-            <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
-        </div>
-    </div>
-
-    <!-- ЭКРАН 1: Тапалка -->
-    <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
-        
-        <div class="scene-container">
-            <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
-            <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
-            <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
-
-            <div id="cat" class="cat-container">
-                <div class="ear ear-left"><div class="ear-inner"></div></div>
-                <div class="ear ear-right"><div class="ear-inner"></div></div>
-                <div class="cat-face">
-                    <div class="eye eye-left"></div>
-                    <div class="eye eye-right"></div>
-                    <div class="cheek cheek-left"></div>
-                    <div class="cheek cheek-right"></div>
-                    <div class="nose"></div>
-                    <div class="mouth"></div>
-                    <div class="whisker whisker-l1"></div>
-                    <div class="whisker whisker-l2"></div>
-                    <div class="whisker whisker-r1"></div>
-                    <div class="whisker whisker-r2"></div>
-                </div>
-                <div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
-                <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+        <div class="p-4 flex justify-center items-center mt-2 z-10 shrink-0">
+            <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
+                <span class="fish-emoji">🐟</span>
+                <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
             </div>
         </div>
 
-        <div class="mt-16 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
-    </div>
+        <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
+            <div class="scene-container">
+                <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
+                <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
+                <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
 
-    <!-- ЭКРАН 2: Магазин -->
-    <div id="tab-shop" class="tab-content flex-grow flex-col w-full overflow-hidden pb-24 z-10 relative bg-transparent">
-        
-        <!-- Переключатель внутри магазина -->
-        <div class="flex justify-center mb-4 mt-2">
-            <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
-                <button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg">⚡ Бустеры</button>
-                <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg">🧸 Предметы</button>
+                <div id="cat" class="cat-container">
+                    <div class="ear ear-left"><div class="ear-inner"></div></div>
+                    <div class="ear ear-right"><div class="ear-inner"></div></div>
+                    <div class="cat-face">
+                        <div class="eye eye-left"></div>
+                        <div class="eye eye-right"></div>
+                        <div class="cheek cheek-left"></div>
+                        <div class="cheek cheek-right"></div>
+                        <div class="nose"></div>
+                        <div class="mouth"></div>
+                        <div class="whisker whisker-l1"></div>
+                        <div class="whisker whisker-l2"></div>
+                        <div class="whisker whisker-r1"></div>
+                        <div class="whisker whisker-r2"></div>
+                    </div>
+                    <div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+                    <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+                </div>
+            </div>
+            <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
+        </div>
+
+        <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
+            <div class="flex justify-center mb-4 mt-2 shrink-0">
+                <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
+                    <button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg">⚡ Бустеры</button>
+                    <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg">🧸 Предметы</button>
+                </div>
+            </div>
+
+            <div class="px-4 w-full scrollable-shop pb-24">
+                <div id="shop-boosters" class="shop-content space-y-3">
+                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                        <div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800">Вкусная рыбка</div><div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div></div></div>
+                        <button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
+                    </div>
+                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                        <div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок ниток</div><div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div></div></div>
+                        <button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
+                    </div>
+                </div>
+
+                <div id="shop-decor" class="shop-content space-y-3 hidden">
+                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                        <div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок шерсти</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+                        <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
+                    </div>
+                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                        <div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800">Игрушечная мышка</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+                        <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
+                    </div>
+                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                        <div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800">Кошачья мята</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+                        <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="px-4 w-full overflow-y-auto" style="height: calc(100vh - 220px);">
-            
-            <!-- Вкладка Бустеры -->
-            <div id="shop-boosters" class="shop-content space-y-3 pb-4">
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="fish-emoji">🐟</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Вкусная рыбка</div>
-                            <div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div>
-                        </div>
-                    </div>
-                    <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
-                </div>
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">🧶</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Клубок ниток</div>
-                            <div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div>
-                        </div>
-                    </div>
-                    <button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
-                </div>
-            </div>
-
-            <!-- Вкладка Предметы (Декор) -->
-            <div id="shop-decor" class="shop-content space-y-3 pb-4 hidden">
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">🧶</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Клубок шерсти</div>
-                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
-                        </div>
-                    </div>
-                    <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
-                </div>
-
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">🐭</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Игрушечная мышка</div>
-                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
-                        </div>
-                    </div>
-                    <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
-                </div>
-                
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-3xl">🌿</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Кошачья мята</div>
-                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
-                        </div>
-                    </div>
-                    <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
-                </div>
-            </div>
-
+        <div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
+            <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
+                <span class="text-2xl">🐱</span>
+                <span class="text-xs mt-1 font-bold">Тапать</span>
+            </button>
+            <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400">
+                <span class="text-2xl">🛒</span>
+                <span class="text-xs mt-1 font-bold">Магазин</span>
+            </button>
         </div>
-    </div>
-
-    <!-- Меню -->
-    <div class="bg-white bg-opacity-90 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
-        <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
-            <span class="text-2xl">🐱</span>
-            <span class="text-xs mt-1 font-bold">Тапать</span>
-        </button>
-        <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400">
-            <span class="text-2xl">🛒</span>
-            <span class="text-xs mt-1 font-bold">Магазин</span>
-        </button>
     </div>
 
     <script>
@@ -315,56 +275,45 @@
 
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
-        const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
 
         updateUI();
         updateDecor();
 
+        // Используем pointerdown - он работает и на ПК, и на тач-экранах
         catElement.addEventListener('pointerdown', (e) => {
             score += tapPower;
             saveProgress();
             
             if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-            coinSound.volume = 0.2;
-            coinSound.currentTime = 0;
-            coinSound.play().catch(() => {});
 
+            // Показываем текст
             createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
             updateUI();
 
+            // Анимация прыжка
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 150);
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 300);
         });
 
         function buyItem(item, price) {
-            // Проверка для декора
             if (item === 'yarn' || item === 'mouse' || item === 'mint') {
-                if (ownedItems[item]) {
-                    alert('Этот предмет уже куплен!');
-                    return;
-                }
+                if (ownedItems[item]) return;
             }
-
             if (score >= price) {
                 score -= price;
-                
-                if (item === 'fish') {
-                    activateBoost(10, 5000);
-                } else if (item === 'yarn_boost') {
-                    activateBoost(50, 5000);
-                } else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
+                if (item === 'fish') activateBoost(10, 5000);
+                else if (item === 'yarn_boost') activateBoost(50, 5000);
+                else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
                     ownedItems[item] = true;
                     updateDecor();
                     saveProgress();
                 }
-
                 updateUI();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                alert('Покупка успешна!');
             } else {
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-                alert('Недостаточно рыбок! Тапай больше!');
+                alert('Недостаточно рыбок!');
             }
         }
 
@@ -372,49 +321,37 @@
             if (ownedItems.yarn) {
                 document.getElementById('decor-yarn').classList.add('active');
                 let btn = document.getElementById('btn-decor-yarn');
-                btn.innerText = 'Куплено';
-                btn.classList.replace('bg-green-500', 'bg-gray-400');
+                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
             if (ownedItems.mouse) {
                 document.getElementById('decor-mouse').classList.add('active');
                 let btn = document.getElementById('btn-decor-mouse');
-                btn.innerText = 'Куплено';
-                btn.classList.replace('bg-green-500', 'bg-gray-400');
+                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
             if (ownedItems.mint) {
                 document.getElementById('decor-mint').classList.add('active');
                 let btn = document.getElementById('btn-decor-mint');
-                btn.innerText = 'Куплено';
-                btn.classList.replace('bg-green-500', 'bg-gray-400');
+                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
         }
 
         function activateBoost(power, duration) {
             tapPower = power;
-            setTimeout(() => {
-                tapPower = 1; 
-                alert('Действие буста закончилось!');
-            }, duration);
+            setTimeout(() => { tapPower = 1; alert('Буст закончился!'); }, duration);
         }
 
         function createFloatingText(x, y, text) {
             const el = document.createElement('div');
-            el.innerText = text;
-            el.className = 'float-text';
-            el.style.left = (x - 15) + 'px';
-            el.style.top = (y - 30) + 'px';
+            el.innerText = text; el.className = 'float-text';
+            el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px';
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 800);
         }
 
         function updateUI() {
-            if (score >= 1000000) {
-                scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
-            } else if (score >= 1000) {
-                scoreElement.innerText = (score / 1000).toFixed(1) + 'k';
-            } else {
-                scoreElement.innerText = score;
-            }
+            if (score >= 1000000) scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
+            else if (score >= 1000) scoreElement.innerText = (score / 1000).toFixed(1) + 'k';
+            else scoreElement.innerText = score;
         }
 
         function saveProgress() {
@@ -422,7 +359,6 @@
             localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
         }
 
-        // Переключение между Тапалка / Магазин
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
@@ -436,13 +372,9 @@
             }
         }
 
-        // Переключение внутри Магазина (Бустеры / Предметы)
         function switchShopTab(shopTab) {
-            // Скрываем контент
             document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
-
-            // Меняем активные кнопки
             if (shopTab === 'boosters') {
                 document.getElementById('shop-btn-boosters').classList.add('active');
                 document.getElementById('shop-btn-decor').classList.remove('active');
