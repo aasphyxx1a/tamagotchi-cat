@@ -212,20 +212,17 @@
     <div id="app-container">
         <div class="clouds"></div>
 
-        <!-- Верхняя панель -->
         <div class="p-4 flex flex-col justify-center items-center mt-2 z-10 shrink-0 gap-2">
             <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
                 <span class="fish-emoji">🐟</span>
                 <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
             </div>
             
-            <!-- ТАЙМЕР БУСТА -->
             <div id="boost-timer" class="hidden bg-yellow-400 bg-opacity-90 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-sm flex items-center gap-1">
                 ⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span>
             </div>
         </div>
 
-        <!-- ЭКРАН 1: Тапалка -->
         <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
             <div class="scene-container" id="tap-zone">
                 
@@ -262,7 +259,6 @@
             <div class="mt-4 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
         </div>
 
-        <!-- ЭКРАН 2: Магазин -->
         <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
             <div class="flex justify-center mb-4 mt-2 shrink-0">
                 <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
@@ -311,7 +307,6 @@
             </div>
         </div>
 
-        <!-- ЭКРАН 3: Котики -->
         <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
             <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🐈 Выбери котика</h2>
             <div class="px-2 w-full scrollable-content pb-24 space-y-3">
@@ -352,7 +347,6 @@
             </div>
         </div>
 
-        <!-- НИЖНЕЕ МЕНЮ -->
         <div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
             <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
                 <span class="text-2xl">👆</span>
@@ -381,7 +375,6 @@
         let currentCat = localStorage.getItem('currentCat') || 'ginger';
         let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
 
-        // Переменные для буста
         let boostMultiplier = 1;
         let boostTimeLeft = 0;
         let boostInterval = null;
@@ -402,7 +395,6 @@
         updateCatUI();
         startAutoTap();
 
-        // === ТАПАЛКА ===
         function doTap(x, y) {
             let actualPower = baseTapPower * boostMultiplier;
             score += actualPower;
@@ -425,7 +417,6 @@
             doTap(touch.clientX, touch.clientY);
         }, { passive: false });
 
-        // === АВТО-ТАП ===
         function startAutoTap() {
             if (hasAutoTap) {
                 let btn = document.getElementById('btn-buy-auto');
@@ -447,7 +438,6 @@
             }
         }
 
-        // === МАГАЗИН ===
         function buyItem(item, price) {
             if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
                 if (item === 'auto_tap' && hasAutoTap) return;
@@ -485,7 +475,6 @@
             }
         }
 
-        // === СИСТЕМА БУСТОВ ===
         function activateBoost(multiplier) {
             currentBoostStack++;
             boostMultiplier = multiplier;
@@ -543,7 +532,6 @@
             }
         }
 
-        // === КОТИКИ ===
         function selectCat(catType) {
             currentCat = catType;
             localStorage.setItem('currentCat', currentCat);
@@ -598,7 +586,6 @@
             }
         }
 
-        // === ВСПОМОГАТЕЛЬНЫЕ ===
         function createFloatingText(x, y, text) {
             const el = document.createElement('div');
             el.innerText = text; el.className = 'float-text';
@@ -607,10 +594,17 @@
             setTimeout(() => el.remove(), 800);
         }
 
+        // ОБНОВЛЕННЫЙ СЧЕТЧИК
         function updateUI() {
             if (score >= 500000) {
-                scoreElement.innerText = score.toLocaleString('ru-RU'); 
+                // Если 500 000 и больше, делаем сокращение (500k, 1.2M)
+                if (score >= 1000000) {
+                    scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
+                } else {
+                    scoreElement.innerText = Math.floor(score / 1000) + 'k';
+                }
             } else {
+                // До 500 000 пишем полностью
                 scoreElement.innerText = score;
             }
         }
@@ -634,4 +628,11 @@
         }
 
         function switchShopTab(shopTab) {
-            document.querySelectorAll('.shop-content').forEach(el
+            document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
+            if (shopTab === 'boosters') {
+                document.getElementById('shop-btn-boosters').classList.add('active');
+                document.getElementById('shop-btn-decor').classList.remove('active');
+            } else {
+                document.getElementById('shop-btn-decor').classList.add('active');
+                document.getElementById('shop-btn
