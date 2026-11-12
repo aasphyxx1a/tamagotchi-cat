@@ -12,7 +12,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .scene-container{position:relative;width:100%;height:350px;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:10;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .cat-wrapper{position:relative;width:240px;height:240px;display:flex;justify-content:center;align-items:center;pointer-events:none;transition:transform 0.1s;filter:drop-shadow(0 15px 15px rgba(0,0,0,0.3))}
-.cat-image{width:100%;height:100%;object-fit:contain}
+.cat-image{width:100%;height:100%;object-fit:contain;z-index:10;}
 .accessory-layer{position:absolute;z-index:15;pointer-events:none;display:none}
 .acc-hat{top:0%;left:50%;transform:translateX(-50%);width:140px}
 .acc-glasses{top:38%;left:50%;transform:translateX(-50%);width:120px}
@@ -21,8 +21,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
 .acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
 .acc-shoes{bottom:-10px;left:50%;transform:translateX(-50%);width:120px}
-/* Позиция для бутылки: справа внизу, вплотную к котику */
-.acc-bottle{bottom: 0%; right: -5%; width: 60px; z-index: 12;}
+/* Бутылка прижата к правой лапке и перекрывает её */
+.acc-bottle{bottom: -5%; right: -5%; width: 65px; z-index: 12;}
 
 .shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
 .shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
@@ -49,6 +49,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <body>
 <div id="app-container">
 
+<!-- ВЕРХНЯЯ ПАНЕЛЬ: БУСТ, БАЛАНС, ГАРДЕРОБ -->
 <div class="p-4 flex justify-between items-start mt-2 z-50 shrink-0">
     <div class="flex flex-col items-center">
         <button onclick="buyBoost()" id="btn-boost" class="bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg border-2 border-white text-xl font-bold hover:bg-red-600 transition boost-pulse">⚡</button>
@@ -78,7 +79,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <img id="acc-tie" class="accessory-layer acc-tie" src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png">
 <img id="acc-bowtie" class="accessory-layer acc-bowtie" src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png">
 <img id="acc-hairpin" class="accessory-layer acc-hairpin" src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png">
-<!-- Новая бутылка -->
+<!-- Бутылка -->
 <img id="acc-bottle" class="accessory-layer acc-bottle" src="https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png">
 </div>
 </div>
@@ -155,7 +156,7 @@ const accData = {
     hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin', price: 50000 },
     chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain', price: 50000 },
     shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png', el: 'acc-shoes', price: 50000 },
-    bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 } // НОВЫЙ ПРЕДМЕТ
+    bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 }
 };
 
 let boostMultiplier = 1, boostTimeLeft = 0, boostInterval = null, currentBoostStack = 0;
