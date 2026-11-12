@@ -1,638 +1,308 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Тамагочи-Котик</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #87CEEB 0%, #b3e5fc 45%, #81c784 55%, #4caf50 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333; 
-        }
-
-        #app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            height: 100dvh;
-            width: 100vw;
-            position: relative;
-            z-index: 1;
-        }
-
-        .clouds {
-            position: absolute;
-            top: 5%;
-            left: 0;
-            width: 100%;
-            height: 150px;
-            background: url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;
-            opacity: 0.6; 
-            z-index: -1; 
-            pointer-events: none;
-        }
-
-        .scene-container {
-            position: relative;
-            width: 100%;
-            height: 350px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* ПРЕДМЕТЫ ДЕКОРА */
-        .shop-item-decor {
-            position: absolute;
-            font-size: 35px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-            opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 5;
-            animation: swing 4s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-        .shop-item-decor.active { opacity: 0.9; }
-        .item-yarn { left: 10%; bottom: 60px; transform: rotate(-15deg); }
-        .item-mouse { right: 10%; bottom: 70px; transform: rotate(15deg); }
-        .item-mint { bottom: 10px; left: 50%; margin-left: -17px; font-size: 30px; }
-        @keyframes swing {
-            0% { transform: rotate(-10deg); }
-            100% { transform: rotate(10deg); }
-        }
-
-        /* --- КОТИК --- */
-        .cat-container {
-            position: relative;
-            width: 220px;
-            height: 200px;
-            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
-            z-index: 10;
-            transition: transform 0.1s;
-            pointer-events: none;
-        }
-
-        .cat-face {
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-            width: 200px;
-            height: 140px;
-            background-color: #e69a45; 
-            border-radius: 100px 100px 80px 80px;
-            transition: background-color 0.3s;
-            z-index: 2;
-        }
-
-        .ear {
-            position: absolute;
-            top: -25px; 
-            width: 0;
-            height: 0;
-            border-left: 40px solid transparent;
-            border-right: 40px solid transparent;
-            border-bottom: 70px solid #e69a45; 
-            z-index: 1;
-            transition: border-bottom-color 0.3s;
-        }
-        .ear-left { left: 15px; transform: rotate(-20deg); }
-        .ear-right { right: 15px; transform: rotate(20deg); }
-        
-        .ear-inner {
-            position: absolute;
-            top: 20px;
-            left: -20px;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid #ffcc99; 
-        }
-
-        .spot { position: absolute; background-color: #c86a1a; border-radius: 50%; opacity: 0.6; transition: opacity 0.3s; z-index: 3; }
-        .spot-1 { top: 20px; left: 30px; width: 15px; height: 15px; }
-        .spot-2 { top: 40px; right: 45px; width: 20px; height: 18px; }
-        .spot-3 { top: 10px; right: 80px; width: 10px; height: 10px; }
-
-        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; z-index: 3; }
-        .eye-left { left: 40px; }
-        .eye-right { right: 40px; }
-        .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
-        .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
-
-        .eyebrow { position: absolute; top: 35px; width: 30px; height: 4px; background-color: #222; border-radius: 2px; opacity: 0; transition: opacity 0.3s; z-index: 3; }
-        .eyebrow-left { left: 35px; transform: rotate(15deg); }
-        .eyebrow-right { right: 35px; transform: rotate(-15deg); }
-
-        .cheek { position: absolute; top: 90px; width: 28px; height: 16px; background-color: #ffb6c1; border-radius: 50%; opacity: 0.8; transition: background-color 0.3s; z-index: 3; }
-        .cheek-left { left: 25px; }
-        .cheek-right { right: 25px; }
-
-        .nose { position: absolute; top: 85px; left: 50%; transform: translateX(-50%); width: 14px; height: 10px; background-color: #333; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; z-index: 3; }
-        .mouth { position: absolute; top: 95px; left: 50%; transform: translateX(-50%); width: 20px; height: 10px; border-bottom: 3px solid #333; border-radius: 0 0 50% 50%; z-index: 3; }
-
-        .whisker { position: absolute; width: 45px; height: 2px; background-color: #333; border-radius: 2px; z-index: 3; }
-        .whisker-l1 { top: 85px; left: -25px; transform: rotate(10deg); }
-        .whisker-l2 { top: 98px; left: -25px; transform: rotate(-10deg); }
-        .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
-        .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
-
-        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; border-radius: 30px 30px 20px 20px; border: 3px solid #333; transition: background-color 0.3s; z-index: 4; }
-        .paw-left { left: 20px; }
-        .paw-right { right: 20px; }
-
-        .toes { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
-        .toe { width: 4px; height: 12px; background-color: #333; border-radius: 2px; }
-
-        .cat-ginger .cat-face { background-color: #e69a45; }
-        .cat-ginger .ear { border-bottom-color: #e69a45; }
-        .cat-ginger .paw { background-color: #e69a45; }
-        .cat-ginger .ear-inner { border-bottom-color: #ffcc99; }
-        
-        .cat-gray .cat-face { background-color: #5c6166; }
-        .cat-gray .ear { border-bottom-color: #5c6166; }
-        .cat-gray .paw { background-color: #5c6166; }
-        .cat-gray .ear-inner { border-bottom-color: #404448; }
-        .cat-gray .spot { opacity: 0; }
-
-        .cat-black .cat-face { background-color: #2a2a2a; }
-        .cat-black .ear { border-bottom-color: #2a2a2a; }
-        .cat-black .paw { background-color: #2a2a2a; }
-        .cat-black .ear-inner { border-bottom-color: #444; }
-        .cat-black .spot { opacity: 0; }
-        .cat-black .eyebrow { opacity: 1; }
-        .cat-black .eye { height: 32px; border-radius: 10px; }
-        .cat-black .cheek { background-color: #661111; }
-        
-        .float-text {
-            position: absolute;
-            color: #1b5e20; 
-            font-weight: bold;
-            font-size: 28px;
-            pointer-events: none;
-            animation: floatUp 0.8s ease-out forwards;
-            text-shadow: 0 0 10px rgba(255,255,255,0.8);
-            z-index: 50;
-        }
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-60px); }
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: flex; }
-
-        .shop-tab-btn { transition: all 0.3s; border-bottom: 3px solid transparent; }
-        .shop-tab-btn.active { border-bottom: 3px solid #10b981; color: #047857; font-weight: bold; }
-
-        .fish-emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
-        .fish-emoji-small { font-size: 18px; line-height: 1; margin-left: 4px; }
-
-        .scrollable-content { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Тамагочи-Котик</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html,body{height:100%;margin:0;padding:0;overflow:hidden;background:linear-gradient(to bottom,#87CEEB 0%,#b3e5fc 45%,#81c784 55%,#4caf50 100%);font-family:'Segoe UI',sans-serif;color:#333}
+#app-container{display:flex;flex-direction:column;height:100vh;height:100dvh;width:100vw;position:relative;z-index:1}
+.clouds{position:absolute;top:5%;left:0;width:100%;height:150px;background:url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;opacity:0.6;z-index:-1;pointer-events:none}
+.scene-container{position:relative;width:100%;height:350px;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:10;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.2));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
+.shop-item-decor.active{opacity:.9}
+.item-yarn{left:10%;bottom:60px;transform:rotate(-15deg)}
+.item-mouse{right:10%;bottom:70px;transform:rotate(15deg)}
+.item-mint{bottom:10px;left:50%;margin-left:-17px;font-size:30px}
+@keyframes swing{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
+.cat-container{position:relative;width:220px;height:200px;filter:drop-shadow(0 15px 15px rgba(0,0,0,0.15));z-index:10;transition:transform .1s;pointer-events:none}
+.cat-face{position:absolute;bottom:0;left:10px;width:200px;height:140px;background:#e69a45;border-radius:100px 100px 80px 80px;transition:background-color .3s;z-index:2}
+.ear{position:absolute;top:-25px;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid #e69a45;z-index:1;transition:border-bottom-color .3s}
+.ear-left{left:15px;transform:rotate(-20deg)}
+.ear-right{right:15px;transform:rotate(20deg)}
+.ear-inner{position:absolute;top:20px;left:-20px;width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:35px solid #ffcc99}
+.spot{position:absolute;background:#c86a1a;border-radius:50%;opacity:.6;transition:opacity .3s;z-index:3}
+.spot-1{top:20px;left:30px;width:15px;height:15px}
+.spot-2{top:40px;right:45px;width:20px;height:18px}
+.spot-3{top:10px;right:80px;width:10px;height:10px}
+.eye{position:absolute;top:40px;width:36px;height:42px;background:#222;border-radius:50%;transition:all .3s;z-index:3}
+.eye-left{left:40px}.eye-right{right:40px}
+.eye::before{content:'';position:absolute;top:8px;left:8px;width:14px;height:14px;background:#fff;border-radius:50%}
+.eye::after{content:'';position:absolute;bottom:8px;right:8px;width:6px;height:6px;background:#fff;border-radius:50%}
+.eyebrow{position:absolute;top:35px;width:30px;height:4px;background:#222;border-radius:2px;opacity:0;transition:opacity .3s;z-index:3}
+.eyebrow-left{left:35px;transform:rotate(15deg)}.eyebrow-right{right:35px;transform:rotate(-15deg)}
+.cheek{position:absolute;top:90px;width:28px;height:16px;background:#ffb6c1;border-radius:50%;opacity:.8;transition:background-color .3s;z-index:3}
+.cheek-left{left:25px}.cheek-right{right:25px}
+.nose{position:absolute;top:85px;left:50%;transform:translateX(-50%);width:14px;height:10px;background:#333;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;z-index:3}
+.mouth{position:absolute;top:95px;left:50%;transform:translateX(-50%);width:20px;height:10px;border-bottom:3px solid #333;border-radius:0 0 50% 50%;z-index:3}
+.whisker{position:absolute;width:45px;height:2px;background:#333;border-radius:2px;z-index:3}
+.whisker-l1{top:85px;left:-25px;transform:rotate(10deg)}.whisker-l2{top:98px;left:-25px;transform:rotate(-10deg)}
+.whisker-r1{top:85px;right:-25px;transform:rotate(-10deg)}.whisker-r2{top:98px;right:-25px;transform:rotate(10deg)}
+.paw{position:absolute;bottom:-10px;width:65px;height:40px;border-radius:30px 30px 20px 20px;border:3px solid #333;transition:background-color .3s;z-index:4}
+.paw-left{left:20px}.paw-right{right:20px}
+.toes{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.toe{width:4px;height:12px;background:#333;border-radius:2px}
+.cat-ginger .cat-face,.cat-ginger .ear{background-color:#e69a45}.cat-ginger .ear{border-bottom-color:#e69a45}.cat-ginger .paw{background:#e69a45}.cat-ginger .ear-inner{border-bottom-color:#ffcc99}
+.cat-gray .cat-face{background:#5c6166}.cat-gray .ear{border-bottom-color:#5c6166}.cat-gray .paw{background:#5c6166}.cat-gray .ear-inner{border-bottom-color:#404448}.cat-gray .spot{opacity:0}
+.cat-black .cat-face{background:#2a2a2a}.cat-black .ear{border-bottom-color:#2a2a2a}.cat-black .paw{background:#2a2a2a}.cat-black .ear-inner{border-bottom-color:#444}.cat-black .spot{opacity:0}.cat-black .eyebrow{opacity:1}.cat-black .eye{height:32px;border-radius:10px}.cat-black .cheek{background:#661111}
+.float-text{position:absolute;color:#1b5e20;font-weight:bold;font-size:28px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:0 0 10px rgba(255,255,255,.8);z-index:50}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
+.tab-content{display:none}.tab-content.active{display:flex}
+.shop-tab-btn{transition:all .3s;border-bottom:3px solid transparent}.shop-tab-btn.active{border-bottom:3px solid #10b981;color:#047857;font-weight:bold}
+.fish-emoji{font-size:32px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.fish-emoji-small{font-size:18px;line-height:1;margin-left:4px}
+.scrollable-content{overflow-y:auto;-webkit-overflow-scrolling:touch}
+</style>
 </head>
 <body>
-
-    <div id="app-container">
-        <div class="clouds"></div>
-
-        <div class="p-4 flex flex-col justify-center items-center mt-2 z-10 shrink-0 gap-2">
-            <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
-                <span class="fish-emoji">🐟</span>
-                <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
-            </div>
-            
-            <div id="boost-timer" class="hidden bg-yellow-400 bg-opacity-90 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-sm flex items-center gap-1">
-                ⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span>
-            </div>
-        </div>
-
-        <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
-            <div class="scene-container" id="tap-zone">
-                
-                <div id="cat-name-display" class="hidden bg-white bg-opacity-80 px-5 py-1.5 rounded-full text-lg font-bold text-gray-700 shadow-sm mb-4 z-20"></div>
-
-                <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
-                <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
-                <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
-
-                <div id="cat" class="cat-container cat-ginger">
-                    <div class="ear ear-left"><div class="ear-inner"></div></div>
-                    <div class="ear ear-right"><div class="ear-inner"></div></div>
-                    <div class="cat-face">
-                        <div class="spot spot-1"></div>
-                        <div class="spot spot-2"></div>
-                        <div class="spot spot-3"></div>
-                        <div class="eyebrow eyebrow-left"></div>
-                        <div class="eyebrow eyebrow-right"></div>
-                        <div class="eye eye-left"></div>
-                        <div class="eye eye-right"></div>
-                        <div class="cheek cheek-left"></div>
-                        <div class="cheek cheek-right"></div>
-                        <div class="nose"></div>
-                        <div class="mouth"></div>
-                        <div class="whisker whisker-l1"></div>
-                        <div class="whisker whisker-l2"></div>
-                        <div class="whisker whisker-r1"></div>
-                        <div class="whisker whisker-r2"></div>
-                    </div>
-                    <div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
-                    <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
-                </div>
-            </div>
-            <div class="mt-4 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
-        </div>
-
-        <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
-            <div class="flex justify-center mb-4 mt-2 shrink-0">
-                <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
-                    <button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg">⚡ Бустеры</button>
-                    <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg">🧸 Предметы</button>
-                </div>
-            </div>
-
-            <div class="px-4 w-full scrollable-content pb-24">
-                <div id="shop-boosters" class="shop-content space-y-3">
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                        <div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800">Вкусная рыбка</div><div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div></div></div>
-                        <button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                        <div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок ниток</div><div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div></div></div>
-                        <button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                    
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200 mt-3">
-                        <div class="flex items-center gap-3">
-                            <span class="text-3xl">🦾</span>
-                            <div>
-                                <div class="font-bold text-gray-800">Робо-лапка</div>
-                                <div class="text-xs text-gray-500">Авто-тап: +2 рыбки в секунду</div>
-                            </div>
-                        </div>
-                        <button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                </div>
-
-                <div id="shop-decor" class="shop-content space-y-3 hidden">
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                        <div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок шерсти</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                        <div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800">Игрушечная мышка</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                    <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                        <div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800">Кошачья мята</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-                        <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
-            <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🐈 Выбери котика</h2>
-            <div class="px-2 w-full scrollable-content pb-24 space-y-3">
-                
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-4xl">🦊</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Рыжий котик</div>
-                            <div class="text-xs text-gray-500">С пятнышками</div>
-                        </div>
-                    </div>
-                    <button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button>
-                </div>
-
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-4xl">🐺</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Нэнсик</div>
-                            <div class="text-xs text-gray-500">Серый котик</div>
-                        </div>
-                    </div>
-                    <button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
-                </div>
-
-                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                    <div class="flex items-center gap-3">
-                        <span class="text-4xl">🐈‍⬛</span>
-                        <div>
-                            <div class="font-bold text-gray-800">Лукошка</div>
-                            <div class="text-xs text-gray-500">Сердитый и стильный</div>
-                        </div>
-                    </div>
-                    <button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
-            <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600">
-                <span class="text-2xl">👆</span>
-                <span class="text-xs mt-1 font-bold">Тапать</span>
-            </button>
-            <button onclick="switchTab('cats')" id="btn-cats" class="flex flex-col items-center text-gray-400">
-                <span class="text-2xl">🐱</span>
-                <span class="text-xs mt-1 font-bold">Котики</span>
-            </button>
-            <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400">
-                <span class="text-2xl">🛒</span>
-                <span class="text-xs mt-1 font-bold">Магазин</span>
-            </button>
-        </div>
-    </div>
-
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.headerColor = '#87CEEB'; 
-
-        let score = parseInt(localStorage.getItem('catScore')) || 0;
-        let baseTapPower = 1;
-        let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
-        let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
-        let currentCat = localStorage.getItem('currentCat') || 'ginger';
-        let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
-
-        let boostMultiplier = 1;
-        let boostTimeLeft = 0;
-        let boostInterval = null;
-        let currentBoostStack = 0;
-        const maxBoostStack = 3;
-        const boostDuration = 5; 
-
-        const scoreElement = document.getElementById('score');
-        const catElement = document.getElementById('cat');
-        const tapZone = document.getElementById('tap-zone');
-        const nameDisplay = document.getElementById('cat-name-display');
-        const timerContainer = document.getElementById('boost-timer');
-        const timerSeconds = document.getElementById('boost-seconds');
-        const timerStack = document.getElementById('boost-stack');
-
-        updateUI();
-        updateDecor();
-        updateCatUI();
-        startAutoTap();
-
-        function doTap(x, y) {
-            let actualPower = baseTapPower * boostMultiplier;
-            score += actualPower;
-            saveProgress();
-            
-            try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
-
-            createFloatingText(x, y, `+${actualPower}`);
-            updateUI();
-
-            catElement.style.transform = 'translateY(-30px) scale(0.95)';
-            setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
-            setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 250);
-        }
-
-        tapZone.addEventListener('mousedown', function(e) { doTap(e.clientX, e.clientY); });
-        tapZone.addEventListener('touchstart', function(e) {
-            e.preventDefault(); 
-            let touch = e.touches[0];
-            doTap(touch.clientX, touch.clientY);
-        }, { passive: false });
-
-        function startAutoTap() {
-            if (hasAutoTap) {
-                let btn = document.getElementById('btn-buy-auto');
-                if(btn) {
-                    btn.innerText = 'Куплено';
-                    btn.classList.replace('bg-green-500', 'bg-gray-400');
-                    btn.disabled = true;
-                }
-
-                setInterval(() => {
-                    score += 2; 
-                    saveProgress();
-                    updateUI();
-
-                    let randomX = (window.innerWidth / 2) + (Math.random() * 100 - 50);
-                    let randomY = (window.innerHeight / 2) + (Math.random() * 100 - 50);
-                    createFloatingText(randomX, randomY, `+2`);
-                }, 1000);
-            }
-        }
-
-        function buyItem(item, price) {
-            if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
-                if (item === 'auto_tap' && hasAutoTap) return;
-                if (item !== 'auto_tap' && ownedItems[item]) return;
-            }
-            
-            if (item === 'fish' || item === 'yarn_boost') {
-                if (currentBoostStack >= maxBoostStack) {
-                    alert('Максимум 3 буста! Дождитесь окончания.');
-                    return;
-                }
-            }
-
-            if (score >= price) {
-                score -= price;
-                
-                if (item === 'fish') activateBoost(10);
-                else if (item === 'yarn_boost') activateBoost(50);
-                else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
-                    ownedItems[item] = true;
-                    updateDecor();
-                } 
-                else if (item === 'auto_tap') {
-                    hasAutoTap = true;
-                    localStorage.setItem('hasAutoTap', 'true');
-                    startAutoTap();
-                }
-
-                saveProgress();
-                updateUI();
-                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-            } else {
-                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
-                alert('Недостаточно рыбок!');
-            }
-        }
-
-        function activateBoost(multiplier) {
-            currentBoostStack++;
-            boostMultiplier = multiplier;
-            
-            if (boostTimeLeft <= 0) {
-                boostTimeLeft = boostDuration;
-            } else {
-                boostTimeLeft += boostDuration;
-            }
-
-            timerContainer.classList.remove('hidden');
-            updateTimerUI();
-
-            if (!boostInterval) {
-                boostInterval = setInterval(() => {
-                    boostTimeLeft--;
-                    if (boostTimeLeft <= 0) {
-                        endBoost();
-                    } else {
-                        updateTimerUI();
-                    }
-                }, 1000);
-            }
-        }
-
-        function updateTimerUI() {
-            timerSeconds.innerText = boostTimeLeft;
-            timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : '';
-        }
-
-        function endBoost() {
-            clearInterval(boostInterval);
-            boostInterval = null;
-            boostMultiplier = 1;
-            currentBoostStack = 0;
-            boostTimeLeft = 0;
-            timerContainer.classList.add('hidden');
-        }
-
-        function updateDecor() {
-            if (ownedItems.yarn) {
-                document.getElementById('decor-yarn').classList.add('active');
-                let btn = document.getElementById('btn-decor-yarn');
-                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
-            }
-            if (ownedItems.mouse) {
-                document.getElementById('decor-mouse').classList.add('active');
-                let btn = document.getElementById('btn-decor-mouse');
-                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
-            }
-            if (ownedItems.mint) {
-                document.getElementById('decor-mint').classList.add('active');
-                let btn = document.getElementById('btn-decor-mint');
-                btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
-            }
-        }
-
-        function selectCat(catType) {
-            currentCat = catType;
-            localStorage.setItem('currentCat', currentCat);
-            updateCatUI();
-            try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-        }
-
-        function buyCat(catType, price) {
-            if (ownedCats[catType]) {
-                selectCat(catType);
-                return;
-            }
-            if (score >= price) {
-                score -= price;
-                ownedCats[catType] = true;
-                saveProgress();
-                updateUI();
-                selectCat(catType);
-                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-            } else {
-                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
-                alert('Недостаточно рыбок для покупки!');
-            }
-        }
-
-        function updateCatUI() {
-            catElement.className = `cat-container cat-${currentCat}`;
-
-            if (currentCat === 'gray') {
-                nameDisplay.innerText = 'Нэнсик';
-                nameDisplay.classList.remove('hidden');
-            } else if (currentCat === 'black') {
-                nameDisplay.innerText = 'Лукошка';
-                nameDisplay.classList.remove('hidden');
-            } else {
-                nameDisplay.classList.add('hidden'); 
-            }
-
-            const btnGray = document.getElementById('btn-cat-gray');
-            const btnBlack = document.getElementById('btn-cat-black');
-
-            if (ownedCats.gray) {
-                btnGray.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать';
-                btnGray.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm';
-                btnGray.onclick = () => selectCat('gray');
-            }
-
-            if (ownedCats.black) {
-                btnBlack.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать';
-                btnBlack.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm';
-                btnBlack.onclick = () => selectCat('black');
-            }
-        }
-
-        function createFloatingText(x, y, text) {
-            const el = document.createElement('div');
-            el.innerText = text; el.className = 'float-text';
-            el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 800);
-        }
-
-        // ОБНОВЛЕННЫЙ СЧЕТЧИК
-        function updateUI() {
-            if (score >= 500000) {
-                // Если 500 000 и больше, делаем сокращение (500k, 1.2M)
-                if (score >= 1000000) {
-                    scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
-                } else {
-                    scoreElement.innerText = Math.floor(score / 1000) + 'k';
-                }
-            } else {
-                // До 500 000 пишем полностью
-                scoreElement.innerText = score;
-            }
-        }
-
-        function saveProgress() {
-            localStorage.setItem('catScore', score);
-            localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
-            localStorage.setItem('ownedCats', JSON.stringify(ownedCats));
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            const tabs = ['tap', 'cats', 'shop'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`btn-${t}`);
-                if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600');
-                else btn.classList.replace('text-green-600', 'text-gray-400');
-            });
-        }
-
-        function switchShopTab(shopTab) {
-            document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
-            if (shopTab === 'boosters') {
-                document.getElementById('shop-btn-boosters').classList.add('active');
-                document.getElementById('shop-btn-decor').classList.remove('active');
-            } else {
-                document.getElementById('shop-btn-decor').classList.add('active');
-                document.getElementById('shop-btn
+<div id="app-container">
+<div class="clouds"></div>
+<div class="p-4 flex flex-col justify-center items-center mt-2 z-10 shrink-0 gap-2">
+<div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
+<div id="boost-timer" class="hidden bg-yellow-400 bg-opacity-90 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-sm flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
+</div>
+<div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
+<div class="scene-container" id="tap-zone">
+<div id="cat-name-display" class="hidden bg-white bg-opacity-80 px-5 py-1.5 rounded-full text-lg font-bold text-gray-700 shadow-sm mb-4 z-20"></div>
+<div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
+<div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
+<div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
+<div id="cat" class="cat-container cat-ginger">
+<div class="ear ear-left"><div class="ear-inner"></div></div>
+<div class="ear ear-right"><div class="ear-inner"></div></div>
+<div class="cat-face">
+<div class="spot spot-1"></div><div class="spot spot-2"></div><div class="spot spot-3"></div>
+<div class="eyebrow eyebrow-left"></div><div class="eyebrow eyebrow-right"></div>
+<div class="eye eye-left"></div><div class="eye eye-right"></div>
+<div class="cheek cheek-left"></div><div class="cheek cheek-right"></div>
+<div class="nose"></div><div class="mouth"></div>
+<div class="whisker whisker-l1"></div><div class="whisker whisker-l2"></div><div class="whisker whisker-r1"></div><div class="whisker whisker-r2"></div>
+</div>
+<div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+<div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
+</div>
+</div>
+<div class="mt-4 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
+</div>
+<div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
+<div class="flex justify-center mb-4 mt-2 shrink-0">
+<div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
+<button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg">⚡ Бустеры</button>
+<button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg">🧸 Предметы</button>
+</div>
+</div>
+<div class="px-4 w-full scrollable-content pb-24">
+<div id="shop-boosters" class="shop-content space-y-3">
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800">Вкусная рыбка</div><div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div></div></div>
+<button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок ниток</div><div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div></div></div>
+<button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200 mt-3">
+<div class="flex items-center gap-3"><span class="text-3xl">🦾</span><div><div class="font-bold text-gray-800">Робо-лапка</div><div class="text-xs text-gray-500">Авто-тап: +2 рыбки в секунду</div></div></div>
+<button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button>
+</div>
+</div>
+<div id="shop-decor" class="shop-content space-y-3 hidden">
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок шерсти</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+<button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800">Игрушечная мышка</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+<button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800">Кошачья мята</div><div class="text-xs text-gray-500">Украшение</div></div></div>
+<button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
+</div>
+</div>
+</div>
+</div>
+<div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
+<h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🐈 Выбери котика</h2>
+<div class="px-2 w-full scrollable-content pb-24 space-y-3">
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-4xl">🦊</span><div><div class="font-bold text-gray-800">Рыжий котик</div><div class="text-xs text-gray-500">С пятнышками</div></div></div>
+<button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-4xl">🐺</span><div><div class="font-bold text-gray-800">Нэнсик</div><div class="text-xs text-gray-500">Серый котик</div></div></div>
+<button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
+</div>
+<div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+<div class="flex items-center gap-3"><span class="text-4xl">🐈‍⬛</span><div><div class="font-bold text-gray-800">Лукошка</div><div class="text-xs text-gray-500">Сердитый и стильный</div></div></div>
+<button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
+</div>
+</div>
+</div>
+<div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
+<button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600"><span class="text-2xl">👆</span><span class="text-xs mt-1 font-bold">Тапать</span></button>
+<button onclick="switchTab('cats')" id="btn-cats" class="flex flex-col items-center text-gray-400"><span class="text-2xl">🐱</span><span class="text-xs mt-1 font-bold">Котики</span></button>
+<button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400"><span class="text-2xl">🛒</span><span class="text-xs mt-1 font-bold">Магазин</span></button>
+</div>
+</div>
+<script>
+let tg = window.Telegram.WebApp;
+tg.expand();
+tg.headerColor = '#87CEEB';
+let score = parseInt(localStorage.getItem('catScore')) || 0;
+let baseTapPower = 1;
+let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
+let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
+let currentCat = localStorage.getItem('currentCat') || 'ginger';
+let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
+let boostMultiplier = 1;
+let boostTimeLeft = 0;
+let boostInterval = null;
+let currentBoostStack = 0;
+const maxBoostStack = 3;
+const boostDuration = 5;
+const scoreElement = document.getElementById('score');
+const catElement = document.getElementById('cat');
+const tapZone = document.getElementById('tap-zone');
+const nameDisplay = document.getElementById('cat-name-display');
+const timerContainer = document.getElementById('boost-timer');
+const timerSeconds = document.getElementById('boost-seconds');
+const timerStack = document.getElementById('boost-stack');
+updateUI(); updateDecor(); updateCatUI(); startAutoTap();
+function doTap(x, y) {
+let actualPower = baseTapPower * boostMultiplier;
+score += actualPower;
+saveProgress();
+try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
+createFloatingText(x, y, `+${actualPower}`);
+updateUI();
+catElement.style.transform = 'translateY(-30px) scale(0.95)';
+setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
+setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 250);
+}
+tapZone.addEventListener('mousedown', function(e) { doTap(e.clientX, e.clientY); });
+tapZone.addEventListener('touchstart', function(e) { e.preventDefault(); let touch = e.touches[0]; doTap(touch.clientX, touch.clientY); }, { passive: false });
+function startAutoTap() {
+if (hasAutoTap) {
+let btn = document.getElementById('btn-buy-auto');
+if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
+setInterval(() => {
+score += 2;
+saveProgress();
+updateUI();
+let randomX = (window.innerWidth / 2) + (Math.random() * 100 - 50);
+let randomY = (window.innerHeight / 2) + (Math.random() * 100 - 50);
+createFloatingText(randomX, randomY, `+2`);
+}, 1000);
+}
+}
+function buyItem(item, price) {
+if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
+if (item === 'auto_tap' && hasAutoTap) return;
+if (item !== 'auto_tap' && ownedItems[item]) return;
+}
+if (item === 'fish' || item === 'yarn_boost') {
+if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
+}
+if (score >= price) {
+score -= price;
+if (item === 'fish') activateBoost(10);
+else if (item === 'yarn_boost') activateBoost(50);
+else if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
+else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
+saveProgress(); updateUI();
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+} else {
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
+alert('Недостаточно рыбок!');
+}
+}
+function activateBoost(multiplier) {
+currentBoostStack++;
+boostMultiplier = multiplier;
+if (boostTimeLeft <= 0) { boostTimeLeft = boostDuration; } else { boostTimeLeft += boostDuration; }
+timerContainer.classList.remove('hidden');
+updateTimerUI();
+if (!boostInterval) {
+boostInterval = setInterval(() => {
+boostTimeLeft--;
+if (boostTimeLeft <= 0) { endBoost(); } else { updateTimerUI(); }
+}, 1000);
+}
+}
+function updateTimerUI() {
+timerSeconds.innerText = boostTimeLeft;
+timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : '';
+}
+function endBoost() {
+clearInterval(boostInterval);
+boostInterval = null;
+boostMultiplier = 1;
+currentBoostStack = 0;
+boostTimeLeft = 0;
+timerContainer.classList.add('hidden');
+}
+function updateDecor() {
+if (ownedItems.yarn) { document.getElementById('decor-yarn').classList.add('active'); let btn = document.getElementById('btn-decor-yarn'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+if (ownedItems.mouse) { document.getElementById('decor-mouse').classList.add('active'); let btn = document.getElementById('btn-decor-mouse'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+if (ownedItems.mint) { document.getElementById('decor-mint').classList.add('active'); let btn = document.getElementById('btn-decor-mint'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+}
+function selectCat(catType) {
+currentCat = catType;
+localStorage.setItem('currentCat', currentCat);
+updateCatUI();
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+}
+function buyCat(catType, price) {
+if (ownedCats[catType]) { selectCat(catType); return; }
+if (score >= price) {
+score -= price;
+ownedCats[catType] = true;
+saveProgress(); updateUI(); selectCat(catType);
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+} else {
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
+alert('Недостаточно рыбок!');
+}
+}
+function updateCatUI() {
+catElement.className = `cat-container cat-${currentCat}`;
+if (currentCat === 'gray') { nameDisplay.innerText = 'Нэнсик'; nameDisplay.classList.remove('hidden'); }
+else if (currentCat === 'black') { nameDisplay.innerText = 'Лукошка'; nameDisplay.classList.remove('hidden'); }
+else { nameDisplay.classList.add('hidden'); }
+const btnGray = document.getElementById('btn-cat-gray');
+const btnBlack = document.getElementById('btn-cat-black');
+if (ownedCats.gray) { btnGray.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; btnGray.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnGray.onclick = () => selectCat('gray'); }
+if (ownedCats.black) { btnBlack.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; btnBlack.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnBlack.onclick = () => selectCat('black'); }
+}
+function createFloatingText(x, y, text) {
+const el = document.createElement('div');
+el.innerText = text; el.className = 'float-text';
+el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px';
+document.body.appendChild(el);
+setTimeout(() => el.remove(), 800);
+}
+function updateUI() {
+if (score >= 1000000) { scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; }
+else if (score >= 500000) { scoreElement.innerText = Math.floor(score / 1000) + 'k'; }
+else { scoreElement.innerText = score; }
+}
+function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedItems', JSON.stringify(ownedItems)); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); }
+function switchTab(tab) {
+document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+document.getElementById(`tab-${tab}`).classList.add('active');
+const tabs = ['tap', 'cats', 'shop'];
+tabs.forEach(t => { const btn = document.getElementById(`btn-${t}`); if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600'); else btn.classList.replace('text-green-600', 'text-gray-400'); });
+}
+function switchShopTab(shopTab) {
+document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
+document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
+if (shopTab === 'boosters') { document.getElementById('shop-btn-boosters').classList.add('active'); document.getElementById('shop-btn-decor').classList.remove('active'); }
+else { document.getElementById('shop-btn-decor').classList.add('active'); document.getElementById('shop-btn-boosters').classList.remove('active'); }
+}
+</script>
+</body>
+</html>
