@@ -82,7 +82,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 <div class="px-4 w-full scrollable-content pb-24">
 <div id="shop-decor" class="shop-content space-y-3 hidden">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mD0XkG5Z/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Зимний вайб</div></div></div><button id="btn-bg-zimniy" onclick="buyBackground('zimniy')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mD0XkG5Z/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">zimniy vibe</div></div></div><button id="btn-bg-zimniy" onclick="buyBackground('zimniy')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/3RV8wdhD/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Minecraft</div></div></div><button id="btn-bg-minecraft" onclick="buyBackground('minecraft')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">150 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/fLGsNp7X/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Liminal</div></div></div><button id="btn-bg-liminal" onclick="buyBackground('liminal')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">150 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Absent Vibe</div></div></div><button id="btn-bg-absent" onclick="buyBackground('absent')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">2 000 000 <span class="fish-emoji-small">🐟</span></button></div>
@@ -130,7 +130,7 @@ black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-kl
 };
 const bgData = {
 default: { name: 'Стандартный', img: '', price: 0 },
-zimniy: { name: 'Зимний вайб', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
+zimniy: { name: 'zimniy vibe', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
 minecraft: { name: 'Minecraft', img: 'https://i.postimg.cc/3RV8wdhD/image.png', price: 150000 },
 liminal: { name: 'Liminal', img: 'https://i.postimg.cc/fLGsNp7X/image.png', price: 150000 },
 absent: { name: 'Absent Vibe', img: 'https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png', price: 2000000 }
@@ -295,8 +295,4 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 }
 function switchShopTab(tab) {
 document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
-['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
-}
-</script>
-</body>
-</html>
+['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b
