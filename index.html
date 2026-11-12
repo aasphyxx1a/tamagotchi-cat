@@ -12,42 +12,25 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background:linear-gradi
 .clouds{position:absolute;top:5%;left:0;width:100%;height:150px;background:url('https://www.transparenttextures.com/patterns/clouds.png') repeat-x;opacity:0.6;z-index:-1;pointer-events:none}
 .scene-container{position:relative;width:100%;height:350px;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:10;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* Стили для картинки кота */
+.cat-image {
+    width: 220px; /* Размер котика */
+    height: auto;
+    pointer-events: none;
+    z-index: 10;
+    transition: transform 0.1s;
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2));
+}
+
+/* Предметы декора */
 .shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.2));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
 .shop-item-decor.active{opacity:.9}
 .item-yarn{left:10%;bottom:60px;transform:rotate(-15deg)}
 .item-mouse{right:10%;bottom:70px;transform:rotate(15deg)}
 .item-mint{bottom:10px;left:50%;margin-left:-17px;font-size:30px}
 @keyframes swing{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
-.cat-container{position:relative;width:220px;height:200px;filter:drop-shadow(0 15px 15px rgba(0,0,0,0.15));z-index:10;transition:transform .1s;pointer-events:none}
-.cat-face{position:absolute;bottom:0;left:10px;width:200px;height:140px;background:#e69a45;border-radius:100px 100px 80px 80px;transition:background-color .3s;z-index:2}
-.ear{position:absolute;top:-25px;width:0;height:0;border-left:40px solid transparent;border-right:40px solid transparent;border-bottom:70px solid #e69a45;z-index:1;transition:border-bottom-color .3s}
-.ear-left{left:15px;transform:rotate(-20deg)}
-.ear-right{right:15px;transform:rotate(20deg)}
-.ear-inner{position:absolute;top:20px;left:-20px;width:0;height:0;border-left:20px solid transparent;border-right:20px solid transparent;border-bottom:35px solid #ffcc99}
-.spot{position:absolute;background:#c86a1a;border-radius:50%;opacity:.6;transition:opacity .3s;z-index:3}
-.spot-1{top:20px;left:30px;width:15px;height:15px}
-.spot-2{top:40px;right:45px;width:20px;height:18px}
-.spot-3{top:10px;right:80px;width:10px;height:10px}
-.eye{position:absolute;top:40px;width:36px;height:42px;background:#222;border-radius:50%;transition:all .3s;z-index:3}
-.eye-left{left:40px}.eye-right{right:40px}
-.eye::before{content:'';position:absolute;top:8px;left:8px;width:14px;height:14px;background:#fff;border-radius:50%}
-.eye::after{content:'';position:absolute;bottom:8px;right:8px;width:6px;height:6px;background:#fff;border-radius:50%}
-.eyebrow{position:absolute;top:35px;width:30px;height:4px;background:#222;border-radius:2px;opacity:0;transition:opacity .3s;z-index:3}
-.eyebrow-left{left:35px;transform:rotate(15deg)}.eyebrow-right{right:35px;transform:rotate(-15deg)}
-.cheek{position:absolute;top:90px;width:28px;height:16px;background:#ffb6c1;border-radius:50%;opacity:.8;transition:background-color .3s;z-index:3}
-.cheek-left{left:25px}.cheek-right{right:25px}
-.nose{position:absolute;top:85px;left:50%;transform:translateX(-50%);width:14px;height:10px;background:#333;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;z-index:3}
-.mouth{position:absolute;top:95px;left:50%;transform:translateX(-50%);width:20px;height:10px;border-bottom:3px solid #333;border-radius:0 0 50% 50%;z-index:3}
-.whisker{position:absolute;width:45px;height:2px;background:#333;border-radius:2px;z-index:3}
-.whisker-l1{top:85px;left:-25px;transform:rotate(10deg)}.whisker-l2{top:98px;left:-25px;transform:rotate(-10deg)}
-.whisker-r1{top:85px;right:-25px;transform:rotate(-10deg)}.whisker-r2{top:98px;right:-25px;transform:rotate(10deg)}
-.paw{position:absolute;bottom:-10px;width:65px;height:40px;border-radius:30px 30px 20px 20px;border:3px solid #333;transition:background-color .3s;z-index:4}
-.paw-left{left:20px}.paw-right{right:20px}
-.toes{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
-.toe{width:4px;height:12px;background:#333;border-radius:2px}
-.cat-ginger .cat-face,.cat-ginger .ear{background-color:#e69a45}.cat-ginger .ear{border-bottom-color:#e69a45}.cat-ginger .paw{background:#e69a45}.cat-ginger .ear-inner{border-bottom-color:#ffcc99}
-.cat-gray .cat-face{background:#5c6166}.cat-gray .ear{border-bottom-color:#5c6166}.cat-gray .paw{background:#5c6166}.cat-gray .ear-inner{border-bottom-color:#404448}.cat-gray .spot{opacity:0}
-.cat-black .cat-face{background:#2a2a2a}.cat-black .ear{border-bottom-color:#2a2a2a}.cat-black .paw{background:#2a2a2a}.cat-black .ear-inner{border-bottom-color:#444}.cat-black .spot{opacity:0}.cat-black .eyebrow{opacity:1}.cat-black .eye{height:32px;border-radius:10px}.cat-black .cheek{background:#661111}
+
 .float-text{position:absolute;color:#1b5e20;font-weight:bold;font-size:28px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:0 0 10px rgba(255,255,255,.8);z-index:50}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
 .tab-content{display:none}.tab-content.active{display:flex}
@@ -70,23 +53,15 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background:linear-gradi
 <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
 <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
 <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
-<div id="cat" class="cat-container cat-ginger">
-<div class="ear ear-left"><div class="ear-inner"></div></div>
-<div class="ear ear-right"><div class="ear-inner"></div></div>
-<div class="cat-face">
-<div class="spot spot-1"></div><div class="spot spot-2"></div><div class="spot spot-3"></div>
-<div class="eyebrow eyebrow-left"></div><div class="eyebrow eyebrow-right"></div>
-<div class="eye eye-left"></div><div class="eye eye-right"></div>
-<div class="cheek cheek-left"></div><div class="cheek cheek-right"></div>
-<div class="nose"></div><div class="mouth"></div>
-<div class="whisker whisker-l1"></div><div class="whisker whisker-l2"></div><div class="whisker whisker-r1"></div><div class="whisker whisker-r2"></div>
-</div>
-<div class="paw paw-left"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
-<div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
-</div>
+
+<!-- Сюда будет подставляться картинка кота -->
+<img id="cat" class="cat-image" src="https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png" alt="Cat">
+
 </div>
 <div class="mt-4 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по экрану!</div>
 </div>
+
+<!-- ЭКРАН 2: Магазин -->
 <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
 <div class="flex justify-center mb-4 mt-2 shrink-0">
 <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
@@ -125,6 +100,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background:linear-gradi
 </div>
 </div>
 </div>
+
+<!-- ЭКРАН 3: Котики -->
 <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
 <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🐈 Выбери котика</h2>
 <div class="px-2 w-full scrollable-content pb-24 space-y-3">
@@ -142,12 +119,15 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background:linear-gradi
 </div>
 </div>
 </div>
+
+<!-- НИЖНЕЕ МЕНЮ -->
 <div class="bg-white bg-opacity-95 border-t border-green-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
 <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600"><span class="text-2xl">👆</span><span class="text-xs mt-1 font-bold">Тапать</span></button>
 <button onclick="switchTab('cats')" id="btn-cats" class="flex flex-col items-center text-gray-400"><span class="text-2xl">🐱</span><span class="text-xs mt-1 font-bold">Котики</span></button>
 <button onclick="switchTab('shop')" id="btn-shop" class="flex flex-col items-center text-gray-400"><span class="text-2xl">🛒</span><span class="text-xs mt-1 font-bold">Магазин</span></button>
 </div>
 </div>
+
 <script>
 let tg = window.Telegram.WebApp;
 tg.expand();
@@ -158,6 +138,14 @@ let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false
 let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
 let currentCat = localStorage.getItem('currentCat') || 'ginger';
 let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
+
+// Ссылки на картинки котов
+const catImages = {
+    ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png',
+    gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png',
+    black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png'
+};
+
 let boostMultiplier = 1;
 let boostTimeLeft = 0;
 let boostInterval = null;
@@ -165,143 +153,163 @@ let currentBoostStack = 0;
 const maxBoostStack = 3;
 const boostDuration = 5;
 const scoreElement = document.getElementById('score');
-const catElement = document.getElementById('cat');
+const catElement = document.getElementById('cat'); // Теперь это <img>
 const tapZone = document.getElementById('tap-zone');
 const nameDisplay = document.getElementById('cat-name-display');
 const timerContainer = document.getElementById('boost-timer');
 const timerSeconds = document.getElementById('boost-seconds');
 const timerStack = document.getElementById('boost-stack');
+
 updateUI(); updateDecor(); updateCatUI(); startAutoTap();
+
 function doTap(x, y) {
-let actualPower = baseTapPower * boostMultiplier;
-score += actualPower;
-saveProgress();
-try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
-createFloatingText(x, y, `+${actualPower}`);
-updateUI();
-catElement.style.transform = 'translateY(-30px) scale(0.95)';
-setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
-setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 250);
+    let actualPower = baseTapPower * boostMultiplier;
+    score += actualPower;
+    saveProgress();
+    try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
+    createFloatingText(x, y, `+${actualPower}`);
+    updateUI();
+    // Анимация прыжка для картинки
+    catElement.style.transform = 'translateY(-30px) scale(0.95)';
+    setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
+    setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 250);
 }
+
 tapZone.addEventListener('mousedown', function(e) { doTap(e.clientX, e.clientY); });
 tapZone.addEventListener('touchstart', function(e) { e.preventDefault(); let touch = e.touches[0]; doTap(touch.clientX, touch.clientY); }, { passive: false });
+
 function startAutoTap() {
-if (hasAutoTap) {
-let btn = document.getElementById('btn-buy-auto');
-if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
-setInterval(() => {
-score += 2;
-saveProgress();
-updateUI();
-let randomX = (window.innerWidth / 2) + (Math.random() * 100 - 50);
-let randomY = (window.innerHeight / 2) + (Math.random() * 100 - 50);
-createFloatingText(randomX, randomY, `+2`);
-}, 1000);
+    if (hasAutoTap) {
+        let btn = document.getElementById('btn-buy-auto');
+        if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
+        setInterval(() => {
+            score += 2; saveProgress(); updateUI();
+            let randomX = (window.innerWidth / 2) + (Math.random() * 100 - 50);
+            let randomY = (window.innerHeight / 2) + (Math.random() * 100 - 50);
+            createFloatingText(randomX, randomY, `+2`);
+        }, 1000);
+    }
 }
-}
+
 function buyItem(item, price) {
-if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
-if (item === 'auto_tap' && hasAutoTap) return;
-if (item !== 'auto_tap' && ownedItems[item]) return;
+    if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
+        if (item === 'auto_tap' && hasAutoTap) return;
+        if (item !== 'auto_tap' && ownedItems[item]) return;
+    }
+    if (item === 'fish' || item === 'yarn_boost') {
+        if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
+    }
+    if (score >= price) {
+        score -= price;
+        if (item === 'fish') activateBoost(10);
+        else if (item === 'yarn_boost') activateBoost(50);
+        else if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
+        else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
+        saveProgress(); updateUI();
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+    } else {
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
+        alert('Недостаточно рыбок!');
+    }
 }
-if (item === 'fish' || item === 'yarn_boost') {
-if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
-}
-if (score >= price) {
-score -= price;
-if (item === 'fish') activateBoost(10);
-else if (item === 'yarn_boost') activateBoost(50);
-else if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
-else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
-saveProgress(); updateUI();
-try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-} else {
-try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
-alert('Недостаточно рыбок!');
-}
-}
+
 function activateBoost(multiplier) {
-currentBoostStack++;
-boostMultiplier = multiplier;
-if (boostTimeLeft <= 0) { boostTimeLeft = boostDuration; } else { boostTimeLeft += boostDuration; }
-timerContainer.classList.remove('hidden');
-updateTimerUI();
-if (!boostInterval) {
-boostInterval = setInterval(() => {
-boostTimeLeft--;
-if (boostTimeLeft <= 0) { endBoost(); } else { updateTimerUI(); }
-}, 1000);
+    currentBoostStack++;
+    boostMultiplier = multiplier;
+    if (boostTimeLeft <= 0) { boostTimeLeft = boostDuration; } else { boostTimeLeft += boostDuration; }
+    timerContainer.classList.remove('hidden');
+    updateTimerUI();
+    if (!boostInterval) {
+        boostInterval = setInterval(() => {
+            boostTimeLeft--;
+            if (boostTimeLeft <= 0) { endBoost(); } else { updateTimerUI(); }
+        }, 1000);
+    }
 }
-}
+
 function updateTimerUI() {
-timerSeconds.innerText = boostTimeLeft;
-timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : '';
+    timerSeconds.innerText = boostTimeLeft;
+    timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : '';
 }
+
 function endBoost() {
-clearInterval(boostInterval);
-boostInterval = null;
-boostMultiplier = 1;
-currentBoostStack = 0;
-boostTimeLeft = 0;
-timerContainer.classList.add('hidden');
+    clearInterval(boostInterval);
+    boostInterval = null;
+    boostMultiplier = 1;
+    currentBoostStack = 0;
+    boostTimeLeft = 0;
+    timerContainer.classList.add('hidden');
 }
+
 function updateDecor() {
-if (ownedItems.yarn) { document.getElementById('decor-yarn').classList.add('active'); let btn = document.getElementById('btn-decor-yarn'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
-if (ownedItems.mouse) { document.getElementById('decor-mouse').classList.add('active'); let btn = document.getElementById('btn-decor-mouse'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
-if (ownedItems.mint) { document.getElementById('decor-mint').classList.add('active'); let btn = document.getElementById('btn-decor-mint'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+    if (ownedItems.yarn) { document.getElementById('decor-yarn').classList.add('active'); let btn = document.getElementById('btn-decor-yarn'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+    if (ownedItems.mouse) { document.getElementById('decor-mouse').classList.add('active'); let btn = document.getElementById('btn-decor-mouse'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
+    if (ownedItems.mint) { document.getElementById('decor-mint').classList.add('active'); let btn = document.getElementById('btn-decor-mint'); btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); }
 }
+
 function selectCat(catType) {
-currentCat = catType;
-localStorage.setItem('currentCat', currentCat);
-updateCatUI();
-try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+    currentCat = catType;
+    localStorage.setItem('currentCat', currentCat);
+    updateCatUI();
+    try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
 }
+
 function buyCat(catType, price) {
-if (ownedCats[catType]) { selectCat(catType); return; }
-if (score >= price) {
-score -= price;
-ownedCats[catType] = true;
-saveProgress(); updateUI(); selectCat(catType);
-try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-} else {
-try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
-alert('Недостаточно рыбок!');
+    if (ownedCats[catType]) { selectCat(catType); return; }
+    if (score >= price) {
+        score -= price;
+        ownedCats[catType] = true;
+        saveProgress(); updateUI(); selectCat(catType);
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
+    } else {
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
+        alert('Недостаточно рыбок!');
+    }
 }
-}
+
 function updateCatUI() {
-catElement.className = `cat-container cat-${currentCat}`;
-if (currentCat === 'gray') { nameDisplay.innerText = 'Нэнсик'; nameDisplay.classList.remove('hidden'); }
-else if (currentCat === 'black') { nameDisplay.innerText = 'Лукошка'; nameDisplay.classList.remove('hidden'); }
-else { nameDisplay.classList.add('hidden'); }
-const btnGray = document.getElementById('btn-cat-gray');
-const btnBlack = document.getElementById('btn-cat-black');
-if (ownedCats.gray) { btnGray.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; btnGray.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnGray.onclick = () => selectCat('gray'); }
-if (ownedCats.black) { btnBlack.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; btnBlack.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnBlack.onclick = () => selectCat('black'); }
+    // Меняем картинку в зависимости от выбранного кота
+    catElement.src = catImages[currentCat];
+
+    // Показываем имена только для серого и черного
+    if (currentCat === 'gray') { nameDisplay.innerText = 'Нэнсик'; nameDisplay.classList.remove('hidden'); }
+    else if (currentCat === 'black') { nameDisplay.innerText = 'Лукошка'; nameDisplay.classList.remove('hidden'); }
+    else { nameDisplay.classList.add('hidden'); }
+
+    const btnGray = document.getElementById('btn-cat-gray');
+    const btnBlack = document.getElementById('btn-cat-black');
+    if (ownedCats.gray) { btnGray.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; btnGray.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnGray.onclick = () => selectCat('gray'); }
+    if (ownedCats.black) { btnBlack.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; btnBlack.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; btnBlack.onclick = () => selectCat('black'); }
 }
+
 function createFloatingText(x, y, text) {
-const el = document.createElement('div');
-el.innerText = text; el.className = 'float-text';
-el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px';
-document.body.appendChild(el);
-setTimeout(() => el.remove(), 800);
+    const el = document.createElement('div');
+    el.innerText = text; el.className = 'float-text';
+    el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 800);
 }
+
 function updateUI() {
-if (score >= 1000000) { scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; }
-else if (score >= 500000) { scoreElement.innerText = Math.floor(score / 1000) + 'k'; }
-else { scoreElement.innerText = score; }
+    if (score >= 1000000) { scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; }
+    else if (score >= 500000) { scoreElement.innerText = Math.floor(score / 1000) + 'k'; }
+    else { scoreElement.innerText = score; }
 }
+
 function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedItems', JSON.stringify(ownedItems)); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); }
+
 function switchTab(tab) {
-document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-document.getElementById(`tab-${tab}`).classList.add('active');
-const tabs = ['tap', 'cats', 'shop'];
-tabs.forEach(t => { const btn = document.getElementById(`btn-${t}`); if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600'); else btn.classList.replace('text-green-600', 'text-gray-400'); });
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    const tabs = ['tap', 'cats', 'shop'];
+    tabs.forEach(t => { const btn = document.getElementById(`btn-${t}`); if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600'); else btn.classList.replace('text-green-600', 'text-gray-400'); });
 }
+
 function switchShopTab(shopTab) {
-document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
-document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
-if (shopTab === 'boosters') { document.getElementById('shop-btn-boosters').classList.add('active'); document.getElementById('shop-btn-decor').classList.remove('active'); }
-else { document.getElementById('shop-btn-decor').classList.add('active'); document.getElementById('shop-btn-boosters').classList.remove('active'); }
+    document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
+    if (shopTab === 'boosters') { document.getElementById('shop-btn-boosters').classList.add('active'); document.getElementById('shop-btn-decor').classList.remove('active'); }
+    else { document.getElementById('shop-btn-decor').classList.add('active'); document.getElementById('shop-btn-boosters').classList.remove('active'); }
 }
 </script>
 </body>
