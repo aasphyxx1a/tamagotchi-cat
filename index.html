@@ -20,10 +20,23 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-bowtie{top:62%;left:50%;transform:translateX(-50%);width:70px}
 .acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
 .acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
-/* Новые ботинки: опущены ниже, чтобы не закрывать лапы */
 .acc-shoes{bottom:-60px;left:50%;transform:translateX(-50%);width:120px; z-index: 14;}
-/* Бутылка увеличена */
 .acc-bottle{bottom: -10%; right: -15%; width: 120px; z-index: 12;}
+
+/* Табличка с именем над котиком */
+#cat-name-display {
+    position: absolute;
+    top: -10px; /* Чуть выше котика */
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-size: 18px;
+    display: none; /* Скрыто по умолчанию */
+    z-index: 20;
+}
 
 .shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
 .shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
@@ -67,13 +80,16 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
 <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
 <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
+
+<!-- Табличка с именем -->
+<div id="cat-name-display">Моня</div>
+
 <div class="cat-wrapper" id="cat-wrapper">
 <img id="cat" class="cat-image" src="https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png">
 <img id="acc-hat" class="accessory-layer acc-hat" src="https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png">
 <img id="acc-glasses-1" class="accessory-layer acc-glasses" src="https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png">
 <img id="acc-glasses-2" class="accessory-layer acc-glasses" src="https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png">
 <img id="acc-glasses-3" class="accessory-layer acc-glasses" src="https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png">
-<!-- Новые ботинки -->
 <img id="acc-shoes" class="accessory-layer acc-shoes" src="https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png">
 <img id="acc-chain" class="accessory-layer acc-chain" src="https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png">
 <img id="acc-cap" class="accessory-layer acc-hat" src="https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png">
@@ -109,9 +125,12 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
 <h2 class="text-2xl font-bold text-center mb-4 text-white drop-shadow-md">🐈 Котики</h2>
 <div class="px-2 w-full scrollable-content pb-24 space-y-3">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🦊</span><div><div class="font-bold text-gray-800">Рыжий</div></div></div><button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button></div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐺</span><div><div class="font-bold text-gray-800">Нэнсик</div></div></div><button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐈‍⬛</span><div><div class="font-bold text-gray-800">Лукошка</div></div></div><button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
+<!-- ИМЯ РЫЖЕГО: МОНЯ -->
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🦊</span><div><div class="font-bold text-gray-800">Моня</div></div></div><button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button></div>
+<!-- ИМЯ СЕРОГО: НЭНСИ -->
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐺</span><div><div class="font-bold text-gray-800">Нэнси</div></div></div><button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
+<!-- ИМЯ ЧЕРНОГО: ЛУКОША -->
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐈‍⬛</span><div><div class="font-bold text-gray-800">Лукоша</div></div></div><button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
 </div>
 
@@ -143,6 +162,10 @@ let equippedAcc = JSON.parse(localStorage.getItem('equippedAcc')) || {};
 
 const catImages = { ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png', gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png', black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png' };
 const catBgs = { ginger: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', gray: 'https://i.postimg.cc/wTGGbpf2/gradient-winter-solstice-illustration-23-2149184799.avif', black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-klikera-2.png' };
+
+// Словарь с именами для таблички
+const catNames = { ginger: 'Моня', gray: 'Нэнси', black: 'Лукоша' };
+
 const accData = {
     hat: { name: 'Шляпа', img: 'https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png', el: 'acc-hat', price: 50000 },
     cap: { name: 'Шапка', img: 'https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png', el: 'acc-cap', price: 50000 },
@@ -153,14 +176,13 @@ const accData = {
     bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', el: 'acc-bowtie', price: 50000 },
     hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin', price: 50000 },
     chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain', price: 50000 },
-    // В магазине ботинки тоже обновлены на новую ссылку
     shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png', el: 'acc-shoes', price: 50000 },
     bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 }
 };
 
 let boostMultiplier = 1, boostTimeLeft = 0, boostInterval = null, currentBoostStack = 0;
 const maxBoostStack = 3, boostDuration = 5, boostPrice = 200;
-const scoreElement = document.getElementById('score'), catWrapper = document.getElementById('cat-wrapper'), catElement = document.getElementById('cat'), tapZone = document.getElementById('tap-zone'), timerContainer = document.getElementById('boost-timer'), timerSeconds = document.getElementById('boost-seconds'), timerStack = document.getElementById('boost-stack');
+const scoreElement = document.getElementById('score'), catWrapper = document.getElementById('cat-wrapper'), catElement = document.getElementById('cat'), tapZone = document.getElementById('tap-zone'), timerContainer = document.getElementById('boost-timer'), timerSeconds = document.getElementById('boost-seconds'), timerStack = document.getElementById('boost-stack'), nameDisplay = document.getElementById('cat-name-display');
 
 updateUI(); updateDecor(); updateCatUI(); renderStyleShop(); updateAccUI(); startAutoTap();
 
@@ -223,6 +245,11 @@ function buyCat(type, price) {
 
 function updateCatUI() {
     catElement.src = catImages[currentCat]; document.body.style.backgroundImage = `url('${catBgs[currentCat]}')`;
+    
+    // Обновляем табличку с именем
+    nameDisplay.innerText = catNames[currentCat];
+    nameDisplay.style.display = 'block';
+
     const g = document.getElementById('btn-cat-gray'), b = document.getElementById('btn-cat-black');
     if (ownedCats.gray) { g.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; g.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
     if (ownedCats.black) { b.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; b.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
