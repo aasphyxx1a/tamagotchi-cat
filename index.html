@@ -24,12 +24,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-bottle{bottom: -10%; right: -15%; width: 120px; z-index: 12;}
 
 .shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2)); border-radius: 8px;}
-.shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
-.shop-item-decor.active{opacity:1;}
-.item-yarn{left:10%;bottom:60px;transform:rotate(-15deg)}
-.item-mouse{right:10%;bottom:70px;transform:rotate(15deg)}
-.item-mint{bottom:10px;left:50%;margin-left:-17px;font-size:30px}
-@keyframes swing{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
 .float-text{position:absolute;color:#fff;font-weight:bold;font-size:32px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;z-index:50}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
 .tab-content{display:none}.tab-content.active{display:flex}
@@ -91,7 +85,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 <div class="px-4 w-full scrollable-content pb-24">
-<!-- Вкладка Фоны -->
 <div id="shop-decor" class="shop-content space-y-3 hidden">
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mD0XkG5Z/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Зимний вайб</div></div></div><button id="btn-bg-zimniy" onclick="buyBackground('zimniy')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/3RV8wdhD/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Minecraft</div></div></div><button id="btn-bg-minecraft" onclick="buyBackground('minecraft')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">150 000 <span class="fish-emoji-small">🐟</span></button></div>
@@ -99,7 +92,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Absent Vibe</div></div></div><button id="btn-bg-absent" onclick="buyBackground('absent')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">2 000 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
 
-<!-- Вкладка Стиль -->
 <div id="shop-style" class="shop-content space-y-3">
 <!-- Сюда JS вставит список одежды -->
 </div>
@@ -122,7 +114,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО ГАРДЕРОБА -->
 <div id="wardrobe-modal">
     <div id="wardrobe-content">
         <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">👗 Гардероб</h2>
@@ -131,7 +122,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
     </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО ФОНОВ -->
 <div id="bg-modal">
     <div id="bg-content">
         <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">🖼️ Твои фоны</h2>
@@ -156,9 +146,8 @@ let currentBg = localStorage.getItem('currentBg') || 'default';
 
 const catImages = { ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png', gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png', black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png' };
 
-// Данные фонов
 const bgData = {
-    default: { name: 'Стандартный (Природа)', img: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', price: 0 },
+    default: { name: 'Стандартный', img: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', price: 0 },
     zimniy: { name: 'Зимний вайб', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
     minecraft: { name: 'Minecraft', img: 'https://i.postimg.cc/3RV8wdhD/image.png', price: 150000 },
     liminal: { name: 'Liminal', img: 'https://i.postimg.cc/fLGsNp7X/image.png', price: 150000 },
@@ -226,7 +215,6 @@ function buyCat(type, price) {
     if (score >= price) { score -= price; ownedCats[type] = true; saveProgress(); updateUI(); selectCat(type); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} } else alert('Мало рыбок!');
 }
 
-// Функция обновления котика (без фона)
 function updateCatUI() {
     catElement.src = catImages[currentCat]; 
     const g = document.getElementById('btn-cat-gray'), b = document.getElementById('btn-cat-black');
@@ -234,7 +222,7 @@ function updateCatUI() {
     if (ownedCats.black) { b.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; b.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
 }
 
-// === ЛОГИКА ФОНОВ ===
+// === ФОНЫ ===
 function applyBackground() {
     document.body.style.backgroundImage = `url('${bgData[currentBg].img}')`;
 }
@@ -289,7 +277,7 @@ function openBackgrounds() {
 }
 function closeBackgrounds() { document.getElementById('bg-modal').style.display = 'none'; updateBgButtons(); }
 
-// === ЛОГИКА АКСЕССУАРОВ ===
+// === АКСЕССУАРЫ ===
 function renderStyleShop() {
     const list = document.getElementById('shop-style'); list.innerHTML = '';
     for (let id in accData) {
@@ -343,4 +331,12 @@ function closeWardrobe() { document.getElementById('wardrobe-modal').style.displ
 
 function createFloatingText(x, y, text) { const el = document.createElement('div'); el.innerText = text; el.className = 'float-text'; el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px'; document.body.appendChild(el); setTimeout(() => el.remove(), 800); }
 function updateUI() { if (score >= 1000000) scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; else if (score >= 500000) scoreElement.innerText = Math.floor(score / 1000) + 'k'; else scoreElement.innerText = score; }
-function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); localStorage.setItem('ownedAcc', JSON
+function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); localStorage.setItem('ownedAcc', JSON.stringify(ownedAcc)); localStorage.setItem('equippedAcc', JSON.stringify(equippedAcc)); localStorage.setItem('ownedBgs', JSON.stringify(ownedBgs)); localStorage.setItem('currentBg', currentBg); }
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tab}`).classList.add('active');
+    ['tap', 'cats', 'shop'].forEach(t => { const b = document.getElementById(`btn-${t}`); if (t === tab) b.classList.replace('text-gray-400', 'text-green-600'); else b.classList.replace('text-green-600', 'text-gray-400'); });
+}
+function switchShopTab(tab) {
+    document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
+    ['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active');
