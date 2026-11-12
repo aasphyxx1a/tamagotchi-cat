@@ -40,8 +40,8 @@
 
         .scene-container {
             position: relative;
-            width: 320px;
-            height: 250px;
+            width: 100%;
+            height: 300px; /* Увеличили зону клика */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -55,6 +55,7 @@
             100% { transform: translateY(0px); }
         }
 
+        /* Предметы декора */
         .shop-item-decor {
             position: absolute;
             font-size: 35px;
@@ -67,8 +68,8 @@
 
         .shop-item-decor.active { opacity: 0.9; }
 
-        .item-yarn { left: -10px; bottom: 40px; transform: rotate(-15deg); }
-        .item-mouse { right: -10px; bottom: 50px; transform: rotate(15deg); }
+        .item-yarn { left: 10%; bottom: 40px; transform: rotate(-15deg); }
+        .item-mouse { right: 10%; bottom: 50px; transform: rotate(15deg); }
         .item-mint { bottom: -20px; left: 50%; margin-left: -17px; font-size: 30px; }
 
         @keyframes swing {
@@ -76,17 +77,16 @@
             100% { transform: rotate(10deg); }
         }
 
+        /* Котик */
         .cat-container {
             position: relative;
             width: 220px;
             height: 200px;
-            cursor: pointer;
             filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
             z-index: 10;
             transition: transform 0.1s;
-            -webkit-tap-highlight-color: transparent;
-            /* Отключаем стандартное поведение для тача, чтобы не было задержек */
-            touch-action: manipulation; 
+            /* Важно: это свойство делает клики мгновенными на телефоне */
+            touch-action: manipulation;
         }
 
         .cat-face {
@@ -188,12 +188,14 @@
         </div>
 
         <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
+            
             <div class="scene-container">
                 <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
                 <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
                 <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
 
-                <div id="cat" class="cat-container">
+                <!-- Добавили onclick прямо в HTML. Это самый надежный способ для телефонов -->
+                <div id="cat" class="cat-container" onclick="handleTap(event)">
                     <div class="ear ear-left"><div class="ear-inner"></div></div>
                     <div class="ear ear-right"><div class="ear-inner"></div></div>
                     <div class="cat-face">
@@ -212,7 +214,7 @@
                     <div class="paw paw-right"><div class="toes"><div class="toe"></div><div class="toe"></div></div></div>
                 </div>
             </div>
-            <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
+            <div class="mt-8 text-green-900 font-bold text-lg z-10 opacity-60 pointer-events-none">Тапай по котику!</div>
         </div>
 
         <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
@@ -279,22 +281,34 @@
         updateUI();
         updateDecor();
 
-        // Используем pointerdown - он работает и на ПК, и на тач-экранах
-        catElement.addEventListener('pointerdown', (e) => {
+        // ГЛАВНАЯ ФУНКЦИЯ ТАПА (вызывается из HTML)
+        function handleTap(e) {
             score += tapPower;
             saveProgress();
             
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            // Безопасная вибрация
+            try {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+            } catch(err) {}
 
-            // Показываем текст
-            createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
+            // Берем координаты касания или мыши
+            let x = e.clientX;
+            let y = e.clientY;
+            
+            // Если это тач-событие, берем координаты пальца
+            if (e.changedTouches && e.changedTouches.length > 0) {
+                x = e.changedTouches[0].clientX;
+                y = e.changedTouches[0].clientY;
+            }
+
+            createFloatingText(x, y, `+${tapPower}`);
             updateUI();
 
             // Анимация прыжка
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 150);
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 300);
-        });
+        }
 
         function buyItem(item, price) {
             if (item === 'yarn' || item === 'mouse' || item === 'mint') {
@@ -310,9 +324,9 @@
                     saveProgress();
                 }
                 updateUI();
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
             } else {
-                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+                try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
                 alert('Недостаточно рыбок!');
             }
         }
