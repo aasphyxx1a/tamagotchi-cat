@@ -125,13 +125,11 @@
             border-bottom: 35px solid #ffcc99; 
         }
 
-        /* Пятнышки */
         .spot { position: absolute; background-color: #c86a1a; border-radius: 50%; opacity: 0.6; transition: opacity 0.3s; z-index: 3; }
         .spot-1 { top: 20px; left: 30px; width: 15px; height: 15px; }
         .spot-2 { top: 40px; right: 45px; width: 20px; height: 18px; }
         .spot-3 { top: 10px; right: 80px; width: 10px; height: 10px; }
 
-        /* Глазки */
         .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; z-index: 3; }
         .eye-left { left: 40px; }
         .eye-right { right: 40px; }
@@ -162,7 +160,6 @@
         .toes { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
         .toe { width: 4px; height: 12px; background-color: #333; border-radius: 2px; }
 
-        /* Классы для смены цвета */
         .cat-ginger .cat-face { background-color: #e69a45; }
         .cat-ginger .ear { border-bottom-color: #e69a45; }
         .cat-ginger .paw { background-color: #e69a45; }
@@ -222,7 +219,7 @@
                 <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
             </div>
             
-            <!-- НОВЫЙ ТАЙМЕР БУСТА -->
+            <!-- ТАЙМЕР БУСТА -->
             <div id="boost-timer" class="hidden bg-yellow-400 bg-opacity-90 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-sm flex items-center gap-1">
                 ⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span>
             </div>
@@ -378,7 +375,7 @@
         tg.headerColor = '#87CEEB'; 
 
         let score = parseInt(localStorage.getItem('catScore')) || 0;
-        let baseTapPower = 1; // Базовая сила тапа
+        let baseTapPower = 1;
         let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
         let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
         let currentCat = localStorage.getItem('currentCat') || 'ginger';
@@ -389,8 +386,8 @@
         let boostTimeLeft = 0;
         let boostInterval = null;
         let currentBoostStack = 0;
-        let maxBoostStack = 3;
-        const boostDuration = 5; // Длительность в секундах
+        const maxBoostStack = 3;
+        const boostDuration = 5; 
 
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
@@ -439,7 +436,7 @@
                 }
 
                 setInterval(() => {
-                    score += 2; // Авто-тап всегда дает +2, независимо от бустов
+                    score += 2; 
                     saveProgress();
                     updateUI();
 
@@ -488,23 +485,20 @@
             }
         }
 
-        // === НОВАЯ СИСТЕМА БУСТОВ ===
+        // === СИСТЕМА БУСТОВ ===
         function activateBoost(multiplier) {
             currentBoostStack++;
             boostMultiplier = multiplier;
             
-            // Время добавляется к текущему или устанавливается заново
             if (boostTimeLeft <= 0) {
                 boostTimeLeft = boostDuration;
             } else {
                 boostTimeLeft += boostDuration;
             }
 
-            // Показываем таймер
             timerContainer.classList.remove('hidden');
             updateTimerUI();
 
-            // Запускаем интервал, если еще не запущен
             if (!boostInterval) {
                 boostInterval = setInterval(() => {
                     boostTimeLeft--;
@@ -629,4 +623,15 @@
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            const tabs = ['tap', 'cats', 'shop'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-${t}`);
+                if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600');
+                else btn.classList.replace('text-green-600', 'text-gray-400');
+            });
+        }
+
+        function switchShopTab(shopTab) {
+            document.querySelectorAll('.shop-content').forEach(el
