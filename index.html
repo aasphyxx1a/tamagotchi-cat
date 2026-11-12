@@ -123,11 +123,7 @@ let ownedBgs = JSON.parse(localStorage.getItem('ownedBgs')) || { default: true, 
 let currentBg = localStorage.getItem('currentBg') || 'default';
 
 const catImages = { ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png', gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png', black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png' };
-const personalBgs = { 
-ginger: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', 
-gray: 'https://i.postimg.cc/Jh0Mc1Y7/photo-2026-11-13-00-12-13.jpg', 
-black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-klikera-2.png' 
-};
+const personalBgs = { ginger: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', gray: 'https://i.postimg.cc/Jh0Mc1Y7/photo-2026-11-13-00-12-13.jpg', black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-klikera-2.png' };
 const bgData = {
 default: { name: 'Стандартный', img: '', price: 0 },
 zimniy: { name: 'zimniy vibe', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
@@ -295,4 +291,8 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 }
 function switchShopTab(tab) {
 document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
-['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b
+['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
+}
+</script>
+</body>
+</html>
