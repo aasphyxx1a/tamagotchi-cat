@@ -42,9 +42,16 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </head>
 <body>
 <div id="app-container">
-<div class="p-4 flex flex-col justify-center items-center mt-2 z-10 shrink-0 gap-2">
-<div class="bg-white rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-200 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
-<div id="boost-timer" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-md flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
+
+<!-- ВЕРХНЯЯ ПАНЕЛЬ С БАЛАНСОМ И ГАРДЕРОБОМ -->
+<div class="p-4 flex justify-between items-start mt-2 z-50 shrink-0">
+    <div class="w-12"></div> <!-- Пустой блок для центрирования -->
+    <div class="flex flex-col items-center gap-2">
+        <div class="bg-white rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-200 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
+        <div id="boost-timer" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-md flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
+    </div>
+    <!-- Кнопка Гардероба теперь в безопасности сверху -->
+    <button onclick="openWardrobe()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">👗</button>
 </div>
 
 <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
@@ -65,8 +72,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <img id="acc-bowtie" class="accessory-layer acc-bowtie" src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png">
 <img id="acc-hairpin" class="accessory-layer acc-hairpin" src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png">
 </div>
-<!-- Кнопка гардероба с исправленным z-index и pointer-events -->
-<button onclick="openWardrobe()" class="absolute bottom-4 right-4 bg-white rounded-full p-3 shadow-lg text-2xl z-50 hover:bg-gray-100 pointer-events-auto">👗</button>
 </div>
 <div class="mt-4 text-white font-bold text-xl z-10 drop-shadow-md pointer-events-none">Тапай по экрану!</div>
 </div>
