@@ -30,7 +30,7 @@
             pointer-events: none;
         }
 
-        /* Контейнер для котика и предметов вокруг него */
+        /* Контейнер для котика и предметов */
         .scene-container {
             position: relative;
             width: 320px;
@@ -48,46 +48,29 @@
             100% { transform: translateY(0px); }
         }
 
-        /* --- ПРЕДМЕТЫ ВОКРУГ --- */
+        /* Предметы декора */
         .shop-item-decor {
             position: absolute;
             font-size: 35px;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-            opacity: 0; /* Изначально скрыты */
+            opacity: 0;
             transition: opacity 0.5s ease, transform 0.5s ease;
             z-index: 5;
-            /* Добавляем легкую анимацию покачивания для предметов */
             animation: swing 4s ease-in-out infinite alternate;
         }
 
-        .shop-item-decor.active {
-            opacity: 0.85; /* Не сильно бросаются в глаза */
-        }
+        .shop-item-decor.active { opacity: 0.9; }
 
-        /* Позиции предметов */
-        .item-yarn {
-            left: -20px;
-            bottom: 40px;
-            transform: rotate(-15deg);
-        }
-        .item-mouse {
-            right: -20px;
-            bottom: 50px;
-            transform: rotate(15deg);
-        }
-        .item-mint {
-            bottom: -20px;
-            left: 50%;
-            margin-left: -17px;
-            font-size: 30px;
-        }
+        .item-yarn { left: -10px; bottom: 40px; transform: rotate(-15deg); }
+        .item-mouse { right: -10px; bottom: 50px; transform: rotate(15deg); }
+        .item-mint { bottom: -20px; left: 50%; margin-left: -17px; font-size: 30px; }
 
         @keyframes swing {
             0% { transform: rotate(-10deg); }
             100% { transform: rotate(10deg); }
         }
 
-        /* --- КОТИК --- */
+        /* Котик */
         .cat-container {
             position: relative;
             width: 220px;
@@ -131,109 +114,31 @@
             border-radius: 8px 8px 0 0;
         }
 
-        .eye {
-            position: absolute;
-            top: 40px;
-            width: 36px;
-            height: 42px;
-            background-color: #222;
-            border-radius: 50%;
-        }
+        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; }
         .eye-left { left: 40px; }
         .eye-right { right: 40px; }
+        .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
+        .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
 
-        .eye::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 14px;
-            height: 14px;
-            background: white;
-            border-radius: 50%;
-        }
-        .eye::after {
-            content: '';
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-        }
-
-        .cheek {
-            position: absolute;
-            top: 90px;
-            width: 28px;
-            height: 16px;
-            background-color: #ffb6c1;
-            border-radius: 50%;
-            opacity: 0.8;
-        }
+        .cheek { position: absolute; top: 90px; width: 28px; height: 16px; background-color: #ffb6c1; border-radius: 50%; opacity: 0.8; }
         .cheek-left { left: 25px; }
         .cheek-right { right: 25px; }
 
-        .nose {
-            position: absolute;
-            top: 85px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 14px;
-            height: 10px;
-            background-color: #333;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-        }
-        .mouth {
-            position: absolute;
-            top: 95px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 10px;
-            border-bottom: 3px solid #333;
-            border-radius: 0 0 50% 50%;
-        }
+        .nose { position: absolute; top: 85px; left: 50%; transform: translateX(-50%); width: 14px; height: 10px; background-color: #333; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
+        .mouth { position: absolute; top: 95px; left: 50%; transform: translateX(-50%); width: 20px; height: 10px; border-bottom: 3px solid #333; border-radius: 0 0 50% 50%; }
 
-        .whisker {
-            position: absolute;
-            width: 45px;
-            height: 2px;
-            background-color: #333;
-            border-radius: 2px;
-        }
+        .whisker { position: absolute; width: 45px; height: 2px; background-color: #333; border-radius: 2px; }
         .whisker-l1 { top: 85px; left: -25px; transform: rotate(10deg); }
         .whisker-l2 { top: 98px; left: -25px; transform: rotate(-10deg); }
         .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
         .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
 
-        .paw {
-            position: absolute;
-            bottom: -10px;
-            width: 65px;
-            height: 40px;
-            background-color: #5c6166;
-            border-radius: 30px 30px 20px 20px;
-            border: 3px solid #333; 
-        }
+        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; background-color: #5c6166; border-radius: 30px 30px 20px 20px; border: 3px solid #333; }
         .paw-left { left: 20px; }
         .paw-right { right: 20px; }
 
-        .toes {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-        }
-        .toe {
-            width: 4px;
-            height: 12px;
-            background-color: #333;
-            border-radius: 2px;
-        }
+        .toes { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+        .toe { width: 4px; height: 12px; background-color: #333; border-radius: 2px; }
         
         .float-text {
             position: absolute;
@@ -253,16 +158,19 @@
         .tab-content { display: none; }
         .tab-content.active { display: flex; }
 
-        .fish-emoji {
-            font-size: 32px;
-            line-height: 1;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        /* Вкладки внутри магазина */
+        .shop-tab-btn {
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
         }
-        .fish-emoji-small {
-            font-size: 18px;
-            line-height: 1;
-            margin-left: 4px;
+        .shop-tab-btn.active {
+            border-bottom: 3px solid #10b981; /* Зеленая полоска под активной вкладкой */
+            color: #047857; /* Темно-зеленый текст */
+            font-weight: bold;
         }
+
+        .fish-emoji { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
+        .fish-emoji-small { font-size: 18px; line-height: 1; margin-left: 4px; }
     </style>
 </head>
 <body>
@@ -277,11 +185,10 @@
         </div>
     </div>
 
-    <!-- Тапалка -->
+    <!-- ЭКРАН 1: Тапалка -->
     <div id="tab-tap" class="tab-content active flex-grow flex flex-col justify-center items-center relative w-full z-10">
         
         <div class="scene-container">
-            <!-- Предметы декора (появляются после покупки) -->
             <div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
             <div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
             <div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
@@ -309,58 +216,79 @@
         <div class="mt-16 text-green-900 font-bold text-lg z-10 opacity-60">Тапай по котику!</div>
     </div>
 
-    <!-- Магазин -->
-    <div id="tab-shop" class="tab-content flex-grow flex-col p-4 w-full overflow-y-auto pb-24 z-10 relative">
-        <h2 class="text-2xl font-bold text-center mb-4 text-green-900 drop-shadow-sm">🛒 Магазин</h2>
+    <!-- ЭКРАН 2: Магазин -->
+    <div id="tab-shop" class="tab-content flex-grow flex-col w-full overflow-hidden pb-24 z-10 relative bg-transparent">
         
-        <div class="space-y-3 z-10">
-            <!-- Улучшения тапа -->
-            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                <div class="flex items-center gap-3">
-                    <span class="fish-emoji">🐟</span>
-                    <div>
-                        <div class="font-bold text-gray-800">Вкусная рыбка</div>
-                        <div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div>
-                    </div>
-                </div>
-                <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
+        <!-- Переключатель внутри магазина -->
+        <div class="flex justify-center mb-4 mt-2">
+            <div class="bg-white bg-opacity-80 rounded-xl flex shadow-sm border border-green-200 p-1 w-11/12 max-w-sm">
+                <button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg">⚡ Бустеры</button>
+                <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg">🧸 Предметы</button>
             </div>
+        </div>
 
-            <!-- Декор: Клубок -->
-            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">🧶</span>
-                    <div>
-                        <div class="font-bold text-gray-800">Клубок шерсти</div>
-                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
-                    </div>
-                </div>
-                <button id="btn-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
-            </div>
-
-            <!-- Декор: Мышка -->
-            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">🐭</span>
-                    <div>
-                        <div class="font-bold text-gray-800">Игрушечная мышка</div>
-                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
-                    </div>
-                </div>
-                <button id="btn-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
-            </div>
+        <div class="px-4 w-full overflow-y-auto" style="height: calc(100vh - 220px);">
             
-            <!-- Декор: Мята -->
-            <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl">🌿</span>
-                    <div>
-                        <div class="font-bold text-gray-800">Кошачья мята</div>
-                        <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
+            <!-- Вкладка Бустеры -->
+            <div id="shop-boosters" class="shop-content space-y-3 pb-4">
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="fish-emoji">🐟</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Вкусная рыбка</div>
+                            <div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div>
+                        </div>
                     </div>
+                    <button onclick="buyItem('fish', 50)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
                 </div>
-                <button id="btn-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm transition shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🧶</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Клубок ниток</div>
+                            <div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div>
+                        </div>
+                    </div>
+                    <button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
+                </div>
             </div>
+
+            <!-- Вкладка Предметы (Декор) -->
+            <div id="shop-decor" class="shop-content space-y-3 pb-4 hidden">
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🧶</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Клубок шерсти</div>
+                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
+                        </div>
+                    </div>
+                    <button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100k <span class="fish-emoji-small">🐟</span></button>
+                </div>
+
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🐭</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Игрушечная мышка</div>
+                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
+                        </div>
+                    </div>
+                    <button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250k <span class="fish-emoji-small">🐟</span></button>
+                </div>
+                
+                <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🌿</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Кошачья мята</div>
+                            <div class="text-xs text-gray-500">Украшение рядом с котиком</div>
+                        </div>
+                    </div>
+                    <button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500k <span class="fish-emoji-small">🐟</span></button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -381,30 +309,22 @@
         tg.expand();
         tg.headerColor = '#a1c4fd';
 
-        // Загружаем счет
         let score = parseInt(localStorage.getItem('catScore')) || 0;
         let tapPower = 1;
-
-        // Загружаем состояние купленных предметов (true/false)
-        let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || {
-            yarn: false,
-            mouse: false,
-            mint: false
-        };
+        let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
 
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
         const coinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
 
         updateUI();
-        updateDecor(); // Включаем купленные предметы при загрузке
+        updateDecor();
 
         catElement.addEventListener('pointerdown', (e) => {
             score += tapPower;
             saveProgress();
             
             if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-            
             coinSound.volume = 0.2;
             coinSound.currentTime = 0;
             coinSound.play().catch(() => {});
@@ -412,14 +332,13 @@
             createFloatingText(e.clientX, e.clientY, `+${tapPower}`);
             updateUI();
 
-            // Прыжок
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 150);
             setTimeout(() => { catElement.style.transform = 'translateY(0) scale(1)'; }, 300);
         });
 
         function buyItem(item, price) {
-            // Проверка, куплен ли уже предмет
+            // Проверка для декора
             if (item === 'yarn' || item === 'mouse' || item === 'mint') {
                 if (ownedItems[item]) {
                     alert('Этот предмет уже куплен!');
@@ -432,6 +351,8 @@
                 
                 if (item === 'fish') {
                     activateBoost(10, 5000);
+                } else if (item === 'yarn_boost') {
+                    activateBoost(50, 5000);
                 } else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
                     ownedItems[item] = true;
                     updateDecor();
@@ -450,18 +371,21 @@
         function updateDecor() {
             if (ownedItems.yarn) {
                 document.getElementById('decor-yarn').classList.add('active');
-                document.getElementById('btn-yarn').innerText = 'Куплено';
-                document.getElementById('btn-yarn').classList.replace('bg-green-500', 'bg-gray-400');
+                let btn = document.getElementById('btn-decor-yarn');
+                btn.innerText = 'Куплено';
+                btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
             if (ownedItems.mouse) {
                 document.getElementById('decor-mouse').classList.add('active');
-                document.getElementById('btn-mouse').innerText = 'Куплено';
-                document.getElementById('btn-mouse').classList.replace('bg-green-500', 'bg-gray-400');
+                let btn = document.getElementById('btn-decor-mouse');
+                btn.innerText = 'Куплено';
+                btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
             if (ownedItems.mint) {
                 document.getElementById('decor-mint').classList.add('active');
-                document.getElementById('btn-mint').innerText = 'Куплено';
-                document.getElementById('btn-mint').classList.replace('bg-green-500', 'bg-gray-400');
+                let btn = document.getElementById('btn-decor-mint');
+                btn.innerText = 'Куплено';
+                btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
         }
 
@@ -484,7 +408,6 @@
         }
 
         function updateUI() {
-            // Форматируем большие числа (1000 -> 1k, 1000000 -> 1M)
             if (score >= 1000000) {
                 scoreElement.innerText = (score / 1000000).toFixed(1) + 'M';
             } else if (score >= 1000) {
@@ -499,6 +422,7 @@
             localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
         }
 
+        // Переключение между Тапалка / Магазин
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
@@ -509,6 +433,22 @@
             } else {
                 document.getElementById('btn-shop').classList.replace('text-gray-400', 'text-green-600');
                 document.getElementById('btn-tap').classList.replace('text-green-600', 'text-gray-400');
+            }
+        }
+
+        // Переключение внутри Магазина (Бустеры / Предметы)
+        function switchShopTab(shopTab) {
+            // Скрываем контент
+            document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
+
+            // Меняем активные кнопки
+            if (shopTab === 'boosters') {
+                document.getElementById('shop-btn-boosters').classList.add('active');
+                document.getElementById('shop-btn-decor').classList.remove('active');
+            } else {
+                document.getElementById('shop-btn-decor').classList.add('active');
+                document.getElementById('shop-btn-boosters').classList.remove('active');
             }
         }
     </script>
