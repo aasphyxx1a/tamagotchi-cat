@@ -15,14 +15,15 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .cat-image{width:100%;height:100%;object-fit:contain;z-index:10;}
 .accessory-layer{position:absolute;z-index:15;pointer-events:none;display:none}
 .acc-hat{top:0%;left:50%;transform:translateX(-50%);width:140px}
-/* Очки подняты выше и увеличены */
 .acc-glasses{top:32%;left:50%;transform:translateX(-50%);width:140px;}
 .acc-tie{top:75%;left:50%;transform:translateX(-50%);width:120px; z-index:16; margin-top: 15px;}
 .acc-bowtie{top:62%;left:50%;transform:translateX(-50%);width:70px}
 .acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
 .acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
-.acc-shoes{bottom:-50px;left:50%;transform:translateX(-50%);width:110px}
-.acc-bottle{bottom: -5%; right: -5%; width: 65px; z-index: 12;}
+/* Новые ботинки: опущены ниже, чтобы не закрывать лапы */
+.acc-shoes{bottom:-60px;left:50%;transform:translateX(-50%);width:120px; z-index: 14;}
+/* Бутылка увеличена */
+.acc-bottle{bottom: -10%; right: -15%; width: 120px; z-index: 12;}
 
 .shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
 .shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
@@ -72,7 +73,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <img id="acc-glasses-1" class="accessory-layer acc-glasses" src="https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png">
 <img id="acc-glasses-2" class="accessory-layer acc-glasses" src="https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png">
 <img id="acc-glasses-3" class="accessory-layer acc-glasses" src="https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png">
-<img id="acc-shoes" class="accessory-layer acc-shoes" src="https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png">
+<!-- Новые ботинки -->
+<img id="acc-shoes" class="accessory-layer acc-shoes" src="https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png">
 <img id="acc-chain" class="accessory-layer acc-chain" src="https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png">
 <img id="acc-cap" class="accessory-layer acc-hat" src="https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png">
 <img id="acc-tie" class="accessory-layer acc-tie" src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png">
@@ -151,7 +153,8 @@ const accData = {
     bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', el: 'acc-bowtie', price: 50000 },
     hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin', price: 50000 },
     chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain', price: 50000 },
-    shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png', el: 'acc-shoes', price: 50000 },
+    // В магазине ботинки тоже обновлены на новую ссылку
+    shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png', el: 'acc-shoes', price: 50000 },
     bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 }
 };
 
