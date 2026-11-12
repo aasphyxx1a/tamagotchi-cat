@@ -21,6 +21,17 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
 .acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
 .acc-shoes{bottom:-10px;left:50%;transform:translateX(-50%);width:120px}
+
+/* Иконки в магазине */
+.shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+
+.shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
+.shop-item-decor.active{opacity:1;}
+.item-yarn{left:10%;bottom:60px;transform:rotate(-15deg)}
+.item-mouse{right:10%;bottom:70px;transform:rotate(15deg)}
+.item-mint{bottom:10px;left:50%;margin-left:-17px;font-size:30px}
+@keyframes swing{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
+
 .float-text{position:absolute;color:#fff;font-weight:bold;font-size:32px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;z-index:50}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
 .tab-content{display:none}.tab-content.active{display:flex}
@@ -28,8 +39,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .fish-emoji{font-size:32px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
 .fish-emoji-small{font-size:18px;line-height:1;margin-left:4px}
 .scrollable-content{overflow-y:auto;-webkit-overflow-scrolling:touch}
-.shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
 .bg-white{background-color:rgba(255,255,255,0.95);backdrop-filter:blur(4px)}
+
 #wardrobe-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;justify-content:center;align-items:center}
 #wardrobe-content{background:white;padding:20px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
 </style>
@@ -43,6 +54,10 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 
 <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
 <div class="scene-container" id="tap-zone">
+<div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
+<div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
+<div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
+
 <div class="cat-wrapper" id="cat-wrapper">
 <img id="cat" class="cat-image" src="https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png">
 <img id="acc-hat" class="accessory-layer acc-hat" src="https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png">
@@ -61,7 +76,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div class="mt-4 text-white font-bold text-xl z-10 drop-shadow-md pointer-events-none">Тапай по экрану!</div>
 </div>
 
-<!-- ЭКРАН 2: Магазин -->
 <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
 <div class="flex justify-center mb-4 mt-2 shrink-0">
 <div class="bg-white rounded-xl flex shadow-md border border-gray-200 p-1 w-11/12 max-w-sm">
@@ -76,17 +90,19 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок</div><div class="text-xs text-gray-500">+50 к тапу (5 сек)</div></div></div><button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🦾</span><div><div class="font-bold text-gray-800 text-sm">Робо-лапка</div><div class="text-xs text-gray-500">Авто-тап</div></div></div><button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
+
 <div id="shop-decor" class="shop-content space-y-3 hidden">
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок шерсти</div></div></div><button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800 text-sm">Мышка</div></div></div><button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800 text-sm">Кошачья мята</div></div></div><button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
-<div id="shop-style" class="shop-content space-y-3 hidden" id="style-list">
-<!-- JS вставит сюда -->
+
+<div id="shop-style" class="shop-content space-y-3 hidden">
+<!-- Сюда JS вставит список одежды -->
 </div>
 </div>
 </div>
 
-<!-- ЭКРАН 3: Котики -->
 <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
 <h2 class="text-2xl font-bold text-center mb-4 text-white drop-shadow-md">🐈 Котики</h2>
 <div class="px-2 w-full scrollable-content pb-24 space-y-3">
@@ -96,7 +112,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 
-<!-- НИЖНЕЕ МЕНЮ -->
 <div class="bg-white border-t border-gray-300 flex justify-around p-3 pb-6 absolute bottom-0 w-full z-20">
 <button onclick="switchTab('tap')" id="btn-tap" class="flex flex-col items-center text-green-600"><span class="text-2xl">👆</span><span class="text-xs mt-1 font-bold">Тапать</span></button>
 <button onclick="switchTab('cats')" id="btn-cats" class="flex flex-col items-center text-gray-400"><span class="text-2xl">🐱</span><span class="text-xs mt-1 font-bold">Котики</span></button>
@@ -104,7 +119,6 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО ГАРДЕРОБА -->
 <div id="wardrobe-modal">
     <div id="wardrobe-content">
         <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">👗 Гардероб</h2>
@@ -117,7 +131,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 let tg = window.Telegram.WebApp; tg.expand(); tg.headerColor = '#333333';
 let score = parseInt(localStorage.getItem('catScore')) || 0;
 let baseTapPower = 1;
-let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false };
+let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
 let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
 let currentCat = localStorage.getItem('currentCat') || 'ginger';
 let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
@@ -165,12 +179,12 @@ function startAutoTap() {
 }
 
 function buyItem(item, price) {
-    if (item === 'yarn' || item === 'mouse' || item === 'auto_tap') { if (item === 'auto_tap' && hasAutoTap) return; if (item !== 'auto_tap' && ownedItems[item]) return; }
+    if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') { if (item === 'auto_tap' && hasAutoTap) return; if (item !== 'auto_tap' && ownedItems[item]) return; }
     if (score >= price) {
         score -= price;
         if (item === 'fish') activateBoost(10);
         else if (item === 'yarn_boost') activateBoost(50);
-        else if (item === 'yarn' || item === 'mouse') { ownedItems[item] = true; updateDecor(); }
+        else if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
         else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
         saveProgress(); updateUI();
         try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
@@ -189,6 +203,7 @@ function endBoost() { clearInterval(boostInterval); boostInterval = null; boostM
 function updateDecor() {
     if (ownedItems.yarn) { let btn = document.getElementById('btn-decor-yarn'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
     if (ownedItems.mouse) { let btn = document.getElementById('btn-decor-mouse'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
+    if (ownedItems.mint) { let btn = document.getElementById('btn-decor-mint'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
 }
 
 function selectCat(type) { currentCat = type; localStorage.setItem('currentCat', currentCat); updateCatUI(); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} }
@@ -206,7 +221,7 @@ function updateCatUI() {
 
 // === АКСЕССУАРЫ ===
 function renderStyleShop() {
-    const list = document.getElementById('style-list'); list.innerHTML = '';
+    const list = document.getElementById('shop-style'); list.innerHTML = '';
     for (let id in accData) {
         let isOwned = ownedAcc[id];
         let btnText = isOwned ? (equippedAcc[id] ? 'Снять' : 'Надеть') : `50 000 <span class="fish-emoji-small">🐟</span>`;
