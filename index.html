@@ -244,11 +244,17 @@ function buyAcc(id) {
     } else alert('Мало рыбок!');
 }
 
-// ФУНКЦИЯ, КОТОРАЯ ОТВЕЧАЕТ ЗА ПОКАЗ ПРЕДМЕТОВ НА КОТЕ
+// ЖЕЛЕЗОБЕТОННАЯ ФУНКЦИЯ ПОКАЗА
 function updateAccUI() {
     for (let id in accData) { 
         let el = document.getElementById(accData[id].el); 
-        if (el) el.style.display = equippedAcc[id] ? 'block' : 'none'; 
+        if (el) {
+            if (equippedAcc[id]) {
+                el.style.setProperty('display', 'block', 'important');
+            } else {
+                el.style.setProperty('display', 'none', 'important');
+            }
+        }
     }
 }
 
