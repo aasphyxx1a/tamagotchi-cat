@@ -8,73 +8,30 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;background-size:cover;background-position:center;background-repeat:no-repeat;transition:background-image 0.5s ease-in-out;font-family:'Segoe UI',sans-serif;color:#333}
-
 #app-container{display:flex;flex-direction:column;height:100vh;height:100dvh;width:100vw;position:relative;z-index:1}
-.clouds{display:none;}
-
 .scene-container{position:relative;width:100%;height:350px;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:10;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-/* Контейнер для кота и аксессуаров */
-.cat-wrapper {
-    position: relative;
-    width: 240px;
-    height: 240px; /* Квадратный контейнер для центрирования */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    transition: transform 0.1s;
-    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3));
-}
-
-.cat-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    z-index: 10; /* Кот поверх одежды? Нет, аксессуары должны быть поверх */
-}
-
-/* Слои аксессуаров */
-.accessory-layer {
-    position: absolute;
-    z-index: 15; /* Поверх котика */
-    pointer-events: none;
-    display: none;
-}
-
-/* Точные позиции (в % от контейнера 240x240) */
-.acc-hat { top: 0%; left: 50%; transform: translateX(-50%); width: 140px; } 
-.acc-glasses { top: 35%; left: 50%; transform: translateX(-50%); width: 130px; }
-.acc-tie { top: 65%; left: 50%; transform: translateX(-50%); width: 60px; }
-.acc-bowtie { top: 65%; left: 50%; transform: translateX(-50%); width: 70px; }
-.acc-hairpin { top: 20%; left: 75%; transform: translateX(-50%); width: 40px; }
-.acc-chain { top: 70%; left: 50%; transform: translateX(-50%); width: 80px; }
-.acc-shoes { bottom: -10px; left: 50%; transform: translateX(-50%); width: 120px; }
-
-.shop-item-decor{position:absolute;font-size:35px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.4));opacity:0;transition:opacity .5s,transform .5s;z-index:5;animation:swing 4s ease-in-out infinite alternate;pointer-events:none}
-.shop-item-decor.active{opacity:1;}
-.item-yarn{left:10%;bottom:60px;transform:rotate(-15deg)}
-.item-mouse{right:10%;bottom:70px;transform:rotate(15deg)}
-.item-mint{bottom:10px;left:50%;margin-left:-17px;font-size:30px}
-@keyframes swing{0%{transform:rotate(-10deg)}100%{transform:rotate(10deg)}}
-
+.cat-wrapper{position:relative;width:240px;height:240px;display:flex;justify-content:center;align-items:center;pointer-events:none;transition:transform 0.1s;filter:drop-shadow(0 15px 15px rgba(0,0,0,0.3))}
+.cat-image{width:100%;height:100%;object-fit:contain}
+.accessory-layer{position:absolute;z-index:15;pointer-events:none;display:none}
+.acc-hat{top:0%;left:50%;transform:translateX(-50%);width:140px}
+.acc-glasses{top:38%;left:50%;transform:translateX(-50%);width:120px}
+.acc-tie{top:62%;left:50%;transform:translateX(-50%);width:60px}
+.acc-bowtie{top:62%;left:50%;transform:translateX(-50%);width:70px}
+.acc-hairpin{top:22%;left:78%;transform:translateX(-50%);width:40px}
+.acc-chain{top:68%;left:50%;transform:translateX(-50%);width:80px}
+.acc-shoes{bottom:-10px;left:50%;transform:translateX(-50%);width:120px}
 .float-text{position:absolute;color:#fff;font-weight:bold;font-size:32px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;z-index:50}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
-
 .tab-content{display:none}.tab-content.active{display:flex}
 .shop-tab-btn{transition:all .3s;border-bottom:3px solid transparent}.shop-tab-btn.active{border-bottom:3px solid #10b981;color:#047857;font-weight:bold}
 .fish-emoji{font-size:32px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
 .fish-emoji-small{font-size:18px;line-height:1;margin-left:4px}
 .scrollable-content{overflow-y:auto;-webkit-overflow-scrolling:touch}
-
-/* Стили для магазина одежды */
-.shop-item-img { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-.bg-white { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); }
-
-/* Модальное окно гардероба */
-#wardrobe-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; justify-content: center; align-items: center; }
-#wardrobe-content { background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; }
+.shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+.bg-white{background-color:rgba(255,255,255,0.95);backdrop-filter:blur(4px)}
+#wardrobe-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;justify-content:center;align-items:center}
+#wardrobe-content{background:white;padding:20px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
 </style>
 </head>
 <body>
@@ -86,28 +43,20 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 
 <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
 <div class="scene-container" id="tap-zone">
-<div id="decor-yarn" class="shop-item-decor item-yarn">🧶</div>
-<div id="decor-mouse" class="shop-item-decor item-mouse">🐭</div>
-<div id="decor-mint" class="shop-item-decor item-mint">🌿</div>
-
-<!-- Контейнер с котом и аксессуарами -->
-<div id="cat-wrapper" class="cat-wrapper">
-    <img id="cat" class="cat-image" src="https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png" alt="Cat">
-    
-    <!-- Аксессуары -->
-    <img id="acc-hat" class="accessory-layer acc-hat" src="https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png" alt="Hat">
-    <img id="acc-glasses-1" class="accessory-layer acc-glasses" src="https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png" alt="Glasses1">
-    <img id="acc-glasses-2" class="accessory-layer acc-glasses" src="https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png" alt="Glasses2">
-    <img id="acc-glasses-3" class="accessory-layer acc-glasses" src="https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png" alt="Glasses3">
-    <img id="acc-shoes" class="accessory-layer acc-shoes" src="https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png" alt="Shoes">
-    <img id="acc-chain" class="accessory-layer acc-chain" src="https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png" alt="Chain">
-    <img id="acc-cap" class="accessory-layer acc-hat" src="https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png" alt="Cap">
-    <img id="acc-tie" class="accessory-layer acc-tie" src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png" alt="Tie">
-    <img id="acc-bowtie" class="accessory-layer acc-bowtie" src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png" alt="Bowtie">
-    <img id="acc-hairpin" class="accessory-layer acc-hairpin" src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png" alt="Hairpin">
+<div class="cat-wrapper" id="cat-wrapper">
+<img id="cat" class="cat-image" src="https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png">
+<img id="acc-hat" class="accessory-layer acc-hat" src="https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png">
+<img id="acc-glasses-1" class="accessory-layer acc-glasses" src="https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png">
+<img id="acc-glasses-2" class="accessory-layer acc-glasses" src="https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png">
+<img id="acc-glasses-3" class="accessory-layer acc-glasses" src="https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png">
+<img id="acc-shoes" class="accessory-layer acc-shoes" src="https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png">
+<img id="acc-chain" class="accessory-layer acc-chain" src="https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png">
+<img id="acc-cap" class="accessory-layer acc-hat" src="https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png">
+<img id="acc-tie" class="accessory-layer acc-tie" src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png">
+<img id="acc-bowtie" class="accessory-layer acc-bowtie" src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png">
+<img id="acc-hairpin" class="accessory-layer acc-hairpin" src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png">
 </div>
-
-<button onclick="openWardrobe()" class="absolute bottom-4 right-4 bg-white rounded-full p-3 shadow-lg text-2xl z-20 pointer-events-auto hover:bg-gray-100 transition">👗</button>
+<button onclick="openWardrobe()" class="absolute bottom-4 right-4 bg-white rounded-full p-3 shadow-lg text-2xl z-20 hover:bg-gray-100 pointer-events-auto">👗</button>
 </div>
 <div class="mt-4 text-white font-bold text-xl z-10 drop-shadow-md pointer-events-none">Тапай по экрану!</div>
 </div>
@@ -116,136 +65,34 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
 <div class="flex justify-center mb-4 mt-2 shrink-0">
 <div class="bg-white rounded-xl flex shadow-md border border-gray-200 p-1 w-11/12 max-w-sm">
-<button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">⚡ Бустеры</button>
+<button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">⚡ Бусты</button>
 <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">🧸 Предметы</button>
 <button onclick="switchShopTab('style')" id="shop-btn-style" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">🧢 Стиль</button>
 </div>
 </div>
 <div class="px-4 w-full scrollable-content pb-24">
 <div id="shop-boosters" class="shop-content space-y-3">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800">Вкусная рыбка</div><div class="text-xs text-gray-500">+10 к тапу (на 5 сек)</div></div></div>
-<button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800 text-sm">Рыбка</div><div class="text-xs text-gray-500">+10 к тапу (5 сек)</div></div></div><button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок</div><div class="text-xs text-gray-500">+50 к тапу (5 сек)</div></div></div><button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🦾</span><div><div class="font-bold text-gray-800 text-sm">Робо-лапка</div><div class="text-xs text-gray-500">Авто-тап</div></div></div><button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок ниток</div><div class="text-xs text-gray-500">+50 к тапу (на 5 сек)</div></div></div>
-<button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
-</div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200 mt-3">
-<div class="flex items-center gap-3"><span class="text-3xl">🦾</span><div><div class="font-bold text-gray-800">Робо-лапка</div><div class="text-xs text-gray-500">Авто-тап: +2 рыбки в секунду</div></div></div>
-<button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button>
-</div>
-</div>
-
-<!-- Предметы (Декор) -->
 <div id="shop-decor" class="shop-content space-y-3 hidden">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800">Клубок шерсти</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-<button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок шерсти</div></div></div><button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800 text-sm">Мышка</div></div></div><button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800">Игрушечная мышка</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-<button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button>
+<div id="shop-style" class="shop-content space-y-3 hidden" id="style-list">
+<!-- JS вставит сюда -->
 </div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800">Кошачья мята</div><div class="text-xs text-gray-500">Украшение</div></div></div>
-<button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
-</div>
-</div>
-
-<!-- Стиль (Одежда) -->
-<div id="shop-style" class="shop-content space-y-3 hidden">
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Черная шляпа</div></div>
-        </div>
-        <button id="btn-style-hat" onclick="buyAccessory('hat', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Черные очки</div></div>
-        </div>
-        <button id="btn-style-glasses-1" onclick="buyAccessory('glasses_1', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Очки (2)</div></div>
-        </div>
-        <button id="btn-style-glasses-2" onclick="buyAccessory('glasses_2', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Очки (3)</div></div>
-        </div>
-        <button id="btn-style-glasses-3" onclick="buyAccessory('glasses_3', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Ботинки</div></div>
-        </div>
-        <button id="btn-style-shoes" onclick="buyAccessory('shoes', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Цепочка</div></div>
-        </div>
-        <button id="btn-style-chain" onclick="buyAccessory('chain', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Шапка</div></div>
-        </div>
-        <button id="btn-style-cap" onclick="buyAccessory('cap', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Красный галстук</div></div>
-        </div>
-        <button id="btn-style-tie" onclick="buyAccessory('tie', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Бабочка</div></div>
-        </div>
-        <button id="btn-style-bowtie" onclick="buyAccessory('bowtie', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-    <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-        <div class="flex items-center gap-3">
-            <img src="https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png" class="shop-item-img">
-            <div><div class="font-bold text-gray-800 text-sm">Заколка</div></div>
-        </div>
-        <button id="btn-style-hairpin" onclick="buyAccessory('hairpin', 50000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 000 <span class="fish-emoji-small">🐟</span></button>
-    </div>
-</div>
-
 </div>
 </div>
 
 <!-- ЭКРАН 3: Котики -->
 <div id="tab-cats" class="tab-content flex-grow flex-col p-4 w-full z-10 relative overflow-hidden">
-<h2 class="text-2xl font-bold text-center mb-4 text-white drop-shadow-md">🐈 Выбери котика</h2>
+<h2 class="text-2xl font-bold text-center mb-4 text-white drop-shadow-md">🐈 Котики</h2>
 <div class="px-2 w-full scrollable-content pb-24 space-y-3">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-4xl">🦊</span><div><div class="font-bold text-gray-800">Рыжий котик</div><div class="text-xs text-gray-500">С пятнышками</div></div></div>
-<button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button>
-</div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-4xl">🐺</span><div><div class="font-bold text-gray-800">Нэнсик</div><div class="text-xs text-gray-500">Серый котик</div></div></div>
-<button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button>
-</div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200">
-<div class="flex items-center gap-3"><span class="text-4xl">🐈‍⬛</span><div><div class="font-bold text-gray-800">Лукошка</div><div class="text-xs text-gray-500">Сердитый и стильный</div></div></div>
-<button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button>
-</div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🦊</span><div><div class="font-bold text-gray-800">Рыжий</div></div></div><button onclick="selectCat('ginger')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Выбрать</button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐺</span><div><div class="font-bold text-gray-800">Нэнсик</div></div></div><button id="btn-cat-gray" onclick="buyCat('gray', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
+<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-4xl">🐈‍⬛</span><div><div class="font-bold text-gray-800">Лукошка</div></div></div><button id="btn-cat-black" onclick="buyCat('black', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
 </div>
 
@@ -261,121 +108,155 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div id="wardrobe-modal">
     <div id="wardrobe-content">
         <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">👗 Гардероб</h2>
-        <div id="wardrobe-list" class="space-y-3">
-            <!-- Список будет генерироваться через JS -->
-        </div>
+        <div id="wardrobe-list" class="space-y-3"></div>
         <button onclick="closeWardrobe()" class="mt-6 w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-xl">Закрыть</button>
     </div>
 </div>
 
 <script>
-let tg = window.Telegram.WebApp;
-tg.expand();
-tg.headerColor = '#333333';
-
+let tg = window.Telegram.WebApp; tg.expand(); tg.headerColor = '#333333';
 let score = parseInt(localStorage.getItem('catScore')) || 0;
 let baseTapPower = 1;
-let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
+let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false };
 let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
 let currentCat = localStorage.getItem('currentCat') || 'ginger';
 let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
+let ownedAcc = JSON.parse(localStorage.getItem('ownedAcc')) || {};
+let equippedAcc = JSON.parse(localStorage.getItem('equippedAcc')) || {};
 
-// Инвентарь и надетые вещи
-let ownedAccessories = JSON.parse(localStorage.getItem('ownedAccessories')) || {};
-let equippedAccessories = JSON.parse(localStorage.getItem('equippedAccessories')) || {
-    hat: false, cap: false, glasses_1: false, glasses_2: false, glasses_3: false, 
-    tie: false, bowtie: false, hairpin: false, chain: false, shoes: false
+const catImages = { ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png', gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png', black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png' };
+const catBgs = { ginger: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', gray: 'https://i.postimg.cc/wTGGbpf2/gradient-winter-solstice-illustration-23-2149184799.avif', black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-klikera-2.png' };
+const accData = {
+    hat: { name: 'Шляпа', img: 'https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png', el: 'acc-hat' },
+    cap: { name: 'Шапка', img: 'https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png', el: 'acc-cap' },
+    glasses_1: { name: 'Очки 1', img: 'https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png', el: 'acc-glasses-1' },
+    glasses_2: { name: 'Очки 2', img: 'https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png', el: 'acc-glasses-2' },
+    glasses_3: { name: 'Очки 3', img: 'https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png', el: 'acc-glasses-3' },
+    tie: { name: 'Галстук', img: 'https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png', el: 'acc-tie' },
+    bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', el: 'acc-bowtie' },
+    hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin' },
+    chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain' },
+    shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png', el: 'acc-shoes' }
 };
 
-const catImages = {
-    ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png',
-    gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png',
-    black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png'
-};
+let boostMultiplier = 1, boostTimeLeft = 0, boostInterval = null, currentBoostStack = 0;
+const maxBoostStack = 3, boostDuration = 5;
+const scoreElement = document.getElementById('score'), catWrapper = document.getElementById('cat-wrapper'), catElement = document.getElementById('cat'), tapZone = document.getElementById('tap-zone'), timerContainer = document.getElementById('boost-timer'), timerSeconds = document.getElementById('boost-seconds'), timerStack = document.getElementById('boost-stack');
 
-const catBackgrounds = {
-    ginger: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg',
-    gray: 'https://i.postimg.cc/wTGGbpf2/gradient-winter-solstice-illustration-23-2149184799.avif',
-    black: 'https://i.postimg.cc/4y8SGkJy/1644513653-2-abrakadabra-fun-p-fon-dlya-klikera-2.png'
-};
-
-// Данные аксессуаров
-const accessoriesData = {
-    hat: { name: 'Черная шляпа', img: 'https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png', element: 'acc-hat' },
-    cap: { name: 'Шапка', img: 'https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png', element: 'acc-cap' },
-    glasses_1: { name: 'Черные очки', img: 'https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png', element: 'acc-glasses-1' },
-    glasses_2: { name: 'Очки (2)', img: 'https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png', element: 'acc-glasses-2' },
-    glasses_3: { name: 'Очки (3)', img: 'https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png', element: 'acc-glasses-3' },
-    tie: { name: 'Красный галстук', img: 'https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png', element: 'acc-tie' },
-    bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', element: 'acc-bowtie' },
-    hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', element: 'acc-hairpin' },
-    chain: { name: 'Цепочка', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', element: 'acc-chain' },
-    shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/gk7WzytZ/image-Photoroom-(4).png', element: 'acc-shoes' }
-};
-
-let boostMultiplier = 1;
-let boostTimeLeft = 0;
-let boostInterval = null;
-let currentBoostStack = 0;
-const maxBoostStack = 3;
-const boostDuration = 5;
-
-const scoreElement = document.getElementById('score');
-const catWrapper = document.getElementById('cat-wrapper'); 
-const catElement = document.getElementById('cat'); 
-const tapZone = document.getElementById('tap-zone');
-const timerContainer = document.getElementById('boost-timer');
-const timerSeconds = document.getElementById('boost-seconds');
-const timerStack = document.getElementById('boost-stack');
-
-updateUI(); updateDecor(); updateCatUI(); updateAccessoriesUI(); startAutoTap();
+updateUI(); updateDecor(); updateCatUI(); renderStyleShop(); updateAccUI(); startAutoTap();
 
 function doTap(x, y) {
-    let actualPower = baseTapPower * boostMultiplier;
-    score += actualPower;
-    saveProgress();
-    try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
-    createFloatingText(x, y, `+${actualPower}`);
-    updateUI();
+    let p = baseTapPower * boostMultiplier; score += p; saveProgress();
+    try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e){}
+    createFloatingText(x, y, `+${p}`); updateUI();
     catWrapper.style.transform = 'translateY(-30px) scale(0.95)';
     setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
     setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1)'; }, 250);
 }
-
-tapZone.addEventListener('mousedown', function(e) { doTap(e.clientX, e.clientY); });
-tapZone.addEventListener('touchstart', function(e) { e.preventDefault(); let touch = e.touches[0]; doTap(touch.clientX, touch.clientY); }, { passive: false });
+tapZone.addEventListener('mousedown', e => doTap(e.clientX, e.clientY));
+tapZone.addEventListener('touchstart', e => { e.preventDefault(); let t = e.touches[0]; doTap(t.clientX, t.clientY); }, { passive: false });
 
 function startAutoTap() {
     if (hasAutoTap) {
         let btn = document.getElementById('btn-buy-auto');
         if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
-        setInterval(() => {
-            score += 2; saveProgress(); updateUI();
-            let randomX = (window.innerWidth / 2) + (Math.random() * 100 - 50);
-            let randomY = (window.innerHeight / 2) + (Math.random() * 100 - 50);
-            createFloatingText(randomX, randomY, `+2`);
-        }, 1000);
+        setInterval(() => { score += 2; saveProgress(); updateUI(); createFloatingText((window.innerWidth/2)+(Math.random()*100-50), (window.innerHeight/2)+(Math.random()*100-50), '+2'); }, 1000);
     }
 }
 
-// === МАГАЗИН: ПОКУПКА АКСЕССУАРОВ ===
-function buyAccessory(accId, price) {
-    if (ownedAccessories[accId]) {
-        // Если уже куплено, просто надеваем/снимаем
-        toggleAccessory(accId);
-        return;
-    }
+function buyItem(item, price) {
+    if (item === 'yarn' || item === 'mouse' || item === 'auto_tap') { if (item === 'auto_tap' && hasAutoTap) return; if (item !== 'auto_tap' && ownedItems[item]) return; }
     if (score >= price) {
         score -= price;
-        ownedAccessories[accId] = true;
-        equippedAccessories[accId] = true; // Сразу надеваем
-        saveProgress(); updateUI(); updateAccessoriesUI();
-        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(err){}
-    } else {
-        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error'); } catch(err){}
-        alert('Недостаточно рыбок!');
+        if (item === 'fish') activateBoost(10);
+        else if (item === 'yarn_boost') activateBoost(50);
+        else if (item === 'yarn' || item === 'mouse') { ownedItems[item] = true; updateDecor(); }
+        else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
+        saveProgress(); updateUI();
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+    } else alert('Мало рыбок!');
+}
+
+function activateBoost(m) {
+    currentBoostStack++; boostMultiplier = m;
+    boostTimeLeft = boostTimeLeft <= 0 ? boostDuration : boostTimeLeft + boostDuration;
+    timerContainer.classList.remove('hidden'); updateTimerUI();
+    if (!boostInterval) boostInterval = setInterval(() => { boostTimeLeft--; if (boostTimeLeft <= 0) endBoost(); else updateTimerUI(); }, 1000);
+}
+function updateTimerUI() { timerSeconds.innerText = boostTimeLeft; timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : ''; }
+function endBoost() { clearInterval(boostInterval); boostInterval = null; boostMultiplier = 1; currentBoostStack = 0; boostTimeLeft = 0; timerContainer.classList.add('hidden'); }
+
+function updateDecor() {
+    if (ownedItems.yarn) { let btn = document.getElementById('btn-decor-yarn'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
+    if (ownedItems.mouse) { let btn = document.getElementById('btn-decor-mouse'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
+}
+
+function selectCat(type) { currentCat = type; localStorage.setItem('currentCat', currentCat); updateCatUI(); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} }
+function buyCat(type, price) {
+    if (ownedCats[type]) { selectCat(type); return; }
+    if (score >= price) { score -= price; ownedCats[type] = true; saveProgress(); updateUI(); selectCat(type); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} } else alert('Мало рыбок!');
+}
+
+function updateCatUI() {
+    catElement.src = catImages[currentCat]; document.body.style.backgroundImage = `url('${catBgs[currentCat]}')`;
+    const g = document.getElementById('btn-cat-gray'), b = document.getElementById('btn-cat-black');
+    if (ownedCats.gray) { g.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; g.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
+    if (ownedCats.black) { b.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; b.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
+}
+
+// === АКСЕССУАРЫ ===
+function renderStyleShop() {
+    const list = document.getElementById('style-list'); list.innerHTML = '';
+    for (let id in accData) {
+        let isOwned = ownedAcc[id];
+        let btnText = isOwned ? (equippedAcc[id] ? 'Снять' : 'Надеть') : `50 000 <span class="fish-emoji-small">🐟</span>`;
+        let btnClass = isOwned ? (equippedAcc[id] ? 'bg-blue-500 text-white' : 'bg-green-500 text-white') : 'bg-green-500 text-white';
+        list.innerHTML += `<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">${accData[id].name}</div></div></div><button onclick="buyAcc('${id}', 50000)" class="${btnClass} px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">${btnText}</button></div>`;
     }
 }
 
-function toggleAccessory(accId) {
-    if (!ownedAccessories[
+function buyAcc(id, price) {
+    if (ownedAcc[id]) { equippedAcc[id] = !equippedAcc[id]; saveProgress(); renderStyleShop(); updateAccUI(); return; }
+    if (score >= price) {
+        score -= price; ownedAcc[id] = true; equippedAcc[id] = true; saveProgress(); updateUI(); renderStyleShop(); updateAccUI();
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+    } else alert('Мало рыбок!');
+}
+
+function updateAccUI() {
+    for (let id in accData) { let el = document.getElementById(accData[id].el); if (el) el.style.display = equippedAcc[id] ? 'block' : 'none'; }
+}
+
+function openWardrobe() {
+    const list = document.getElementById('wardrobe-list'); list.innerHTML = '';
+    let hasItems = false;
+    for (let id in accData) {
+        if (ownedAcc[id]) {
+            hasItems = true;
+            let btnText = equippedAcc[id] ? 'Снять' : 'Надеть';
+            let btnClass = equippedAcc[id] ? 'bg-red-500 text-white' : 'bg-green-500 text-white';
+            list.innerHTML += `<div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="w-10 h-10 object-contain"><span class="font-bold text-sm">${accData[id].name}</span></div><button onclick="toggleAcc('${id}')" class="${btnClass} px-3 py-1 rounded-lg text-xs font-bold">${btnText}</button></div>`;
+        }
+    }
+    if (!hasItems) list.innerHTML = '<p class="text-center text-gray-500">Вы пока ничего не купили!</p>';
+    document.getElementById('wardrobe-modal').style.display = 'flex';
+}
+
+function toggleAcc(id) { equippedAcc[id] = !equippedAcc[id]; saveProgress(); updateAccUI(); openWardrobe(); }
+function closeWardrobe() { document.getElementById('wardrobe-modal').style.display = 'none'; renderStyleShop(); }
+
+function createFloatingText(x, y, text) { const el = document.createElement('div'); el.innerText = text; el.className = 'float-text'; el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px'; document.body.appendChild(el); setTimeout(() => el.remove(), 800); }
+function updateUI() { if (score >= 1000000) scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; else if (score >= 500000) scoreElement.innerText = Math.floor(score / 1000) + 'k'; else scoreElement.innerText = score; }
+function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedItems', JSON.stringify(ownedItems)); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); localStorage.setItem('ownedAcc', JSON.stringify(ownedAcc)); localStorage.setItem('equippedAcc', JSON.stringify(equippedAcc)); }
+
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tab}`).classList.add('active');
+    ['tap', 'cats', 'shop'].forEach(t => { const b = document.getElementById(`btn-${t}`); if (t === tab) b.classList.replace('text-gray-400', 'text-green-600'); else b.classList.replace('text-green-600', 'text-gray-400'); });
+}
+function switchShopTab(tab) {
+    document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
+    ['boosters', 'decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
+}
+</script>
+</body>
+</html>
