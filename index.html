@@ -22,8 +22,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .acc-chain{top:73%;left:50%;transform:translateX(-50%);width:100px; z-index:14;}
 .acc-shoes{bottom:-60px;left:50%;transform:translateX(-50%);width:120px; z-index: 14;}
 .acc-bottle{bottom: -10%; right: -15%; width: 120px; z-index: 12;}
-
-.shop-item-img{width:50px;height:50px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2)); border-radius: 8px;}
+.shop-item-img{width:50px;height:50px;object-fit:cover;border-radius:8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
 .float-text{position:absolute;color:#fff;font-weight:bold;font-size:32px;pointer-events:none;animation:floatUp .8s ease-out forwards;text-shadow:2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;z-index:50}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
 .tab-content{display:none}.tab-content.active{display:flex}
@@ -34,29 +33,26 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .bg-white{background-color:rgba(255,255,255,0.95);backdrop-filter:blur(4px)}
 #wardrobe-modal, #bg-modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;justify-content:center;align-items:center}
 #wardrobe-content, #bg-content {background:white;padding:20px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
-
 @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 .boost-pulse { animation: pulse-red 1s infinite; }
 </style>
 </head>
 <body>
 <div id="app-container">
-
 <div class="p-4 flex justify-between items-start mt-2 z-50 shrink-0">
-    <div class="flex flex-col items-center">
-        <button onclick="buyBoost()" id="btn-boost" class="bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg border-2 border-white text-xl font-bold hover:bg-red-600 transition boost-pulse">⚡</button>
-        <span class="text-xs font-bold text-white bg-black bg-opacity-50 px-2 py-0.5 rounded mt-1 shadow-sm">+50</span>
-    </div>
-    <div class="flex flex-col items-center gap-2">
-        <div class="bg-white rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-200 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
-        <div id="boost-timer" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-md flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
-    </div>
-    <div class="flex gap-2">
-        <button onclick="openBackgrounds()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">🖼️</button>
-        <button onclick="openWardrobe()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">👗</button>
-    </div>
+<div class="flex flex-col items-center">
+<button onclick="buyBoost()" id="btn-boost" class="bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg border-2 border-white text-xl font-bold hover:bg-red-600 transition boost-pulse">⚡</button>
+<span class="text-xs font-bold text-white bg-black bg-opacity-50 px-2 py-0.5 rounded mt-1 shadow-sm">+50</span>
 </div>
-
+<div class="flex flex-col items-center gap-2">
+<div class="bg-white rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-200 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
+<div id="boost-timer" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-md flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
+</div>
+<div class="flex gap-2">
+<button onclick="openBackgrounds()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">🖼️</button>
+<button onclick="openWardrobe()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">👗</button>
+</div>
+</div>
 <div id="tab-tap" class="tab-content active flex-grow flex-col justify-center items-center relative w-full z-10">
 <div class="scene-container" id="tap-zone">
 <div class="cat-wrapper" id="cat-wrapper">
@@ -91,10 +87,7 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/fLGsNp7X/image.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Liminal</div></div></div><button id="btn-bg-liminal" onclick="buyBackground('liminal')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">150 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">Absent Vibe</div></div></div><button id="btn-bg-absent" onclick="buyBackground('absent')" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">2 000 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
-
-<div id="shop-style" class="shop-content space-y-3">
-<!-- Сюда JS вставит список одежды -->
-</div>
+<div id="shop-style" class="shop-content space-y-3"></div>
 </div>
 </div>
 
@@ -114,21 +107,8 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 </div>
 </div>
 
-<div id="wardrobe-modal">
-    <div id="wardrobe-content">
-        <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">👗 Гардероб</h2>
-        <div id="wardrobe-list" class="space-y-3"></div>
-        <button onclick="closeWardrobe()" class="mt-6 w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-xl">Закрыть</button>
-    </div>
-</div>
-
-<div id="bg-modal">
-    <div id="bg-content">
-        <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">🖼️ Твои фоны</h2>
-        <div id="bg-list" class="space-y-3"></div>
-        <button onclick="closeBackgrounds()" class="mt-6 w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-xl">Закрыть</button>
-    </div>
-</div>
+<div id="wardrobe-modal"><div id="wardrobe-content"><h2 class="text-2xl font-bold text-center mb-4 text-gray-800">👗 Гардероб</h2><div id="wardrobe-list" class="space-y-3"></div><button onclick="closeWardrobe()" class="mt-6 w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-xl">Закрыть</button></div></div>
+<div id="bg-modal"><div id="bg-content"><h2 class="text-2xl font-bold text-center mb-4 text-gray-800">🖼️ Твои фоны</h2><div id="bg-list" class="space-y-3"></div><button onclick="closeBackgrounds()" class="mt-6 w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-xl">Закрыть</button></div></div>
 
 <script>
 let tg = window.Telegram.WebApp; tg.expand(); tg.headerColor = '#333333';
@@ -139,204 +119,163 @@ let currentCat = localStorage.getItem('currentCat') || 'ginger';
 let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
 let ownedAcc = JSON.parse(localStorage.getItem('ownedAcc')) || {};
 let equippedAcc = JSON.parse(localStorage.getItem('equippedAcc')) || {};
-
-// Логика фонов
 let ownedBgs = JSON.parse(localStorage.getItem('ownedBgs')) || { default: true, zimniy: false, minecraft: false, liminal: false, absent: false };
 let currentBg = localStorage.getItem('currentBg') || 'default';
 
 const catImages = { ginger: 'https://i.postimg.cc/qBC0G1MX/photo-2026-11-12-08-43-06-Photoroom.png', gray: 'https://i.postimg.cc/NjsWZDBG/photo-2026-11-12-08-43-25-Photoroom.png', black: 'https://i.postimg.cc/7ZtQdyKL/photo-2026-11-12-08-43-32-Photoroom.png' };
-
 const bgData = {
-    default: { name: 'Стандартный', img: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', price: 0 },
-    zimniy: { name: 'Зимний вайб', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
-    minecraft: { name: 'Minecraft', img: 'https://i.postimg.cc/3RV8wdhD/image.png', price: 150000 },
-    liminal: { name: 'Liminal', img: 'https://i.postimg.cc/fLGsNp7X/image.png', price: 150000 },
-    absent: { name: 'Absent Vibe', img: 'https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png', price: 2000000 }
+default: { name: 'Стандартный', img: 'https://i.postimg.cc/bJhMH96W/1644513648-1-abrakadabra-fun-p-fon-dlya-klikera-1.jpg', price: 0 },
+zimniy: { name: 'Зимний вайб', img: 'https://i.postimg.cc/mD0XkG5Z/image.png', price: 100000 },
+minecraft: { name: 'Minecraft', img: 'https://i.postimg.cc/3RV8wdhD/image.png', price: 150000 },
+liminal: { name: 'Liminal', img: 'https://i.postimg.cc/fLGsNp7X/image.png', price: 150000 },
+absent: { name: 'Absent Vibe', img: 'https://i.postimg.cc/mDHx8Vx4/Bez-imeni.png', price: 2000000 }
 };
-
 const accData = {
-    hat: { name: 'Шляпа', img: 'https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png', el: 'acc-hat', price: 50000 },
-    cap: { name: 'Шапка', img: 'https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png', el: 'acc-cap', price: 50000 },
-    glasses_1: { name: 'Очки 1', img: 'https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png', el: 'acc-glasses-1', price: 50000 },
-    glasses_2: { name: 'Очки 2', img: 'https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png', el: 'acc-glasses-2', price: 50000 },
-    glasses_3: { name: 'Очки 3', img: 'https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png', el: 'acc-glasses-3', price: 50000 },
-    tie: { name: 'Галстук', img: 'https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png', el: 'acc-tie', price: 50000 },
-    bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', el: 'acc-bowtie', price: 50000 },
-    hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin', price: 50000 },
-    chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain', price: 50000 },
-    shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png', el: 'acc-shoes', price: 50000 },
-    bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 }
+hat: { name: 'Шляпа', img: 'https://i.postimg.cc/Wbwkx358/image-Photoroom-(1).png', el: 'acc-hat', price: 50000 },
+cap: { name: 'Шапка', img: 'https://i.postimg.cc/gJtMVsZw/image-Photoroom-(6).png', el: 'acc-cap', price: 50000 },
+glasses_1: { name: 'Очки 1', img: 'https://i.postimg.cc/qMwNjF7m/image-Photoroom-(2).png', el: 'acc-glasses-1', price: 50000 },
+glasses_2: { name: 'Очки 2', img: 'https://i.postimg.cc/ydC6Vhdk/image-Photoroom-(3).png', el: 'acc-glasses-2', price: 50000 },
+glasses_3: { name: 'Очки 3', img: 'https://i.postimg.cc/J0qj34gv/image-Photoroom-(10).png', el: 'acc-glasses-3', price: 50000 },
+tie: { name: 'Галстук', img: 'https://i.postimg.cc/rw97dSQ7/image-Photoroom-(7).png', el: 'acc-tie', price: 50000 },
+bowtie: { name: 'Бабочка', img: 'https://i.postimg.cc/pXbSq07N/image-Photoroom-(8).png', el: 'acc-bowtie', price: 50000 },
+hairpin: { name: 'Заколка', img: 'https://i.postimg.cc/L4zD6myv/image-Photoroom-(9).png', el: 'acc-hairpin', price: 50000 },
+chain: { name: 'Цепь', img: 'https://i.postimg.cc/63MPHwDp/image-Photoroom-(5).png', el: 'acc-chain', price: 50000 },
+shoes: { name: 'Ботинки', img: 'https://i.postimg.cc/bJ0YC6PY/photo-2026-11-12-23-42-45-Photoroom.png', el: 'acc-shoes', price: 50000 },
+bottle: { name: 'Бутылка', img: 'https://i.postimg.cc/DZH7CtJg/image-Photoroom-(11).png', el: 'acc-bottle', price: 1000000 }
 };
-
 let boostMultiplier = 1, boostTimeLeft = 0, boostInterval = null, currentBoostStack = 0;
 const maxBoostStack = 3, boostDuration = 5, boostPrice = 200;
 const scoreElement = document.getElementById('score'), catWrapper = document.getElementById('cat-wrapper'), catElement = document.getElementById('cat'), tapZone = document.getElementById('tap-zone'), timerContainer = document.getElementById('boost-timer'), timerSeconds = document.getElementById('boost-seconds'), timerStack = document.getElementById('boost-stack');
-
 updateUI(); updateCatUI(); updateAccUI(); renderStyleShop(); applyBackground(); startAutoTap();
-
 function doTap(x, y) {
-    let p = baseTapPower * boostMultiplier; score += p; saveProgress();
-    try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e){}
-    createFloatingText(x, y, `+${p}`); updateUI();
-    catWrapper.style.transform = 'translateY(-30px) scale(0.95)';
-    setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
-    setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1)'; }, 250);
+let p = baseTapPower * boostMultiplier; score += p; saveProgress();
+try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e){}
+createFloatingText(x, y, `+${p}`); updateUI();
+catWrapper.style.transform = 'translateY(-30px) scale(0.95)';
+setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1.05, 0.9)'; }, 100);
+setTimeout(() => { catWrapper.style.transform = 'translateY(0) scale(1)'; }, 250);
 }
 tapZone.addEventListener('mousedown', e => doTap(e.clientX, e.clientY));
 tapZone.addEventListener('touchstart', e => { e.preventDefault(); let t = e.touches[0]; doTap(t.clientX, t.clientY); }, { passive: false });
-
 function startAutoTap() {
-    if (hasAutoTap) {
-        let btn = document.getElementById('btn-buy-auto');
-        if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
-        setInterval(() => { score += 2; saveProgress(); updateUI(); createFloatingText((window.innerWidth/2)+(Math.random()*100-50), (window.innerHeight/2)+(Math.random()*100-50), '+2'); }, 1000);
-    }
+if (hasAutoTap) {
+let btn = document.getElementById('btn-buy-auto');
+if(btn) { btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400'); btn.disabled = true; }
+setInterval(() => { score += 2; saveProgress(); updateUI(); createFloatingText((window.innerWidth/2)+(Math.random()*100-50), (window.innerHeight/2)+(Math.random()*100-50), '+2'); }, 1000);
 }
-
+}
 function buyBoost() {
-    if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
-    if (score >= boostPrice) {
-        score -= boostPrice; currentBoostStack++; boostMultiplier = 50;
-        boostTimeLeft = boostTimeLeft <= 0 ? boostDuration : boostTimeLeft + boostDuration;
-        timerContainer.classList.remove('hidden'); updateTimerUI(); saveProgress(); updateUI();
-        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
-        if (!boostInterval) {
-            boostInterval = setInterval(() => { boostTimeLeft--; if (boostTimeLeft <= 0) endBoost(); else updateTimerUI(); }, 1000);
-        }
-    } else alert('Мало рыбок! Нужно ' + boostPrice);
+if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
+if (score >= boostPrice) {
+score -= boostPrice; currentBoostStack++; boostMultiplier = 50;
+boostTimeLeft = boostTimeLeft <= 0 ? boostDuration : boostTimeLeft + boostDuration;
+timerContainer.classList.remove('hidden'); updateTimerUI(); saveProgress(); updateUI();
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+if (!boostInterval) {
+boostInterval = setInterval(() => { boostTimeLeft--; if (boostTimeLeft <= 0) endBoost(); else updateTimerUI(); }, 1000);
 }
-
+} else alert('Мало рыбок! Нужно ' + boostPrice);
+}
 function updateTimerUI() { timerSeconds.innerText = boostTimeLeft; timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : ''; }
 function endBoost() { clearInterval(boostInterval); boostInterval = null; boostMultiplier = 1; currentBoostStack = 0; boostTimeLeft = 0; timerContainer.classList.add('hidden'); }
-
 function selectCat(type) { currentCat = type; localStorage.setItem('currentCat', currentCat); updateCatUI(); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} }
 function buyCat(type, price) {
-    if (ownedCats[type]) { selectCat(type); return; }
-    if (score >= price) { score -= price; ownedCats[type] = true; saveProgress(); updateUI(); selectCat(type); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} } else alert('Мало рыбок!');
+if (ownedCats[type]) { selectCat(type); return; }
+if (score >= price) { score -= price; ownedCats[type] = true; saveProgress(); updateUI(); selectCat(type); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} } else alert('Мало рыбок!');
 }
-
 function updateCatUI() {
-    catElement.src = catImages[currentCat]; 
-    const g = document.getElementById('btn-cat-gray'), b = document.getElementById('btn-cat-black');
-    if (ownedCats.gray) { g.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; g.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
-    if (ownedCats.black) { b.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; b.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
+catElement.src = catImages[currentCat]; 
+const g = document.getElementById('btn-cat-gray'), b = document.getElementById('btn-cat-black');
+if (ownedCats.gray) { g.innerText = currentCat === 'gray' ? 'Активен' : 'Выбрать'; g.className = currentCat === 'gray' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
+if (ownedCats.black) { b.innerText = currentCat === 'black' ? 'Активен' : 'Выбрать'; b.className = currentCat === 'black' ? 'bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm' : 'bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm'; }
 }
-
-// === ФОНЫ ===
-function applyBackground() {
-    document.body.style.backgroundImage = `url('${bgData[currentBg].img}')`;
-}
-
+function applyBackground() { document.body.style.backgroundImage = `url('${bgData[currentBg].img}')`; }
 function buyBackground(id) {
-    if (ownedBgs[id]) return;
-    let price = bgData[id].price;
-    if (score >= price) {
-        score -= price;
-        ownedBgs[id] = true;
-        currentBg = id;
-        saveProgress();
-        updateUI();
-        applyBackground();
-        updateBgButtons();
-        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
-    } else alert('Мало рыбок!');
+if (ownedBgs[id]) return;
+let price = bgData[id].price;
+if (score >= price) {
+score -= price; ownedBgs[id] = true; currentBg = id;
+saveProgress(); updateUI(); applyBackground(); updateBgButtons();
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+} else alert('Мало рыбок!');
 }
-
 function updateBgButtons() {
-    for (let id in bgData) {
-        if (id === 'default') continue;
-        let btn = document.getElementById('btn-bg-' + id);
-        if (btn) {
-            if (ownedBgs[id]) {
-                btn.innerText = currentBg === id ? 'Активен' : 'Выбрать';
-                btn.className = currentBg === id ? 'bg-blue-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center' : 'bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center';
-                btn.onclick = () => selectBackground(id);
-            }
-        }
-    }
+for (let id in bgData) {
+if (id === 'default') continue;
+let btn = document.getElementById('btn-bg-' + id);
+if (btn) {
+if (ownedBgs[id]) {
+btn.innerText = currentBg === id ? 'Активен' : 'Выбрать';
+btn.className = currentBg === id ? 'bg-blue-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center' : 'bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center';
+btn.onclick = () => selectBackground(id);
 }
-
-function selectBackground(id) {
-    currentBg = id;
-    localStorage.setItem('currentBg', currentBg);
-    applyBackground();
-    updateBgButtons();
-    try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
 }
-
+}
+}
+function selectBackground(id) { currentBg = id; localStorage.setItem('currentBg', currentBg); applyBackground(); updateBgButtons(); try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} }
 function openBackgrounds() {
-    const list = document.getElementById('bg-list'); list.innerHTML = '';
-    for (let id in bgData) {
-        if (ownedBgs[id]) {
-            let btnText = currentBg === id ? 'Активен' : 'Выбрать';
-            let btnClass = currentBg === id ? 'bg-blue-500 text-white' : 'bg-green-500 text-white';
-            list.innerHTML += `<div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl"><div class="flex items-center gap-3"><img src="${bgData[id].img}" class="w-12 h-12 object-cover rounded-lg"><span class="font-bold text-sm">${bgData[id].name}</span></div><button onclick="selectBackground('${id}'); closeBackgrounds();" class="${btnClass} px-3 py-1 rounded-lg text-xs font-bold">${btnText}</button></div>`;
-        }
-    }
-    document.getElementById('bg-modal').style.display = 'flex';
+const list = document.getElementById('bg-list'); list.innerHTML = '';
+for (let id in bgData) {
+if (ownedBgs[id]) {
+let btnText = currentBg === id ? 'Активен' : 'Выбрать';
+let btnClass = currentBg === id ? 'bg-blue-500 text-white' : 'bg-green-500 text-white';
+list.innerHTML += `<div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl"><div class="flex items-center gap-3"><img src="${bgData[id].img}" class="w-12 h-12 object-cover rounded-lg"><span class="font-bold text-sm">${bgData[id].name}</span></div><button onclick="selectBackground('${id}'); closeBackgrounds();" class="${btnClass} px-3 py-1 rounded-lg text-xs font-bold">${btnText}</button></div>`;
+}
+}
+document.getElementById('bg-modal').style.display = 'flex';
 }
 function closeBackgrounds() { document.getElementById('bg-modal').style.display = 'none'; updateBgButtons(); }
-
-// === АКСЕССУАРЫ ===
 function renderStyleShop() {
-    const list = document.getElementById('shop-style'); list.innerHTML = '';
-    for (let id in accData) {
-        let isOwned = ownedAcc[id];
-        let priceText = accData[id].price.toLocaleString('ru-RU');
-        let btnText = isOwned ? (equippedAcc[id] ? 'Снять' : 'Надеть') : `${priceText} <span class="fish-emoji-small">🐟</span>`;
-        let btnClass = isOwned ? (equippedAcc[id] ? 'bg-blue-500 text-white' : 'bg-green-500 text-white') : 'bg-green-500 text-white';
-        list.innerHTML += `<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">${accData[id].name}</div></div></div><button onclick="buyAcc('${id}')" class="${btnClass} px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">${btnText}</button></div>`;
-    }
+const list = document.getElementById('shop-style'); list.innerHTML = '';
+for (let id in accData) {
+let isOwned = ownedAcc[id];
+let priceText = accData[id].price.toLocaleString('ru-RU');
+let btnText = isOwned ? (equippedAcc[id] ? 'Снять' : 'Надеть') : `${priceText} <span class="fish-emoji-small">🐟</span>`;
+let btnClass = isOwned ? (equippedAcc[id] ? 'bg-blue-500 text-white' : 'bg-green-500 text-white') : 'bg-green-500 text-white';
+list.innerHTML += `<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="shop-item-img"><div><div class="font-bold text-gray-800 text-sm">${accData[id].name}</div></div></div><button onclick="buyAcc('${id}')" class="${btnClass} px-3 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">${btnText}</button></div>`;
 }
-
+}
 function buyAcc(id) {
-    let price = accData[id].price;
-    if (ownedAcc[id]) { equippedAcc[id] = !equippedAcc[id]; saveProgress(); renderStyleShop(); updateAccUI(); return; }
-    if (score >= price) {
-        score -= price; ownedAcc[id] = true; equippedAcc[id] = true; saveProgress(); updateUI(); renderStyleShop(); updateAccUI();
-        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
-    } else alert('Мало рыбок!');
+let price = accData[id].price;
+if (ownedAcc[id]) { equippedAcc[id] = !equippedAcc[id]; saveProgress(); renderStyleShop(); updateAccUI(); return; }
+if (score >= price) {
+score -= price; ownedAcc[id] = true; equippedAcc[id] = true; saveProgress(); updateUI(); renderStyleShop(); updateAccUI();
+try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+} else alert('Мало рыбок!');
 }
-
 function updateAccUI() {
-    for (let id in accData) { 
-        let el = document.getElementById(accData[id].el); 
-        if (el) {
-            if (equippedAcc[id]) {
-                el.style.setProperty('display', 'block', 'important');
-            } else {
-                el.style.setProperty('display', 'none', 'important');
-            }
-        }
-    }
+for (let id in accData) { 
+let el = document.getElementById(accData[id].el); 
+if (el) el.style.display = equippedAcc[id] ? 'block' : 'none'; 
 }
-
+}
 function openWardrobe() {
-    const list = document.getElementById('wardrobe-list'); list.innerHTML = '';
-    let hasItems = false;
-    for (let id in accData) {
-        if (ownedAcc[id]) {
-            hasItems = true;
-            let btnText = equippedAcc[id] ? 'Снять' : 'Надеть';
-            let btnClass = equippedAcc[id] ? 'bg-red-500 text-white' : 'bg-green-500 text-white';
-            list.innerHTML += `<div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="w-10 h-10 object-contain"><span class="font-bold text-sm">${accData[id].name}</span></div><button onclick="toggleAcc('${id}')" class="${btnClass} px-3 py-1 rounded-lg text-xs font-bold">${btnText}</button></div>`;
-        }
-    }
-    if (!hasItems) list.innerHTML = '<p class="text-center text-gray-500">Вы пока ничего не купили!</p>';
-    document.getElementById('wardrobe-modal').style.display = 'flex';
+const list = document.getElementById('wardrobe-list'); list.innerHTML = '';
+let hasItems = false;
+for (let id in accData) {
+if (ownedAcc[id]) {
+hasItems = true;
+let btnText = equippedAcc[id] ? 'Снять' : 'Надеть';
+let btnClass = equippedAcc[id] ? 'bg-red-500 text-white' : 'bg-green-500 text-white';
+list.innerHTML += `<div class="flex justify-between items-center bg-gray-100 p-3 rounded-xl"><div class="flex items-center gap-3"><img src="${accData[id].img}" class="w-10 h-10 object-contain"><span class="font-bold text-sm">${accData[id].name}</span></div><button onclick="toggleAcc('${id}')" class="${btnClass} px-3 py-1 rounded-lg text-xs font-bold">${btnText}</button></div>`;
 }
-
+}
+if (!hasItems) list.innerHTML = '<p class="text-center text-gray-500">Вы пока ничего не купили!</p>';
+document.getElementById('wardrobe-modal').style.display = 'flex';
+}
 function toggleAcc(id) { equippedAcc[id] = !equippedAcc[id]; saveProgress(); updateAccUI(); openWardrobe(); }
 function closeWardrobe() { document.getElementById('wardrobe-modal').style.display = 'none'; renderStyleShop(); }
-
 function createFloatingText(x, y, text) { const el = document.createElement('div'); el.innerText = text; el.className = 'float-text'; el.style.left = (x - 15) + 'px'; el.style.top = (y - 30) + 'px'; document.body.appendChild(el); setTimeout(() => el.remove(), 800); }
 function updateUI() { if (score >= 1000000) scoreElement.innerText = (score / 1000000).toFixed(1) + 'M'; else if (score >= 500000) scoreElement.innerText = Math.floor(score / 1000) + 'k'; else scoreElement.innerText = score; }
 function saveProgress() { localStorage.setItem('catScore', score); localStorage.setItem('ownedCats', JSON.stringify(ownedCats)); localStorage.setItem('ownedAcc', JSON.stringify(ownedAcc)); localStorage.setItem('equippedAcc', JSON.stringify(equippedAcc)); localStorage.setItem('ownedBgs', JSON.stringify(ownedBgs)); localStorage.setItem('currentBg', currentBg); }
-
 function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tab}`).classList.add('active');
-    ['tap', 'cats', 'shop'].forEach(t => { const b = document.getElementById(`btn-${t}`); if (t === tab) b.classList.replace('text-gray-400', 'text-green-600'); else b.classList.replace('text-green-600', 'text-gray-400'); });
+document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.getElementById(`tab-${tab}`).classList.add('active');
+['tap', 'cats', 'shop'].forEach(t => { const b = document.getElementById(`btn-${t}`); if (t === tab) b.classList.replace('text-gray-400', 'text-green-600'); else b.classList.replace('text-green-600', 'text-gray-400'); });
 }
 function switchShopTab(tab) {
-    document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
-    ['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active');
+document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
+['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
+}
+</script>
+</body>
+</html>
