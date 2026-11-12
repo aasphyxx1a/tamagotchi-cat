@@ -38,19 +38,30 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 .bg-white{background-color:rgba(255,255,255,0.95);backdrop-filter:blur(4px)}
 #wardrobe-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:100;justify-content:center;align-items:center}
 #wardrobe-content{background:white;padding:20px;border-radius:20px;width:90%;max-width:400px;max-height:80vh;overflow-y:auto}
+
+/* Анимация для кнопки буста */
+@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+.boost-pulse { animation: pulse-red 1s infinite; }
 </style>
 </head>
 <body>
 <div id="app-container">
 
-<!-- ВЕРХНЯЯ ПАНЕЛЬ С БАЛАНСОМ И ГАРДЕРОБОМ -->
+<!-- ВЕРХНЯЯ ПАНЕЛЬ: БУСТ, БАЛАНС, ГАРДЕРОБ -->
 <div class="p-4 flex justify-between items-start mt-2 z-50 shrink-0">
-    <div class="w-12"></div> <!-- Пустой блок для центрирования -->
+    <!-- Кнопка буста слева -->
+    <div class="flex flex-col items-center">
+        <button onclick="buyBoost()" id="btn-boost" class="bg-red-500 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg border-2 border-white text-xl font-bold hover:bg-red-600 transition boost-pulse">⚡</button>
+        <span class="text-xs font-bold text-white bg-black bg-opacity-50 px-2 py-0.5 rounded mt-1 shadow-sm">+50</span>
+    </div>
+
+    <!-- Баланс по центру -->
     <div class="flex flex-col items-center gap-2">
         <div class="bg-white rounded-full px-6 py-2 flex items-center shadow-lg border border-gray-200 gap-2"><span class="fish-emoji">🐟</span><span id="score" class="text-3xl font-bold text-yellow-600">0</span></div>
         <div id="boost-timer" class="hidden bg-yellow-400 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-md flex items-center gap-1">⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span></div>
     </div>
-    <!-- Кнопка Гардероба теперь в безопасности сверху -->
+
+    <!-- Гардероб справа -->
     <button onclick="openWardrobe()" class="bg-white rounded-full p-3 shadow-lg text-2xl hover:bg-gray-100 border border-gray-200">👗</button>
 </div>
 
@@ -76,28 +87,24 @@ html,body{height:100%;margin:0;padding:0;overflow:hidden;background-color:#333;b
 <div class="mt-4 text-white font-bold text-xl z-10 drop-shadow-md pointer-events-none">Тапай по экрану!</div>
 </div>
 
+<!-- МАГАЗИН -->
 <div id="tab-shop" class="tab-content flex-grow flex-col w-full z-10 relative overflow-hidden">
 <div class="flex justify-center mb-4 mt-2 shrink-0">
 <div class="bg-white rounded-xl flex shadow-md border border-gray-200 p-1 w-11/12 max-w-sm">
-<button onclick="switchShopTab('boosters')" id="shop-btn-boosters" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">⚡ Бусты</button>
 <button onclick="switchShopTab('decor')" id="shop-btn-decor" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">🧸 Предметы</button>
-<button onclick="switchShopTab('style')" id="shop-btn-style" class="shop-tab-btn flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">🧢 Стиль</button>
+<button onclick="switchShopTab('style')" id="shop-btn-style" class="shop-tab-btn active flex-1 py-2 text-center text-gray-500 rounded-lg text-sm">🧢 Стиль</button>
 </div>
 </div>
 <div class="px-4 w-full scrollable-content pb-24">
-<div id="shop-boosters" class="shop-content space-y-3">
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="fish-emoji">🐟</span><div><div class="font-bold text-gray-800 text-sm">Рыбка</div><div class="text-xs text-gray-500">+10 к тапу (5 сек)</div></div></div><button onclick="buyItem('fish', 50)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">50 <span class="fish-emoji-small">🐟</span></button></div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок</div><div class="text-xs text-gray-500">+50 к тапу (5 сек)</div></div></div><button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button></div>
-<div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🦾</span><div><div class="font-bold text-gray-800 text-sm">Робо-лапка</div><div class="text-xs text-gray-500">Авто-тап</div></div></div><button id="btn-buy-auto" onclick="buyItem('auto_tap', 500)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">500 <span class="fish-emoji-small">🐟</span></button></div>
-</div>
-
+<!-- Декор -->
 <div id="shop-decor" class="shop-content space-y-3 hidden">
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🧶</span><div><div class="font-bold text-gray-800 text-sm">Клубок шерсти</div></div></div><button id="btn-decor-yarn" onclick="buyItem('yarn', 100000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">100 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🐭</span><div><div class="font-bold text-gray-800 text-sm">Мышка</div></div></div><button id="btn-decor-mouse" onclick="buyItem('mouse', 250000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">250 000 <span class="fish-emoji-small">🐟</span></button></div>
 <div class="bg-white p-4 rounded-xl flex justify-between items-center shadow-md border border-gray-200"><div class="flex items-center gap-3"><span class="text-3xl">🌿</span><div><div class="font-bold text-gray-800 text-sm">Кошачья мята</div></div></div><button id="btn-decor-mint" onclick="buyItem('mint', 500000)" class="bg-green-500 text-white px-3 py-2 rounded-lg font-bold text-sm flex items-center">500 000 <span class="fish-emoji-small">🐟</span></button></div>
 </div>
 
-<div id="shop-style" class="shop-content space-y-3 hidden">
+<!-- Стиль -->
+<div id="shop-style" class="shop-content space-y-3">
 <!-- Сюда JS вставит список одежды -->
 </div>
 </div>
@@ -154,7 +161,7 @@ const accData = {
 };
 
 let boostMultiplier = 1, boostTimeLeft = 0, boostInterval = null, currentBoostStack = 0;
-const maxBoostStack = 3, boostDuration = 5;
+const maxBoostStack = 3, boostDuration = 5, boostPrice = 200; // Цена буста
 const scoreElement = document.getElementById('score'), catWrapper = document.getElementById('cat-wrapper'), catElement = document.getElementById('cat'), tapZone = document.getElementById('tap-zone'), timerContainer = document.getElementById('boost-timer'), timerSeconds = document.getElementById('boost-seconds'), timerStack = document.getElementById('boost-stack');
 
 updateUI(); updateDecor(); updateCatUI(); renderStyleShop(); updateAccUI(); startAutoTap();
@@ -178,27 +185,43 @@ function startAutoTap() {
     }
 }
 
+// === БУСТ (КНОПКА СВЕРХУ) ===
+function buyBoost() {
+    if (currentBoostStack >= maxBoostStack) { alert('Максимум 3 буста!'); return; }
+    
+    if (score >= boostPrice) {
+        score -= boostPrice;
+        currentBoostStack++;
+        boostMultiplier = 50; // +50 к тапу
+        boostTimeLeft = boostTimeLeft <= 0 ? boostDuration : boostTimeLeft + boostDuration;
+        
+        timerContainer.classList.remove('hidden'); updateTimerUI();
+        saveProgress(); updateUI();
+        
+        try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
+        
+        if (!boostInterval) {
+            boostInterval = setInterval(() => {
+                boostTimeLeft--;
+                if (boostTimeLeft <= 0) { endBoost(); } else { updateTimerUI(); }
+            }, 1000);
+        }
+    } else alert('Мало рыбок! Нужно ' + boostPrice);
+}
+
+function updateTimerUI() { timerSeconds.innerText = boostTimeLeft; timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : ''; }
+function endBoost() { clearInterval(boostInterval); boostInterval = null; boostMultiplier = 1; currentBoostStack = 0; boostTimeLeft = 0; timerContainer.classList.add('hidden'); }
+
+// === МАГАЗИН ===
 function buyItem(item, price) {
-    if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') { if (item === 'auto_tap' && hasAutoTap) return; if (item !== 'auto_tap' && ownedItems[item]) return; }
+    if (item === 'yarn' || item === 'mouse' || item === 'mint') { if (ownedItems[item]) return; }
     if (score >= price) {
         score -= price;
-        if (item === 'fish') activateBoost(10);
-        else if (item === 'yarn_boost') activateBoost(50);
-        else if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
-        else if (item === 'auto_tap') { hasAutoTap = true; localStorage.setItem('hasAutoTap', 'true'); startAutoTap(); }
+        if (item === 'yarn' || item === 'mouse' || item === 'mint') { ownedItems[item] = true; updateDecor(); }
         saveProgress(); updateUI();
         try { if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){}
     } else alert('Мало рыбок!');
 }
-
-function activateBoost(m) {
-    currentBoostStack++; boostMultiplier = m;
-    boostTimeLeft = boostTimeLeft <= 0 ? boostDuration : boostTimeLeft + boostDuration;
-    timerContainer.classList.remove('hidden'); updateTimerUI();
-    if (!boostInterval) boostInterval = setInterval(() => { boostTimeLeft--; if (boostTimeLeft <= 0) endBoost(); else updateTimerUI(); }, 1000);
-}
-function updateTimerUI() { timerSeconds.innerText = boostTimeLeft; timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : ''; }
-function endBoost() { clearInterval(boostInterval); boostInterval = null; boostMultiplier = 1; currentBoostStack = 0; boostTimeLeft = 0; timerContainer.classList.add('hidden'); }
 
 function updateDecor() {
     if (ownedItems.yarn) { let btn = document.getElementById('btn-decor-yarn'); if(btn){btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');} }
@@ -270,7 +293,7 @@ function switchTab(tab) {
 }
 function switchShopTab(tab) {
     document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden')); document.getElementById(`shop-${tab}`).classList.remove('hidden');
-    ['boosters', 'decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
+    ['decor', 'style'].forEach(t => { const b = document.getElementById(`shop-btn-${t}`); if (t === tab) b.classList.add('active'); else b.classList.remove('active'); });
 }
 </script>
 </body>
