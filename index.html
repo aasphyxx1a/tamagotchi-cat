@@ -97,66 +97,66 @@
             background-color: #e69a45; 
             border-radius: 100px 100px 80px 80px;
             transition: background-color 0.3s;
+            z-index: 2; /* Мордочка поверх ушей */
         }
 
-        /* Уши */
+        /* Уши (исправлены) */
         .ear {
             position: absolute;
             top: -15px;
-            width: 0;
-            height: 0;
-            border-left: 35px solid transparent;
-            border-right: 35px solid transparent;
-            border-bottom: 60px solid #e69a45; 
-            z-index: -1;
-            transition: border-bottom-color 0.3s;
+            width: 60px;
+            height: 60px;
+            background-color: #e69a45; 
+            border-radius: 15px 15px 0 0; 
+            z-index: 1;
+            transition: background-color 0.3s;
         }
-        .ear-left { left: 15px; transform: rotate(-20deg); }
-        .ear-right { right: 15px; transform: rotate(20deg); }
+        .ear-left { left: 20px; transform: rotate(-25deg); }
+        .ear-right { right: 20px; transform: rotate(25deg); }
         
         .ear-inner {
             position: absolute;
             top: 15px;
-            left: -20px;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid #ffcc99; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #ffcc99; 
+            border-radius: 8px 8px 0 0;
         }
 
         /* Пятнышки */
-        .spot { position: absolute; background-color: #c86a1a; border-radius: 50%; opacity: 0.6; transition: opacity 0.3s; }
+        .spot { position: absolute; background-color: #c86a1a; border-radius: 50%; opacity: 0.6; transition: opacity 0.3s; z-index: 3; }
         .spot-1 { top: 20px; left: 30px; width: 15px; height: 15px; }
         .spot-2 { top: 40px; right: 45px; width: 20px; height: 18px; }
         .spot-3 { top: 10px; right: 80px; width: 10px; height: 10px; }
 
         /* Глазки */
-        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; }
+        .eye { position: absolute; top: 40px; width: 36px; height: 42px; background-color: #222; border-radius: 50%; transition: all 0.3s; z-index: 3; }
         .eye-left { left: 40px; }
         .eye-right { right: 40px; }
         .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
         .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
 
         /* Брови */
-        .eyebrow { position: absolute; top: 35px; width: 30px; height: 4px; background-color: #222; border-radius: 2px; opacity: 0; transition: opacity 0.3s; }
+        .eyebrow { position: absolute; top: 35px; width: 30px; height: 4px; background-color: #222; border-radius: 2px; opacity: 0; transition: opacity 0.3s; z-index: 3; }
         .eyebrow-left { left: 35px; transform: rotate(15deg); }
         .eyebrow-right { right: 35px; transform: rotate(-15deg); }
 
-        .cheek { position: absolute; top: 90px; width: 28px; height: 16px; background-color: #ffb6c1; border-radius: 50%; opacity: 0.8; transition: background-color 0.3s; }
+        .cheek { position: absolute; top: 90px; width: 28px; height: 16px; background-color: #ffb6c1; border-radius: 50%; opacity: 0.8; transition: background-color 0.3s; z-index: 3; }
         .cheek-left { left: 25px; }
         .cheek-right { right: 25px; }
 
-        .nose { position: absolute; top: 85px; left: 50%; transform: translateX(-50%); width: 14px; height: 10px; background-color: #333; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; }
-        .mouth { position: absolute; top: 95px; left: 50%; transform: translateX(-50%); width: 20px; height: 10px; border-bottom: 3px solid #333; border-radius: 0 0 50% 50%; }
+        .nose { position: absolute; top: 85px; left: 50%; transform: translateX(-50%); width: 14px; height: 10px; background-color: #333; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; z-index: 3; }
+        .mouth { position: absolute; top: 95px; left: 50%; transform: translateX(-50%); width: 20px; height: 10px; border-bottom: 3px solid #333; border-radius: 0 0 50% 50%; z-index: 3; }
 
-        .whisker { position: absolute; width: 45px; height: 2px; background-color: #333; border-radius: 2px; }
+        .whisker { position: absolute; width: 45px; height: 2px; background-color: #333; border-radius: 2px; z-index: 3; }
         .whisker-l1 { top: 85px; left: -25px; transform: rotate(10deg); }
         .whisker-l2 { top: 98px; left: -25px; transform: rotate(-10deg); }
         .whisker-r1 { top: 85px; right: -25px; transform: rotate(-10deg); }
         .whisker-r2 { top: 98px; right: -25px; transform: rotate(10deg); }
 
-        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; border-radius: 30px 30px 20px 20px; border: 3px solid #333; transition: background-color 0.3s; }
+        .paw { position: absolute; bottom: -10px; width: 65px; height: 40px; border-radius: 30px 30px 20px 20px; border: 3px solid #333; transition: background-color 0.3s; z-index: 4; }
         .paw-left { left: 20px; }
         .paw-right { right: 20px; }
 
@@ -164,18 +164,21 @@
         .toe { width: 4px; height: 12px; background-color: #333; border-radius: 2px; }
 
         /* Классы для смены цвета */
-        .cat-ginger .cat-face, .cat-ginger .ear { background-color: #e69a45; border-bottom-color: #e69a45; }
+        .cat-ginger .cat-face { background-color: #e69a45; }
+        .cat-ginger .ear { background-color: #e69a45; }
         .cat-ginger .paw { background-color: #e69a45; }
-        .cat-ginger .ear-inner { border-bottom-color: #ffcc99; }
+        .cat-ginger .ear-inner { background-color: #ffcc99; }
         
-        .cat-gray .cat-face, .cat-gray .ear { background-color: #5c6166; border-bottom-color: #5c6166; }
+        .cat-gray .cat-face { background-color: #5c6166; }
+        .cat-gray .ear { background-color: #5c6166; }
         .cat-gray .paw { background-color: #5c6166; }
-        .cat-gray .ear-inner { border-bottom-color: #404448; }
+        .cat-gray .ear-inner { background-color: #404448; }
         .cat-gray .spot { opacity: 0; }
 
-        .cat-black .cat-face, .cat-black .ear { background-color: #2a2a2a; border-bottom-color: #2a2a2a; }
+        .cat-black .cat-face { background-color: #2a2a2a; }
+        .cat-black .ear { background-color: #2a2a2a; }
         .cat-black .paw { background-color: #2a2a2a; }
-        .cat-black .ear-inner { border-bottom-color: #444; }
+        .cat-black .ear-inner { background-color: #444; }
         .cat-black .spot { opacity: 0; }
         .cat-black .eyebrow { opacity: 1; }
         .cat-black .eye { height: 32px; border-radius: 10px; }
@@ -516,7 +519,6 @@
         function updateCatUI() {
             catElement.className = `cat-container cat-${currentCat}`;
 
-            // Показываем имена только для серого и черного
             if (currentCat === 'gray') {
                 nameDisplay.innerText = 'Нэнсик';
                 nameDisplay.classList.remove('hidden');
@@ -524,7 +526,7 @@
                 nameDisplay.innerText = 'Лукошка';
                 nameDisplay.classList.remove('hidden');
             } else {
-                nameDisplay.classList.add('hidden'); // Для рыжего скрываем
+                nameDisplay.classList.add('hidden'); 
             }
 
             const btnGray = document.getElementById('btn-cat-gray');
