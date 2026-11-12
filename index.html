@@ -12,7 +12,6 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            /* Четкий природный фон без блюра */
             background: linear-gradient(to bottom, #87CEEB 0%, #b3e5fc 45%, #81c784 55%, #4caf50 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333; 
@@ -28,7 +27,6 @@
             z-index: 1;
         }
 
-        /* Четкие, не размытые облака */
         .clouds {
             position: absolute;
             top: 5%;
@@ -90,7 +88,6 @@
             pointer-events: none;
         }
 
-        /* Мордочка */
         .cat-face {
             position: absolute;
             bottom: 0;
@@ -103,7 +100,6 @@
             z-index: 2;
         }
 
-        /* Уши (Идеальные треугольники) */
         .ear {
             position: absolute;
             top: -25px; 
@@ -142,7 +138,6 @@
         .eye::before { content: ''; position: absolute; top: 8px; left: 8px; width: 14px; height: 14px; background: white; border-radius: 50%; }
         .eye::after { content: ''; position: absolute; bottom: 8px; right: 8px; width: 6px; height: 6px; background: white; border-radius: 50%; }
 
-        /* Брови */
         .eyebrow { position: absolute; top: 35px; width: 30px; height: 4px; background-color: #222; border-radius: 2px; opacity: 0; transition: opacity 0.3s; z-index: 3; }
         .eyebrow-left { left: 35px; transform: rotate(15deg); }
         .eyebrow-right { right: 35px; transform: rotate(-15deg); }
@@ -220,10 +215,16 @@
     <div id="app-container">
         <div class="clouds"></div>
 
-        <div class="p-4 flex justify-center items-center mt-2 z-10 shrink-0">
+        <!-- Верхняя панель -->
+        <div class="p-4 flex flex-col justify-center items-center mt-2 z-10 shrink-0 gap-2">
             <div class="bg-white bg-opacity-80 rounded-full px-6 py-2 flex items-center shadow-md border border-green-300 gap-2">
                 <span class="fish-emoji">🐟</span>
                 <span id="score" class="text-3xl font-bold text-yellow-600">0</span>
+            </div>
+            
+            <!-- НОВЫЙ ТАЙМЕР БУСТА -->
+            <div id="boost-timer" class="hidden bg-yellow-400 bg-opacity-90 text-yellow-900 font-bold px-4 py-1 rounded-full text-sm shadow-sm flex items-center gap-1">
+                ⚡ <span id="boost-seconds">0</span> сек <span id="boost-stack"></span>
             </div>
         </div>
 
@@ -284,7 +285,6 @@
                         <button onclick="buyItem('yarn_boost', 200)" class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-sm flex items-center">200 <span class="fish-emoji-small">🐟</span></button>
                     </div>
                     
-                    <!-- Робо-лапка -->
                     <div class="bg-white bg-opacity-90 p-4 rounded-xl flex justify-between items-center shadow-md border border-green-200 mt-3">
                         <div class="flex items-center gap-3">
                             <span class="text-3xl">🦾</span>
@@ -377,19 +377,28 @@
         tg.expand();
         tg.headerColor = '#87CEEB'; 
 
-        // Загрузка сохранений
         let score = parseInt(localStorage.getItem('catScore')) || 0;
-        let tapPower = 1;
-        let boostTimeout = null; // Храним таймер буста, чтобы сбрасывать его при повторной покупке
+        let baseTapPower = 1; // Базовая сила тапа
         let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || { yarn: false, mouse: false, mint: false };
         let ownedCats = JSON.parse(localStorage.getItem('ownedCats')) || { ginger: true, gray: false, black: false };
         let currentCat = localStorage.getItem('currentCat') || 'ginger';
         let hasAutoTap = localStorage.getItem('hasAutoTap') === 'true';
 
+        // Переменные для буста
+        let boostMultiplier = 1;
+        let boostTimeLeft = 0;
+        let boostInterval = null;
+        let currentBoostStack = 0;
+        let maxBoostStack = 3;
+        const boostDuration = 5; // Длительность в секундах
+
         const scoreElement = document.getElementById('score');
         const catElement = document.getElementById('cat');
         const tapZone = document.getElementById('tap-zone');
         const nameDisplay = document.getElementById('cat-name-display');
+        const timerContainer = document.getElementById('boost-timer');
+        const timerSeconds = document.getElementById('boost-seconds');
+        const timerStack = document.getElementById('boost-stack');
 
         updateUI();
         updateDecor();
@@ -398,12 +407,13 @@
 
         // === ТАПАЛКА ===
         function doTap(x, y) {
-            score += tapPower;
+            let actualPower = baseTapPower * boostMultiplier;
+            score += actualPower;
             saveProgress();
             
             try { if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(err) {}
 
-            createFloatingText(x, y, `+${tapPower}`);
+            createFloatingText(x, y, `+${actualPower}`);
             updateUI();
 
             catElement.style.transform = 'translateY(-30px) scale(0.95)';
@@ -429,7 +439,7 @@
                 }
 
                 setInterval(() => {
-                    score += 2;
+                    score += 2; // Авто-тап всегда дает +2, независимо от бустов
                     saveProgress();
                     updateUI();
 
@@ -442,17 +452,23 @@
 
         // === МАГАЗИН ===
         function buyItem(item, price) {
-            // Проверяем на уникальность (для предметов интерьера и робо-лапки)
             if (item === 'yarn' || item === 'mouse' || item === 'mint' || item === 'auto_tap') {
                 if (item === 'auto_tap' && hasAutoTap) return;
                 if (item !== 'auto_tap' && ownedItems[item]) return;
             }
             
+            if (item === 'fish' || item === 'yarn_boost') {
+                if (currentBoostStack >= maxBoostStack) {
+                    alert('Максимум 3 буста! Дождитесь окончания.');
+                    return;
+                }
+            }
+
             if (score >= price) {
                 score -= price;
                 
-                if (item === 'fish') activateBoost(10, 5000);
-                else if (item === 'yarn_boost') activateBoost(50, 5000);
+                if (item === 'fish') activateBoost(10);
+                else if (item === 'yarn_boost') activateBoost(50);
                 else if (item === 'yarn' || item === 'mouse' || item === 'mint') {
                     ownedItems[item] = true;
                     updateDecor();
@@ -472,6 +488,49 @@
             }
         }
 
+        // === НОВАЯ СИСТЕМА БУСТОВ ===
+        function activateBoost(multiplier) {
+            currentBoostStack++;
+            boostMultiplier = multiplier;
+            
+            // Время добавляется к текущему или устанавливается заново
+            if (boostTimeLeft <= 0) {
+                boostTimeLeft = boostDuration;
+            } else {
+                boostTimeLeft += boostDuration;
+            }
+
+            // Показываем таймер
+            timerContainer.classList.remove('hidden');
+            updateTimerUI();
+
+            // Запускаем интервал, если еще не запущен
+            if (!boostInterval) {
+                boostInterval = setInterval(() => {
+                    boostTimeLeft--;
+                    if (boostTimeLeft <= 0) {
+                        endBoost();
+                    } else {
+                        updateTimerUI();
+                    }
+                }, 1000);
+            }
+        }
+
+        function updateTimerUI() {
+            timerSeconds.innerText = boostTimeLeft;
+            timerStack.innerText = currentBoostStack > 1 ? `(x${currentBoostStack})` : '';
+        }
+
+        function endBoost() {
+            clearInterval(boostInterval);
+            boostInterval = null;
+            boostMultiplier = 1;
+            currentBoostStack = 0;
+            boostTimeLeft = 0;
+            timerContainer.classList.add('hidden');
+        }
+
         function updateDecor() {
             if (ownedItems.yarn) {
                 document.getElementById('decor-yarn').classList.add('active');
@@ -488,26 +547,6 @@
                 let btn = document.getElementById('btn-decor-mint');
                 btn.innerText = 'Куплено'; btn.classList.replace('bg-green-500', 'bg-gray-400');
             }
-        }
-
-        // Обновленный буст (можно покупать много раз, табличка не мешает)
-        function activateBoost(power, duration) {
-            tapPower = power;
-            
-            // Показываем красивую надпись, что буст активирован
-            let randomX = (window.innerWidth / 2);
-            let randomY = (window.innerHeight / 2) - 50;
-            createFloatingText(randomX, randomY, `БУСТ +${power}!`);
-
-            // Если старый таймер еще идет, сбрасываем его
-            if (boostTimeout) clearTimeout(boostTimeout);
-
-            // Запускаем новый таймер
-            boostTimeout = setTimeout(() => { 
-                tapPower = 1; 
-                // Вместо alert просто показываем надпись, что буст спал
-                createFloatingText(randomX, randomY, `Буст спал`);
-            }, duration);
         }
 
         // === КОТИКИ ===
@@ -590,27 +629,4 @@
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            const tabs = ['tap', 'cats', 'shop'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`btn-${t}`);
-                if (t === tab) btn.classList.replace('text-gray-400', 'text-green-600');
-                else btn.classList.replace('text-green-600', 'text-gray-400');
-            });
-        }
-
-        function switchShopTab(shopTab) {
-            document.querySelectorAll('.shop-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`shop-${shopTab}`).classList.remove('hidden');
-            if (shopTab === 'boosters') {
-                document.getElementById('shop-btn-boosters').classList.add('active');
-                document.getElementById('shop-btn-decor').classList.remove('active');
-            } else {
-                document.getElementById('shop-btn-decor').classList.add('active');
-                document.getElementById('shop-btn-boosters').classList.remove('active');
-            }
-        }
-    </script>
-</body>
-</html>
+            document.getElementById(`tab-${tab}`).classList.add
